@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 08-Mar-2023 às 18:36
+-- Tempo de geração: 08-Mar-2023 às 18:59
 -- Versão do servidor: 5.7.40
 -- versão do PHP: 8.0.26
 
@@ -34,6 +34,8 @@ CREATE TABLE IF NOT EXISTS `chamados` (
   `solicitante_id` int(11) DEFAULT NULL,
   `chamado_statu_id` int(11) DEFAULT NULL,
   `historico_chamado_id` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -47,6 +49,8 @@ DROP TABLE IF EXISTS `chamado_statuses`;
 CREATE TABLE IF NOT EXISTS `chamado_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(255) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -62,6 +66,8 @@ CREATE TABLE IF NOT EXISTS `historico_chamados` (
   `chamado_id` int(11) DEFAULT NULL,
   `chamado_statu_id` int(11) DEFAULT NULL,
   `usuario_id` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -75,8 +81,20 @@ DROP TABLE IF EXISTS `nivel_usuarios`;
 CREATE TABLE IF NOT EXISTS `nivel_usuarios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `nivel_usuarios`
+--
+
+INSERT INTO `nivel_usuarios` (`id`, `descricao`, `created_at`, `updated_at`) VALUES
+(1, 'Administrador', NULL, NULL),
+(2, 'Analista', NULL, NULL),
+(3, 'Técnico', NULL, NULL),
+(4, 'Solicitante', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -91,8 +109,17 @@ CREATE TABLE IF NOT EXISTS `solicitantes` (
   `email` varchar(255) DEFAULT NULL,
   `senha` varchar(255) DEFAULT NULL,
   `nivel_usuario_id` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `solicitantes`
+--
+
+INSERT INTO `solicitantes` (`id`, `nome`, `email`, `senha`, `nivel_usuario_id`, `updated_at`, `created_at`) VALUES
+(1, 'yuri', 'yuri.alec@hotmail.com', '123456', 4, '2023-03-08 18:54:02', '2023-03-08 18:54:02');
 
 -- --------------------------------------------------------
 
@@ -107,6 +134,8 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `email` varchar(255) DEFAULT NULL,
   `senha` varchar(255) DEFAULT NULL,
   `nivel_usuario_id` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 COMMIT;

@@ -29,7 +29,7 @@ Route::get('/solicitantes', [solicitanteController::class, 'index']);
 Route::get('solicitante/{id}', [solicitanteController::class, 'show']);
 Route::post('cadastrar-solicitante', [solicitanteController::class, 'cadastrar']);
 Route::put('editar-solicitante/{id}', [solicitanteController::class, 'editar']);
-Route::delete('deletar-solicitantes/{id}', [solicitanteController::class, 'deletar']);
+Route::delete('deletar-solicitante/{id}', [solicitanteController::class, 'deletar']);
 
 Route::get('/chamados', [ChamadoController::class, 'index']);
 Route::get('chamado/{id}', [ChamadoController::class, 'show']);
