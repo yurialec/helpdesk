@@ -14,6 +14,12 @@ class ChamadoController extends Controller
         return ResourcesChamado::collection($chamados);
     }
 
+    public function show($id)
+    {
+        $chamados = Chamado::findOrFail($id);
+        return new ResourcesChamado($chamados);
+    }
+
     public function cadastrar(Request $request)
     {
         $chamado = new Chamado;

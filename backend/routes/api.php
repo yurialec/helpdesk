@@ -2,22 +2,12 @@
 
 use App\Http\Controllers\ChamadoController;
 use App\Http\Controllers\ChamadoStatusController;
+use App\Http\Controllers\HistoricoChamadoController;
 use App\Http\Controllers\NivelUsuarioController;
 use App\Http\Controllers\solicitanteController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -46,3 +36,9 @@ Route::get('chamado/{id}', [ChamadoController::class, 'show']);
 Route::post('cadastrar-chamado', [ChamadoController::class, 'cadastrar']);
 Route::put('editar-chamado/{id}', [ChamadoController::class, 'editar']);
 Route::delete('deletar-chamado/{id}', [ChamadoController::class, 'deletar']);
+
+Route::get('/historico-chamados', [HistoricoChamadoController::class, 'index']);
+Route::get('historico-chamado/{id}', [HistoricoChamadoController::class, 'show']);
+Route::post('cadastrar-historico-chamado', [HistoricoChamadoController::class, 'cadastrar']);
+Route::put('editar-historico-chamado/{id}', [HistoricoChamadoController::class, 'editar']);
+Route::delete('deletar-historico-chamado/{id}', [HistoricoChamadoController::class, 'deletar']);
