@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChamadoController;
 use App\Http\Controllers\ChamadoStatusController;
 use App\Http\Controllers\NivelUsuarioController;
 use App\Http\Controllers\solicitanteController;
@@ -39,3 +40,9 @@ Route::get('solicitante/{id}', [solicitanteController::class, 'show']);
 Route::post('cadastrar-solicitante', [solicitanteController::class, 'cadastrar']);
 Route::put('editar-solicitante/{id}', [solicitanteController::class, 'editar']);
 Route::delete('deletar-solicitantes/{id}', [solicitanteController::class, 'deletar']);
+
+Route::get('/chamados', [ChamadoController::class, 'index']);
+Route::get('chamado/{id}', [ChamadoController::class, 'show']);
+Route::post('cadastrar-chamado', [ChamadoController::class, 'cadastrar']);
+Route::put('editar-chamado/{id}', [ChamadoController::class, 'editar']);
+Route::delete('deletar-chamado/{id}', [ChamadoController::class, 'deletar']);
