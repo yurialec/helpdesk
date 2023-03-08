@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NivelUsuario extends Model
+class Usuario extends Model
 {
     use HasFactory;
-
-    public function usuario()
-    {
-        return $this->belongsTo(Usuario::class);
-    }
 }
