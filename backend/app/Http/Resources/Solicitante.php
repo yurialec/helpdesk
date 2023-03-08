@@ -19,6 +19,7 @@ class Solicitante extends JsonResource
             'nome' => $this->nome,
             'email' => $this->email,
             'senha' => $this->senha,
+            'nivel_usuario_id' => $this->nivel_usuario_id
         ];
     }
 }
