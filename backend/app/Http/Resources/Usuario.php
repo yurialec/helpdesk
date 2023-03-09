@@ -12,7 +12,7 @@ class Usuario extends JsonResource
             'id' => $this->id,
             'nome' => $this->nome,
             'email' => $this->email,
-            'senha' => $this->senha,
+            'password' => $this->password,
             'nivel_usuario_id' => $this->nivel_usuario_id
         ];
     }

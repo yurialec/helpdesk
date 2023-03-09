@@ -26,7 +26,7 @@ class UsuarioController extends Controller
         $usuario = new Usuario;
         $usuario->nome = $request->input('nome');
         $usuario->email = $request->input('email');
-        $usuario->senha = $request->input('senha');
+        $usuario->password = $request->input('password');
         $usuario->nivel_usuario_id = $request->input('nivel_usuario_id');
         $usuario->save();
 
@@ -46,7 +46,7 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($request->id);
         $usuario->nome = $request->input('nome');
         $usuario->email = $request->input('email');
-        $usuario->senha = $request->input('senha');
+        $usuario->password = $request->input('password');
         $usuario->nivel_usuario_id = $request->input('nivel_usuario_id');
 
         if ($usuario->save()) {

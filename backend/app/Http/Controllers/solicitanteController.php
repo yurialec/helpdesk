@@ -19,7 +19,7 @@ class solicitanteController extends Controller
         $solicitante = new Solicitante();
         $solicitante->nome = $request->input('nome');
         $solicitante->email = $request->input('email');
-        $solicitante->senha = $request->input('senha');
+        $solicitante->password = $request->input('password');
         $solicitante->save();
 
         if ($solicitante->save()) {
@@ -38,7 +38,7 @@ class solicitanteController extends Controller
         $solicitante = new Solicitante();
         $solicitante->nome = $request->input('nome');
         $solicitante->email = $request->input('email');
-        $solicitante->senha = $request->input('senha');
+        $solicitante->password = $request->input('password');
         $solicitante->save();
 
         if ($solicitante->save()) {
