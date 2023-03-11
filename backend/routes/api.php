@@ -6,12 +6,15 @@ use App\Http\Controllers\HistoricoChamadoController;
 use App\Http\Controllers\NivelUsuarioController;
 use App\Http\Controllers\solicitanteController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('nivel-usuarios', [NivelUsuarioController::class, 'index']);
 Route::get('nivel-usuario/{id}', [NivelUsuarioController::class, 'show']);
