@@ -10,38 +10,47 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::prefix('solicitantes')->group(function () {
+    Route::get('/', [solicitanteController::class, 'index']);
+    Route::get('/{id}', [solicitanteController::class, 'show']);
+    Route::post('/cadastrar', [solicitanteController::class, 'cadastrar']);
+    Route::put('/editar/{id}', [solicitanteController::class, 'editar']);
+    Route::delete('/deletar/{id}', [solicitanteController::class, 'deletar']);
+});
 
-Route::get('nivel-usuarios', [NivelUsuarioController::class, 'index']);
-Route::get('nivel-usuario/{id}', [NivelUsuarioController::class, 'show']);
+Route::prefix('nivel-usuarios')->group(function () {
+    Route::get('/', [NivelUsuarioController::class, 'index']);
+    Route::get('/{id}', [NivelUsuarioController::class, 'show']);
+});
 
-Route::get('/usuarios', [UsuarioController::class, 'index']);
-Route::get('usuario/{id}', [UsuarioController::class, 'show']);
-Route::post('cadastrar-usuario', [UsuarioController::class, 'cadastrar']);
-Route::put('editar-usuario/{id}', [UsuarioController::class, 'editar']);
-Route::delete('deletar-usuario/{id}', [UsuarioController::class, 'deletar']);
+Route::prefix('usuarios')->group(function () {
+    Route::get('/', [UsuarioController::class, 'index']);
+    Route::get('/{id}', [UsuarioController::class, 'show']);
+    Route::post('/cadastrar', [UsuarioController::class, 'cadastrar']);
+    Route::put('/editar/{id}', [UsuarioController::class, 'editar']);
+    Route::delete('/deletar/{id}', [UsuarioController::class, 'deletar']);
+});
 
-Route::get('chamado-status', [ChamadoStatusController::class, 'index']);
-Route::get('chamado-status/{id}', [ChamadoStatusController::class, 'show']);
+Route::prefix('chamado-status')->group(function () {
+    Route::get('/', [ChamadoStatusController::class, 'index']);
+    Route::get('/{id}', [ChamadoStatusController::class, 'show']);
+});
 
-Route::get('/solicitantes', [solicitanteController::class, 'index']);
-Route::get('solicitante/{id}', [solicitanteController::class, 'show']);
-Route::post('cadastrar-solicitante', [solicitanteController::class, 'cadastrar']);
-Route::put('editar-solicitante/{id}', [solicitanteController::class, 'editar']);
-Route::delete('deletar-solicitante/{id}', [solicitanteController::class, 'deletar']);
+Route::prefix('chamados')->group(function () {
+    Route::get('/', [ChamadoController::class, 'index']);
+    Route::get('/{id}', [ChamadoController::class, 'show']);
+    Route::post('/cadastrar', [ChamadoController::class, 'cadastrar']);
+    Route::put('/editar{id}', [ChamadoController::class, 'editar']);
+    Route::delete('/deletar/{id}', [ChamadoController::class, 'deletar']);
+});
 
-Route::get('/chamados', [ChamadoController::class, 'index']);
-Route::get('chamado/{id}', [ChamadoController::class, 'show']);
-Route::post('cadastrar-chamado', [ChamadoController::class, 'cadastrar']);
-Route::put('editar-chamado/{id}', [ChamadoController::class, 'editar']);
-Route::delete('deletar-chamado/{id}', [ChamadoController::class, 'deletar']);
-
-Route::get('/historico-chamados', [HistoricoChamadoController::class, 'index']);
-Route::get('historico-chamado/{id}', [HistoricoChamadoController::class, 'show']);
-Route::post('cadastrar-historico-chamado', [HistoricoChamadoController::class, 'cadastrar']);
-Route::put('editar-historico-chamado/{id}', [HistoricoChamadoController::class, 'editar']);
-Route::delete('deletar-historico-chamado/{id}', [HistoricoChamadoController::class, 'deletar']);
+Route::prefix('historico-chamados')->group(function () {
+    Route::get('/', [HistoricoChamadoController::class, 'index']);
+    Route::get('/{id}', [HistoricoChamadoController::class, 'show']);
+    Route::post('/cadastrar', [HistoricoChamadoController::class, 'cadastrar']);
+    Route::put('/editar/{id}', [HistoricoChamadoController::class, 'editar']);
+    Route::delete('/deletar/{id}', [HistoricoChamadoController::class, 'deletar']);
+});

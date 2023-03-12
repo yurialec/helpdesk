@@ -5,12 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\Solicitante as ResourcesSolicitante;
 use App\Models\Solicitante;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 
 class solicitanteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
+        $user = Auth::user()->nivel_usuario_id;
         $solicitante = Solicitante::all();
         return ResourcesSolicitante::collection($solicitante);
     }
@@ -20,7 +28,7 @@ class solicitanteController extends Controller
         $solicitante = new Solicitante();
         $solicitante->nome = $request->input('nome');
         $solicitante->email = $request->input('email');
-        $solicitante->nivel_usuario_id = $request->input('nivel_usuario_id');
+        $solicitante->nivel_usuario_id = $request->input(4);
         $solicitante->password = Hash::make($request->input('password'));
         $solicitante->save();
 
