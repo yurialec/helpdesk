@@ -60,6 +60,13 @@ export default function Esqueceu() {
                             Enviar email para recuperação de senha
                         </Button>
                     </Box>
+                    <Grid container>
+                        <Grid item xs>
+                            <Link href="/" variant="body2">
+                                Login
+                            </Link>
+                        </Grid>
+                    </Grid>
                 </Box>
             </Container>
         </ThemeProvider>
