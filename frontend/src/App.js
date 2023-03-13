@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import Aberto from './Pages/Chamados/Aberto';
+import Andamento from './Pages/Chamados/Andamento';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Cadastrar from './Pages/Solicitantes/Cadastrar';
@@ -41,6 +43,33 @@ function App() {
           element={
             <>
               <Esqueceu />
+            </>
+          }>
+        </Route>
+        <Route
+          path="/chamados/aberto"
+          exact
+          element={
+            <>
+              <Aberto />
+            </>
+          }>
+        </Route>
+        <Route
+          path="/chamados/em-andamento"
+          exact
+          element={
+            <>
+              <Andamento />
+            </>
+          }>
+        </Route>
+        <Route
+          path="/chamados/finalizado"
+          exact
+          element={
+            <>
+              <Aberto />
             </>
           }>
         </Route>

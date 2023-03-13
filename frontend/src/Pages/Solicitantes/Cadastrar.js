@@ -91,6 +91,13 @@ export default function Login() {
                         >
                             Cadastrar
                         </Button>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link href="/" variant="body2">
+                                    Login
+                                </Link>
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Box>
             </Container>
