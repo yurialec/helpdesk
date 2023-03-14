@@ -27,12 +27,12 @@ export default function Footer() {
         <footer className="py-5 text-center">
             <ul className="flex flex-row space-x-4 p-2 text-xs items-center justify-center text-gray-400">
                 <li className="curors-pointer">
-                    <a href="https://www.linkedin.com/in/yuri-alec-3976b227/">
+                    <a href="https://www.linkedin.com/in/yuri-alec-3976b227/" target='_blank'>
                         <LinkedInIcon />
                     </a>
                 </li>
                 <li className="curors-pointer">
-                    <a href="https://github.com/yurialec">
+                    <a href="https://github.com/yurialec" target='_blank'>
                         <GitHubIcon />
                     </a>
                 </li>
@@ -48,11 +48,11 @@ export default function Footer() {
                     >
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
-                                Sistema de abertura de chamados técnico.
-                                Não se esqueça de avaliar meu repositório.
+                                <p>O Sistema de abertura de chamados técnico froi desenvolvido com o intuito de melhorar minhas habilidades técnicas.</p>
+                                <p>Foram utilizadas as seguintes tecnologias: Laravel 8, ReactJs e MySql.</p>
+                                <p>Não se esqueça de avaliar meu repositório <a href='https://github.com/yurialec/helpdesk' target='_blank'>Aqui</a></p>
                             </DialogContentText>
                         </DialogContent>
-
                     </Dialog>
                 </li>
             </ul>

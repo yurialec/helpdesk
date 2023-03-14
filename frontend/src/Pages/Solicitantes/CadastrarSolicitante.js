@@ -39,9 +39,6 @@ export default function CadastrarSolicitante() {
                     <Typography component="h1" variant="h5">
                         Sistema de cadastro de chamados técnicos
                     </Typography>
-                    {/* <Typography component="h1" variant="h5">
-            Login
-          </Typography> */}
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"

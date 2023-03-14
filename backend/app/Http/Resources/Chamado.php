@@ -14,6 +14,8 @@ class Chamado extends JsonResource
             'solicitante_id' => $this->solicitante_id,
             'chamado_statu_id' => $this->chamado_statu_id,
             'historico_chamado_id' => $this->historico_chamado_id ? $this->historico_chamado_id : null,
+            'protocolo' => $this->protocolo,
+            'data_cadastro' => $this->created_at,
         ];
     }
 }
