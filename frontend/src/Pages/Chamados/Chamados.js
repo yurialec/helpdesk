@@ -12,6 +12,15 @@ export default function Chamados() {
     return (
         <div className='mt-5 ml-5 mr-5'>
             <h1 className='mt-5 ml-5 mr-5 text-3xl'>Meus Chamados</h1>
+            <div className='ml-2'>
+                <CardActions>
+                    <Button size="small">
+                        <Link to={"/chamados/cadastrar"}>
+                            Cadastrar novo chamado
+                        </Link>
+                    </Button>
+                </CardActions>
+            </div>
             <div className='mt-5 ml-5 mr-5 flex flex-row'>
                 <div className='mt-5 ml-5 mr-5'>
                     <Card sx={{ width: 250 }}>

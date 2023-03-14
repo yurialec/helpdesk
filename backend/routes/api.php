@@ -46,7 +46,7 @@ Route::prefix('chamados')->group(function () {
     Route::get('/', [ChamadoController::class, 'index']);
     Route::get('/{id}', [ChamadoController::class, 'show']);
     Route::post('/cadastrar', [ChamadoController::class, 'cadastrar']);
-    Route::put('/editar{id}', [ChamadoController::class, 'editar']);
+    Route::put('/editar/{id}', [ChamadoController::class, 'editar']);
     Route::delete('/deletar/{id}', [ChamadoController::class, 'deletar']);
 });
 

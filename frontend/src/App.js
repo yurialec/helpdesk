@@ -1,9 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Aberto from './Pages/Chamados/Aberto';
 import Andamento from './Pages/Chamados/Andamento';
+import CadastrarChamado from './Pages/Chamados/CadastrarChamado';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
-import Cadastrar from './Pages/Solicitantes/Cadastrar';
+import CadastrarSolicitante from './Pages/Solicitantes/CadastrarSolicitante';
+import DadosSolicitante from './Pages/Solicitantes/DadosSolicitante';
 import Esqueceu from './Pages/Solicitantes/Esqueceu';
 
 function App() {
@@ -21,7 +23,6 @@ function App() {
         </Route>
         <Route
           path="/home"
-          exact
           element={
             <>
               <Home />
@@ -30,16 +31,14 @@ function App() {
         </Route>
         <Route
           path="/solicitantes/cadastrar"
-          exact
           element={
             <>
-              <Cadastrar />
+              <CadastrarSolicitante />
             </>
           }>
         </Route>
         <Route
           path="/solicitantes/esqueceu"
-          exact
           element={
             <>
               <Esqueceu />
@@ -48,7 +47,6 @@ function App() {
         </Route>
         <Route
           path="/chamados/aberto"
-          exact
           element={
             <>
               <Aberto />
@@ -57,7 +55,6 @@ function App() {
         </Route>
         <Route
           path="/chamados/em-andamento"
-          exact
           element={
             <>
               <Andamento />
@@ -66,10 +63,25 @@ function App() {
         </Route>
         <Route
           path="/chamados/finalizado"
-          exact
           element={
             <>
               <Aberto />
+            </>
+          }>
+        </Route>
+        <Route
+          path="/chamados/cadastrar"
+          element={
+            <>
+              <CadastrarChamado />
+            </>
+          }>
+        </Route>
+        <Route
+          path="/dados-solicitante"
+          element={
+            <>
+              <DadosSolicitante />
             </>
           }>
         </Route>
