@@ -34,12 +34,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [SiteController::class, 'index'])->name('index.site');
+Route::get('/', [LoginController::class, 'showLoginForm'])->name('index.site');
 Route::get('/sobre', [SiteController::class, 'about'])->name('about');
 Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
-
-Route::get('/blog', [SiteBlogController::class, 'index'])->name('site.blog.index');
-Route::get('/blog/post/{blog}', [SiteBlogController::class, 'post'])->name('site.blog.post');
 
 Route::middleware(['auth'])->group(function () {
 
@@ -111,26 +108,6 @@ Route::middleware(['auth'])->group(function () {
                     Route::delete('/delete/{id}', [LogoController::class, 'delete'])->name('site.logo.delete');
                 });
 
-                Route::prefix('main-text')->group(function () {
-                    Route::get('/', [MainTextController::class, 'index'])->name('site.maintext.index');
-                    Route::get('/list', [MainTextController::class, 'list'])->name('site.maintext.list');
-                    Route::get('/create', [MainTextController::class, 'create'])->name('site.maintext.create');
-                    Route::post('/store', [MainTextController::class, 'store'])->name('site.maintext.store');
-                    Route::get('/edit/{id}', [MainTextController::class, 'edit'])->name('site.maintext.edit');
-                    Route::post('/update/{id}', [MainTextController::class, 'update'])->name('site.maintext.update');
-                    Route::delete('/delete/{id}', [MainTextController::class, 'delete'])->name('site.maintext.delete');
-                });
-
-                Route::prefix('carousel')->group(function () {
-                    Route::get('/', [SiteCarouselController::class, 'index'])->name('site.carousel.index');
-                    Route::get('/list', [SiteCarouselController::class, 'list'])->name('site.carousel.list');
-                    Route::get('/create', [SiteCarouselController::class, 'create'])->name('site.carousel.create');
-                    Route::post('/store', [SiteCarouselController::class, 'store'])->name('site.carousel.store');
-                    Route::get('/edit/{id}', [SiteCarouselController::class, 'edit'])->name('site.carousel.edit');
-                    Route::post('/update/{id}', [SiteCarouselController::class, 'update'])->name('site.carousel.update');
-                    Route::delete('/delete/{id}', [SiteCarouselController::class, 'delete'])->name('site.carousel.delete');
-                });
-
                 Route::prefix('site-about')->group(function () {
                     Route::get('/', [SiteAboutController::class, 'index'])->name('site.about.index');
                     Route::get('/list', [SiteAboutController::class, 'list'])->name('site.about.list');
@@ -150,33 +127,13 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/update/{id}', [ContactController::class, 'update'])->name('site.contact.update');
                     Route::delete('/delete/{id}', [ContactController::class, 'delete'])->name('site.contact.delete');
                 });
-
-                Route::prefix('social-media')->group(function () {
-                    Route::get('/', [SocialMediaController::class, 'index'])->name('site.socialmedia.index');
-                    Route::get('/list', [SocialMediaController::class, 'list'])->name('site.socialmedia.list');
-                    Route::get('/create', [SocialMediaController::class, 'create'])->name('site.socialmedia.create');
-                    Route::post('/store', [SocialMediaController::class, 'store'])->name('site.socialmedia.store');
-                    Route::get('/edit/{id}', [SocialMediaController::class, 'edit'])->name('site.socialmedia.edit');
-                    Route::post('/update/{id}', [SocialMediaController::class, 'update'])->name('site.socialmedia.update');
-                    Route::delete('/delete/{id}', [SocialMediaController::class, 'delete'])->name('site.socialmedia.delete');
-                });
-            });
-
-            Route::prefix('blog')->group(function () {
-                Route::get('/', [BlogController::class, 'index'])->name('blog.index');
-                Route::get('/list', [BlogController::class, 'list'])->name('blog.list');
-                Route::get('/create', [BlogController::class, 'create'])->name('blog.create');
-                Route::post('/store', [BlogController::class, 'store'])->name('blog.store');
-                Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('blog.edit');
-                Route::post('/update/{id}', [BlogController::class, 'update'])->name('blog.update');
-                Route::delete('/delete/{id}', [BlogController::class, 'delete'])->name('blog.delete');
             });
         });
-    });
 
-    Route::get('/cep/{cep}', function ($cep) {
-        $response = Http::get("https://viacep.com.br/ws/{$cep}/json/");
-        return $response->json();
+        //CONSULTA CEP
+        Route::get('/cep/{cep}', function ($cep) {
+            $response = Http::get("https://viacep.com.br/ws/{$cep}/json/");
+            return $response->json();
+        });
     });
-
 });

@@ -6,7 +6,7 @@
             </a>
         </div>
         <ul class="sidebar-list">
-            <li v-for="menu in menus" :key="menu.id">
+            <li v-for="menu in orderedMenus" :key="menu.id">
                 <template v-if="menu.children && menu.children.length > 0">
                     <div>
                         <a href="#" class="sidebar-nav" @click.prevent="toggleSubmenu(menu)">
@@ -45,8 +45,22 @@ export default {
     data() {
         return {
             menus: [],
-            submenuState: {},
         };
+    },
+    computed: {
+        orderedMenus() {
+            const homeMenu = this.menus.find(menu => menu.label === 'Home');
+            const adminMenu = this.menus.find(menu => menu.label === 'Administrativo');
+            const logoutMenu = this.menus.find(menu => menu.label === 'Sair');
+            const otherMenus = this.menus.filter(menu => menu.label !== 'Home' && menu.label !== 'Administrativo' && menu.label !== 'Sair');
+
+            return [
+                ...(homeMenu ? [homeMenu] : []),
+                ...(adminMenu ? [adminMenu] : []),
+                ...otherMenus,
+                ...(logoutMenu ? [logoutMenu] : []),
+            ];
+        }
     },
     created() {
         this.getMenus();
@@ -55,9 +69,10 @@ export default {
         getMenus() {
             axios.get('/admin/menus')
                 .then(response => {
-                    this.menus = response.data.map(menu => {
-                        return { ...menu, expanded: false };
-                    });
+                    this.menus = response.data.map(menu => ({
+                        ...menu,
+                        expanded: false,
+                    }));
                 })
                 .catch(error => {
                     console.error(error);
@@ -66,13 +81,6 @@ export default {
         toggleSubmenu(menu) {
             menu.expanded = !menu.expanded;
         },
-        closeAllSubmenus(currentMenu) {
-            this.menus.forEach(menu => {
-                if (menu !== currentMenu && menu.expanded) {
-                    menu.expanded = false;
-                }
-            });
-        }
     }
 };
 </script>

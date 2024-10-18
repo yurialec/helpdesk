@@ -53,21 +53,6 @@ import SiteLogoIndexComponent from './components/Site/Logo/SiteLogoIndexComponen
 import SiteLogoCreateComponent from './components/Site/Logo/SiteLogoCreateComponent.vue';
 import SiteLogoEditComponent from './components/Site/Logo/SiteLogoEditComponent.vue';
 
-//Carousel
-import SiteCarrouselIndexComponent from './components/Site/Carousel/SiteCarrouselIndexComponent.vue';
-import SiteCarouselCreateComponent from './components/Site/Carousel/SiteCarouselCreateComponent.vue';
-import SiteCarouselEditComponent from './components/Site/Carousel/SiteCarouselEditComponent.vue';
-
-//MAINTEXT
-import SiteMainTextIndexComponent from './components/Site/MainText/SiteMainTextIndexComponent.vue';
-import SiteMainTextCreateComponent from './components/Site/MainText/SiteMainTextCreateComponent.vue';
-import SiteMainTextEditComponent from './components/Site/MainText/SiteMainTextEditComponent.vue';
-
-//SOCIALMEDIA
-import SiteSocialMediaIndexComponent from './components/Site/SocialMedia/SiteSocialMediaIndexComponent.vue';
-import SiteSocialMediaCreateComponent from './components/Site/SocialMedia/SiteSocialMediaCreateComponent.vue';
-import SiteSocialMediaEditComponent from './components/Site/SocialMedia/SiteSocialMediaEditComponent.vue';
-
 //ABOUT
 import SiteAboutIndexComponent from './components/Site/About/SiteAboutIndexComponent.vue';
 import SiteAboutCreateComponent from './components/Site/About/SiteAboutCreateComponent.vue';
@@ -77,11 +62,6 @@ import SiteAboutEditComponent from './components/Site/About/SiteAboutEditCompone
 import SiteContactIndexComponent from './components/Site/Contact/SiteContactIndexComponent.vue';
 import SiteContactCreateComponent from './components/Site/Contact/SiteContactCreateComponent.vue';
 import SiteContactEditComponent from './components/Site/Contact/SiteContactEditComponent.vue';
-
-//BLOG
-import BlogIndexComponent from './components/Blog/BlogIndexComponent.vue';
-import BlogCreateComponent from './components/Blog/BlogCreateComponent.vue';
-import BlogEditComponent from './components/Blog/BlogEditComponent.vue';
 
 //Theme
 app.component('example-component', ExampleComponent);
@@ -118,21 +98,6 @@ app.component('site-logo-index-component', SiteLogoIndexComponent);
 app.component('site-logo-create-component', SiteLogoCreateComponent);
 app.component('site-logo-edit-component', SiteLogoEditComponent);
 
-//CARROUSEL
-app.component('site-carousel-index-component', SiteCarrouselIndexComponent);
-app.component('site-carousel-create-component', SiteCarouselCreateComponent);
-app.component('site-carousel-edit-component', SiteCarouselEditComponent);
-
-//MAINTEXT
-app.component('site-main-text-index-component', SiteMainTextIndexComponent);
-app.component('site-main-text-create-component', SiteMainTextCreateComponent);
-app.component('site-main-text-edit-component', SiteMainTextEditComponent);
-
-//SOCIALMEDIA
-app.component('site-socialmedia-index-component', SiteSocialMediaIndexComponent);
-app.component('site-socialmedia-create-component', SiteSocialMediaCreateComponent);
-app.component('site-socialmedia-edit-component', SiteSocialMediaEditComponent);
-
 //ABOUT
 app.component('site-about-index-component', SiteAboutIndexComponent);
 app.component('site-about-create-component', SiteAboutCreateComponent);
@@ -142,12 +107,6 @@ app.component('site-about-edit-component', SiteAboutEditComponent);
 app.component('site-contact-index-component', SiteContactIndexComponent);
 app.component('site-contact-create-component', SiteContactCreateComponent);
 app.component('site-contact-edit-component', SiteContactEditComponent);
-
-
-//BLOG
-app.component('blog-index-component', BlogIndexComponent);
-app.component('blog-create-component', BlogCreateComponent);
-app.component('blog-edit-component', BlogEditComponent);
 
 app.use(store);
 app.mount('#app');
