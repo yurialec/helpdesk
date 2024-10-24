@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @include('partials.navbar')
 <div class="main-content container">
-    <div class="row justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="row justify-content-center align-items-center" style="min-height: 73vh;">
         @if (isset($contact) && $contact)
             <div class="main-content container">
                 <div class="container text-center col-sm-4 div-contact-page">
