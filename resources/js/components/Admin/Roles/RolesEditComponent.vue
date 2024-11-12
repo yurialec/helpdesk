@@ -1,60 +1,66 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            <h4>Editar perfil</h4>
-        </div>
-        <div class="card-body">
-            <div class="row justify-content-center">
-                <div class="col-sm-6">
-                    <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
-                        role="alert">
-                        <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                        <hr>
-                        <ul v-for="msg in messages.data.errors">
-                            <li>{{ msg[0] }}</li>
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div v-if="loading" class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
+    <div class="container-fluid px-4 mt-2">
+        <div class="card">
+            <div class="card-header">
+                <h4>Editar perfil</h4>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-sm-6">
+                        <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
+                            role="alert">
+                            <i class="fa-regular fa-circle-check"></i> Registro atualizado com sucesso
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                    </div>
-
-                    <form v-else method="POST" action="" @submit.prevent="salvar">
-                        <div class="form-group">
-                            <label>Nome</label>
-                            <input type="text" class="form-control" disabled v-model="role.role.name">
+                        <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
+                            role="alert">
+                            <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
+                            <hr>
+                            <ul v-for="msg in messages.data.errors">
+                                <li>{{ msg[0] }}</li>
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-
-                        <br>
-
-                        <div class="form-group">
-                            <multiselect v-model="role.permissionsSelected" :options="permissions" :multiple="true"
-                                label="label" track-by="id">
-                            </multiselect>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="text-start" style="margin-top: 10px;">
-                                    <a :href="urlIndexRole" class="btn btn-secondary btn-sm">Voltar</a>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="text-end" style="margin-top: 10px;">
-                                    <a href="#" class="btn btn-primary btn-sm" @click="salvar">Salvar
-                                        Alterações</a>
-                                </div>
+                        <div v-if="loading" class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
                             </div>
                         </div>
-                    </form>
+                        <form v-else method="POST" action="" @submit.prevent="salvar">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input type="text" class="form-control" disabled v-model="role.role.name">
+                            </div>
+                            <div class="form-group">
+                                <label>Módulo</label>
+                                <select class="form-select" v-model="module_id" @change="changeModule">
+                                    <option v-for="module in modules" :key="module.id" :value="module.id">
+                                        {{ module.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <multiselect v-model="role.permissionsSelected" :options="filteredPermissions"
+                                    :multiple="true" label="label" track-by="id">
+                                </multiselect>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="text-start" style="margin-top: 10px;">
+                                        <a :href="urlIndexRole" class="btn btn-secondary btn-sm">Voltar</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="text-end" style="margin-top: 10px;">
+                                        <a href="#" class="btn btn-primary btn-sm" @click="salvar">
+                                            Salvar Alterações
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,13 +89,25 @@ export default {
             alertStatus: null,
             messages: [],
             permissions: [],
+            modules: [],
+            module_id: '',
             loading: null,
+            filteredPermissions: [],
         };
     },
     mounted() {
         this.getPermissions();
+        this.getModules();
+        this.changeModule();
     },
     methods: {
+        changeModule() {
+            const filteredPermissions = this.permissions.filter(permission => permission.module_id === this.module_id);
+            this.filteredPermissions = [
+                ...filteredPermissions,
+                ...this.role.permissionsSelected.filter(permission => !filteredPermissions.some(p => p.id === permission.id))
+            ];
+        },
         salvar() {
             const permissionsIds = this.role.permissionsSelected.map(permission => permission.id);
 
@@ -106,6 +124,19 @@ export default {
                 .catch(errors => {
                     this.alertStatus = false;
                     this.messages = errors.response;
+                });
+        },
+        getModules() {
+            this.loading = true;
+            axios.get('/admin/modules/list')
+                .then(response => {
+                    this.modules = response.data.modules;
+                })
+                .catch(errors => {
+                    this.alertStatus = false;
+                    this.messages = errors.response;
+                }).finally(() => {
+                    this.loading = false;
                 });
         },
         getPermissions() {
@@ -126,7 +157,7 @@ export default {
                 return this.permissions.find(p => p.id === permission.id);
             });
             this.role.permissionsSelected = selectedPermissions;
-        }
+        },
     }
 }
 </script>
