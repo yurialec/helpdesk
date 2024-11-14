@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('chat_history', function (Blueprint $table) {
+        Schema::create('conversations', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('client_id')->unsigned()->index()->nullable();
-            $table->foreign('client_id')->references('id')->on('client')->onDelete('cascade');
+            $table->foreignId('client_id')->constrained()->onDelete('cascade'); // Relaciona com a tabela `clients`
+            $table->enum('status', ['ativa', 'fechada'])->default('ativa');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chat_history');
+        Schema::dropIfExists('conversations');
     }
 };
