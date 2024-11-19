@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Models\Admin;
+namespace App\Models\Chat;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class Clients extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'cpf_cnpj',
-        'email',
+        'name',
+        'phone',
         'telefone',
-        'responsavel',
+        'cpf_cnpj',
     ];
 }

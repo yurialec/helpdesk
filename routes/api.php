@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\ChatConroller;
+use App\Http\Controllers\Api\ChatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +20,6 @@ Route::get('/helpdesk', function (Request $request) {
 });
 
 Route::prefix('helpdesk')->group(function () {
-    Route::post('/chat', [ChatConroller::class, 'store']);
+    Route::post('/first-contact', [ChatController::class, 'firstContact']);
+    Route::post('/chat/{protocol}', [ChatController::class, 'sendMessage']);
 });

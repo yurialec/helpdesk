@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MenusSeeder::class);
         $this->call(ModuleSeeder::class);
         $this->call(PermissionSeeder::class);
+        $this->call(ChatStatusSeeder::class);
     }
 }
