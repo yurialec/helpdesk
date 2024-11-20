@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ValidRoutesController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\LogoController;
@@ -90,6 +91,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/edit/{id}', [MenuController::class, 'edit'])->name('menu.edit');
                 Route::post('/update/{id}', [MenuController::class, 'update'])->name('menu.update');
                 Route::delete('/delete/{id}', [MenuController::class, 'delete'])->name('menu.delete');
+                Route::post('/change-order-menu/{id}', [MenuController::class, 'changeOrderMenu'])->name('menu.changeOrderMenu');
             });
 
             Route::prefix('site/')->group(function () {
@@ -122,6 +124,10 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/update/{id}', [ContactController::class, 'update'])->name('site.contact.update');
                     Route::delete('/delete/{id}', [ContactController::class, 'delete'])->name('site.contact.delete');
                 });
+            });
+
+            Route::prefix('chat')->group(function () {
+                Route::get('/', [ChatController::class, 'index'])->name('chat.index');
             });
         });
 
