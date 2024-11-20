@@ -11,7 +11,7 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-axios.defaults.baseURL = 'http://localhost:8080/';
+axios.defaults.baseURL = 'http://localhost:8000/';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 window.axios = axios;
 

@@ -29,7 +29,7 @@ class ChatController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Sessão iniciada com sucesso.',
+                'protocolo' => $conversation,
             ], 200);
 
         } catch (\Exception $e) {
@@ -61,19 +61,21 @@ class ChatController extends Controller
             $string = Str::upper(Str::random(6));
             $protocol = 'P' . date('m') . date('y') . $formattedId . $string;
 
-            $chat = new Chat;
-            $chat->protocol = $protocol;
-            $chat->client_id = $client->id;
-            $chat->chat_status_id = ChatStatus::where('name', 'Ativo')->first()->id;
+            $chat = Chat::create([
+                'protocol' => $protocol,
+                'client_id' => $client->id,
+                'chat_status_id' => ChatStatus::where('name', 'Ativo')->first()->id
+            ]);
 
-            $chat->save();
+            return $chat->protocol;
         });
     }
 
     public function sendMessage(Chat $chat, Request $request)
     {
         try {
-            if ($chat->first()->chat_status_id) { // Verifica se o chat está ativo
+            // Verifica se o chat está ativo
+            if ($chat->first()->chat_status_id) {
 
                 $validatedData = $request->validate([
                     'message' => 'required|string',
@@ -81,19 +83,19 @@ class ChatController extends Controller
                 ]);
 
                 // Cria a mensagem
-                // $message = Messages::create([
-                //     'message' => $validatedData['message'],
-                //     'attachment' => $validatedData['attachment'] ?? null,
-                //     'client_id' => $chat->client_id,
-                //     'chat_id' => $chat->id,
-                // ]);
+                $messageCreated = Messages::create([
+                    'message' => $validatedData['message'],
+                    'attachment' => $validatedData['attachment'] ?? null,
+                    'client_id' => $chat->first()->client_id,
+                    'chat_id' => $chat->first()->id,
+                ]);
 
                 // Retorna todas as mensagens do chat
                 $messages = Messages::where('chat_id', $chat->first()->id)->get();
 
                 return response()->json([
                     'status' => true,
-                    'data' => MessageResource::collection($messages),
+                    'data' => $messages,
                 ], 200);
 
             } else {
