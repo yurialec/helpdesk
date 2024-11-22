@@ -128,6 +128,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::prefix('chat')->group(function () {
                 Route::get('/', [ChatController::class, 'index'])->name('chat.index');
+                Route::get('/list', [ChatController::class, 'list'])->name('site.contact.list');
             });
         });
 

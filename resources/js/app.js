@@ -108,5 +108,10 @@ app.component('site-contact-index-component', SiteContactIndexComponent);
 app.component('site-contact-create-component', SiteContactCreateComponent);
 app.component('site-contact-edit-component', SiteContactEditComponent);
 
+//CHAT
+// ChatIndexComponent
+import ChatIndexComponent from './components/Admin/Chat/ChatIndexComponent.vue';
+app.component('chat-index-component', ChatIndexComponent);
+
 app.use(store);
 app.mount('#app');
