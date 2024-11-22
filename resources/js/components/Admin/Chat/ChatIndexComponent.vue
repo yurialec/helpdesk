@@ -48,12 +48,13 @@
                             <td scope="row">{{ formatDate(chat.created_at) }}</td>
                             <td scope="row">{{ chat.user_id ?? 'Não Iniciado' }}</td>
                             <td scope="row">
-                                <button class="btn" data-toggle="tooltip" title="Iniciar Chat">
+                                <a :href="urlInitiateChat.replace(':id', chat.id)" class="btn" data-toggle="tooltip"
+                                    title="Iniciar Chat">
                                     <i style="color:green;" class="bi bi-chat-text"></i>
-                                </button>
-                                <button class="btn" data-toggle="tooltip" title="Transferir para outro atendente">
+                                </a>
+                                <a class="btn" data-toggle="tooltip" title="Transferir para outro atendente">
                                     <i style="color:#87CEFA;" class="bi bi-person-fill-gear"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -75,10 +76,12 @@
 
 <script>
 import axios from 'axios';
-import { Modal } from 'bootstrap';
 import dayjs from 'dayjs';
 
 export default {
+    props: {
+        urlInitiateChat: String,
+    },
     data() {
         return {
             chats: {

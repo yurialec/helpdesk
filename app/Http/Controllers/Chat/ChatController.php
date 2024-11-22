@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Chat;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chat\Chat;
 use App\Services\Admin\ChatService;
 use Illuminate\Http\Request;
 
@@ -34,5 +35,11 @@ class ChatController extends Controller
                 'status' => 204
             ]);
         }
+    }
+
+    public function initiate(Chat $chat)
+    {
+        $chatById = $chat->first();
+        return view('admin.chat.initiate', compact('chatById'));
     }
 }

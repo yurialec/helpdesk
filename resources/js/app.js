@@ -112,6 +112,11 @@ app.component('site-contact-edit-component', SiteContactEditComponent);
 // ChatIndexComponent
 import ChatIndexComponent from './components/Admin/Chat/ChatIndexComponent.vue';
 app.component('chat-index-component', ChatIndexComponent);
+import ChatInitiateComponent from './components/Admin/Chat/ChatInitiateComponent.vue';
+app.component('chat-initiate-component', ChatInitiateComponent);
+
+
+
 
 app.use(store);
 app.mount('#app');
