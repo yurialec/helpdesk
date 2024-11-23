@@ -20,6 +20,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/chat.scss', 'resources/js/app.js'])
 </head>
 
 <body class="sb-nav-fixed">
