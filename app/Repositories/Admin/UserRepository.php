@@ -22,6 +22,7 @@ class UserRepository implements UserRepositoryInterface
             ->when($term, function ($query) use ($term) {
                 return $query->where('name', 'like', '%' . $term . '%');
             })
+            ->orderBy('role_id', 'ASC')
             ->paginate(10);
     }
 

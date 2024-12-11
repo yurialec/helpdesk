@@ -10,12 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('attendant_chat', function (Blueprint $table) {
+        Schema::create('chat_queue', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->index()->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->bigInteger('chat_id')->unsigned()->index()->nullable();
+            $table->unsignedBigInteger('chat_id');
             $table->foreign('chat_id')->references('id')->on('chats')->onDelete('cascade');
+            $table->unsignedBigInteger('priority_id');
+            $table->foreign('priority_id')->references('id')->on('chat_priority')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendant_chat');
+        Schema::dropIfExists('chat_queue');
     }
 };

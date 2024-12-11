@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\ChatStatusEnum;
+use App\Enums\ChatPriorityEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,9 +11,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('chat_status', function (Blueprint $table) {
+        Schema::create('chat_priority', function (Blueprint $table) {
             $table->id();
-            $table->enum('name', array_column(ChatStatusEnum::cases(), 'value'));
+            $table->enum('name', array_column(ChatPriorityEnum::cases(), 'value'));
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('chat_status');
+        Schema::dropIfExists('chat_priority');
     }
 };

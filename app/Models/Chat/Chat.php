@@ -2,6 +2,7 @@
 
 namespace App\Models\Chat;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +25,12 @@ class Chat extends Model
         'updated_at',
     ];
 
-    protected $with = ['client', 'status'];
+    protected $hidden = [
+        'user_id',
+        'client_id',
+    ];
+
+    protected $with = ['client', 'status', 'messages', 'user'];
 
     public function client()
     {
@@ -34,5 +40,15 @@ class Chat extends Model
     public function status()
     {
         return $this->belongsTo(ChatStatus::class, 'chat_status_id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Messages::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -31,7 +31,6 @@
                             <th scope="col">Cliente</th>
                             <th scope="col">Status</th>
                             <th scope="col">Criado em</th>
-                            <th scope="col">Atendente</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
@@ -45,14 +44,10 @@
                                 </span>
                             </td>
                             <td scope="row">{{ formatDate(chat.created_at) }}</td>
-                            <td scope="row">{{ chat.user.name }}</td>
                             <td scope="row">
                                 <a :href="urlInitiateChat.replace(':id', chat.id)" class="btn" data-toggle="tooltip"
                                     title="Iniciar Chat">
                                     <i style="color:green;" class="bi bi-chat-text"></i>
-                                </a>
-                                <a class="btn" data-toggle="tooltip" title="Transferir para outro atendente">
-                                    <i style="color:#87CEFA;" class="bi bi-person-fill-gear"></i>
                                 </a>
                             </td>
                         </tr>
@@ -99,14 +94,14 @@ export default {
     },
     methods: {
         pesquisar() {
-            this.getChats('admin/chat/list', this.searchFilter);
+            this.getChats('admin/attendants/list-my-chats', this.searchFilter);
         },
         pagination(url) {
             if (url) {
                 this.getChats(url);
             }
         },
-        getChats(url = 'admin/chat/list') {
+        getChats(url = 'admin/attendants/list-my-chats') {
             this.loading = true;
             axios.get(url)
                 .then(response => {

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ChatStatusEnum;
+use App\Models\Chat\ChatStatus;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -14,17 +16,13 @@ class ChatStatusSeeder extends Seeder
      */
     public function run(): void
     {
-        $arrStatus = [
-            'Ativo',
-            'Inativo'
-        ];
-
-        foreach ($arrStatus as $value) {
-            DB::table('chat_status')->insert([
-                'name' => $value,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
+        foreach (ChatStatusEnum::cases() as $status) {
+            if (!ChatStatus::where("name", $status->value)->first()) {
+                ChatStatus::create([
+                    'name' => $status->value,
+                    'created_at' => Carbon::now(),
+                ]);
+            }
         }
     }
 }

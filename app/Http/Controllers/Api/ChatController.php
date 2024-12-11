@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\ChatPriorityEnum;
+use App\Enums\ChatStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MessageResource;
 use App\Models\Chat\Chat;
+use App\Models\Chat\ChatPriority;
+use App\Models\Chat\ChatQueue;
 use App\Models\Chat\ChatStatus;
 use App\Models\Chat\Clients;
 use App\Models\Chat\Messages;
+use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
 use Log;
@@ -61,10 +66,19 @@ class ChatController extends Controller
             $string = Str::upper(Str::random(6));
             $protocol = 'P' . date('m') . date('y') . $formattedId . $string;
 
+            $userId = $this->getAvailableUser();
+
             $chat = Chat::create([
                 'protocol' => $protocol,
                 'client_id' => $client->id,
-                'chat_status_id' => ChatStatus::where('name', 'Ativo')->first()->id
+                'user_id' => $userId,
+                'chat_status_id' => ChatStatus::where('name', ChatStatusEnum::Pendente->value)->first()->id,
+            ]);
+
+            ChatQueue::create([
+                'user_id' => $userId,
+                'chat_id' => $chat->id,
+                'priority_id' => ChatPriority::where('name', ChatPriorityEnum::Media->value)->first()->id,
             ]);
 
             return $chat->protocol;
@@ -113,5 +127,23 @@ class ChatController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    private function getAvailableUser(): mixed
+    {
+        $userWithLeastChats = ChatQueue::select('user_id')
+            ->groupBy('user_id')
+            ->orderByRaw('COUNT(chat_id) ASC, MAX(created_at) ASC')
+            ->first();
+
+        if ($userWithLeastChats) {
+            return $userWithLeastChats->user_id;
+        }
+
+        $nextUser = User::orderBy('id')
+            ->where('role_id', 5)
+            ->first();
+
+        return $nextUser ? $nextUser->id : null;
     }
 }

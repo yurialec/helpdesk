@@ -2,16 +2,17 @@
 
 namespace App\Models\Chat;
 
-use App\Enums\ChatStatusEnum;
+use App\Enums\ChatPriorityEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ChatStatus extends Model
+class ChatPriority extends Model
 {
     use HasFactory;
-    protected $table = 'chat_status';
+
+    protected $table = 'chat_priority';
 
     protected $casts = [
-        'name' => ChatStatusEnum::class,
+        'name' => ChatPriorityEnum::class,
     ];
 }

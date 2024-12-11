@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ValidRoutesController;
+use App\Http\Controllers\Attendants\AttendantsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\HomeController;
@@ -130,6 +131,15 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [ChatController::class, 'index'])->name('chat.index');
                 Route::get('/list', [ChatController::class, 'list'])->name('chat.list');
                 Route::get('/initiate/{id}', [ChatController::class, 'initiate'])->name('chat.initiate');
+            });
+
+            Route::prefix('attendants')->group(function () {
+                Route::get('/', [AttendantsController::class, 'index'])->name('attendants.index');
+                Route::get('/list', [AttendantsController::class, 'list'])->name('attendants.list');
+
+                Route::get('/my-chats', [AttendantsController::class, 'myChats'])->name('attendants.my.chats');
+                Route::get('/list-my-chats', [AttendantsController::class, 'listMyChats'])->name('attendants.list.my.chats');
+                Route::get('/view-chat/{id}', [AttendantsController::class, 'viewChat'])->name('attendants.view.chat');
             });
         });
 

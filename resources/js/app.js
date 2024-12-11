@@ -109,14 +109,19 @@ app.component('site-contact-create-component', SiteContactCreateComponent);
 app.component('site-contact-edit-component', SiteContactEditComponent);
 
 //CHAT
-// ChatIndexComponent
 import ChatIndexComponent from './components/Admin/Chat/ChatIndexComponent.vue';
 app.component('chat-index-component', ChatIndexComponent);
 import ChatInitiateComponent from './components/Admin/Chat/ChatInitiateComponent.vue';
 app.component('chat-initiate-component', ChatInitiateComponent);
 
 
+//ATTENDENTS
+import AttendantsIndexComponent from './components/Admin/Attendants/AttendantsIndexComponent.vue';
+app.component('attendants-index-component', AttendantsIndexComponent);
 
+//MYCHATS
+import MyChatsComponent from './components/Admin/Attendants/MyChatsComponent.vue';
+app.component('my-chats-component', MyChatsComponent);
 
 app.use(store);
 app.mount('#app');

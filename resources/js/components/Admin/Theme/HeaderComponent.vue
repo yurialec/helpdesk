@@ -18,7 +18,12 @@
                     <i class="bi bi-person-circle h3"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" :href="urlProfile">Meu Cadastro</a></li>
+                    <li>
+                        <a class="dropdown-item" :href="urlProfile">Meu Cadastro</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" :href="urlMyChats">Meus Chats</a>
+                    </li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
@@ -34,6 +39,7 @@ export default {
     name: 'Header',
     props: {
         urlSair: String,
+        urlMyChats: String,
         urlProfile: String,
         urlHome: String,
         logo: String,

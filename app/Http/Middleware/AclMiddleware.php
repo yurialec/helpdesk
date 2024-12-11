@@ -12,6 +12,9 @@ class AclMiddleware
         'profile',
         'profile.view',
         'modules.list',
+        'attendants.my.chats',
+        'attendants.list.my.chats',
+        'attendants.view.chat',
     ];
 
     public function handle(Request $request, Closure $next)
