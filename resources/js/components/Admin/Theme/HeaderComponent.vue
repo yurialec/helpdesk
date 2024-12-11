@@ -21,7 +21,7 @@
                     <li>
                         <a class="dropdown-item" :href="urlProfile">Meu Cadastro</a>
                     </li>
-                    <li>
+                    <li v-if="this.isTecnico">
                         <a class="dropdown-item" :href="urlMyChats">Meus Chats</a>
                     </li>
                     <li>
@@ -43,6 +43,7 @@ export default {
         urlProfile: String,
         urlHome: String,
         logo: String,
+        isTecnico: Boolean,
     },
     data() {
         return {
