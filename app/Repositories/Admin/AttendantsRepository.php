@@ -6,7 +6,9 @@ use App\Interfaces\Admin\AttendantsRepositoryInterface;
 use App\Models\Chat\Chat;
 use App\Models\User;
 use Auth;
+use Exception;
 use Illuminate\Support\Facades\Hash;
+use Log;
 
 class AttendantsRepository implements AttendantsRepositoryInterface
 {
@@ -39,5 +41,17 @@ class AttendantsRepository implements AttendantsRepositoryInterface
             })
             ->where('user_id', $userId)
             ->paginate(10);
+    }
+
+    public function chatById($id)
+    {
+        try {
+            return $this->chats->find($id);
+        } catch (Exception $err) {
+            Log::error('Erro', [
+                'message' => $err->getMessage()
+            ]);
+            return false;
+        }
     }
 }

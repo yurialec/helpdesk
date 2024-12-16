@@ -22,4 +22,9 @@ class Messages extends Model
     {
         return $this->belongsTo(Clients::class, 'client_id', 'id');
     }
+
+    public function chat()
+    {
+        return $this->belongsTo(Chat::class);
+    }
 }

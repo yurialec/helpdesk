@@ -196,21 +196,76 @@ a {
 message-area
 ******************************** */
 
-.message-area {
-    height: 70vh;
-    overflow: hidden;
-    padding: 30px 0;
-    background: #f5f5f5;
-}
+.message-area {}
 
 .chat-area {
-    position: relative;
-    width: 100%;
-    background-color: #fff;
-    border-radius: 0.3rem;
-    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
     overflow: hidden;
-    min-height: calc(100% - 1rem);
+}
+
+.chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.chat-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.chat-body li {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.message-bubble {
+    position: relative;
+    word-wrap: break-word;
+}
+
+.message-bubble .time {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #999;
+    text-align: right;
+}
+
+.client-message .message-bubble {
+    background-color: #e9ecef;
+    color: #333;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 60%;
+    text-align: left;
+}
+
+.attendant-message .message-bubble {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 15px;
+    padding: 10px;
+    max-width: 60%;
+    text-align: left;
+}
+
+.attendant-message {
+    justify-content: flex-end;
+}
+
+.client-message {
+    justify-content: flex-start;
+}
+
+.send-box {
+    padding: 10px 15px;
+    border-top: 1px solid #ccc;
+    background-color: #fff;
 }
 
 .chatlist {
@@ -356,26 +411,45 @@ a.add img {
     border: 2px solid #fff;
 }
 
-.msg-head h3 {
-    color: #222;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.5;
-    margin-bottom: 0;
-}
-
-.msg-head p {
-    color: #343434;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
-    text-transform: capitalize;
-    margin-bottom: 0;
-}
-
 .msg-head {
     padding: 15px;
     border-bottom: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 8px 8px 0 0;
+}
+
+.msg-head h3 {
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 5px;
+}
+
+.msg-head p {
+    color: #555;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 5px;
+}
+
+.msg-head .btn {
+    font-size: 14px;
+    padding: 5px 10px;
+    color: #555;
+    border-color: #bbb;
+    transition: all 0.3s ease;
+}
+
+.msg-head .btn:hover {
+    color: white;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.text-md-end {
+    text-align: end;
 }
 
 .moreoption {

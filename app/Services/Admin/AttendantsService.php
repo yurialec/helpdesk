@@ -23,4 +23,9 @@ class AttendantsService
     {
         return $this->attendantsRepository->listMyChats($term);
     }
+
+    public function chatById($id)
+    {
+        return $this->attendantsRepository->chatById($id);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Attendants;
 use App\Http\Controllers\Controller;
 use App\Models\Chat\Chat;
 use App\Services\Admin\AttendantsService;
+use Auth;
 use Illuminate\Http\Request;
 
 class AttendantsController extends Controller
@@ -59,9 +60,28 @@ class AttendantsController extends Controller
         }
     }
 
-    public function viewChat(Chat $chat)
+    public function viewChat($id)
     {
-        $chatById = $chat->first();
-        return view('admin.chat.initiate', compact('chatById'));
+        $chatById = $this->attendantService->chatById($id);
+        return view('admin.attendants.initiate', compact('chatById'));
+    }
+
+    public function sendMessage(Request $request, $protocol)
+    {
+        $chat = Chat::where('protocol', $protocol)->first();
+
+        $validatedData = $request->validate([
+            'message' => 'required|string',
+        ]);
+
+        $message = $chat->messages()->create([
+            'message' => $validatedData['message'],
+            'user_id' => Auth::id(),
+            'chat_id' => $chat->id,
+        ]);
+
+        return response()->json([
+            'data' => $message
+        ], 201);
     }
 }

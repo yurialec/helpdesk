@@ -15,6 +15,7 @@ class AclMiddleware
         'attendants.my.chats',
         'attendants.list.my.chats',
         'attendants.view.chat',
+        'attendants.send.message',
     ];
 
     public function handle(Request $request, Closure $next)

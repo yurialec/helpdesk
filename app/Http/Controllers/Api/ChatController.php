@@ -62,10 +62,7 @@ class ChatController extends Controller
             );
 
             $clientId = $client->id;
-            $formattedId = str_pad($clientId, 4, '0', STR_PAD_LEFT);
-            $string = Str::upper(Str::random(6));
-            $protocol = 'P' . date('m') . date('y') . $formattedId . $string;
-
+            $protocol = $this->generateProtocol($client->id);
             $userId = $this->getAvailableUser();
 
             $chat = Chat::create([
@@ -85,39 +82,52 @@ class ChatController extends Controller
         });
     }
 
-    public function sendMessage(Chat $chat, Request $request)
+    private function generateProtocol($clientId)
+    {
+        $formattedId = str_pad($clientId, 4, '0', STR_PAD_LEFT);
+        $string = Str::upper(Str::random(6));
+        return 'P' . date('m') . date('y') . $formattedId . $string;
+    }
+
+    public function sendMessage(Request $request, $protocol)
     {
         try {
-            // Verifica se o chat está ativo
-            if ($chat->first()->chat_status_id) {
+            $chat = Chat::where('protocol', $protocol)->first();
 
-                $validatedData = $request->validate([
-                    'message' => 'required|string',
-                    'attachment' => 'nullable|file',
-                ]);
-
-                // Cria a mensagem
-                $messageCreated = Messages::create([
-                    'message' => $validatedData['message'],
-                    'attachment' => $validatedData['attachment'] ?? null,
-                    'client_id' => $chat->first()->client_id,
-                    'chat_id' => $chat->first()->id,
-                ]);
-
-                // Retorna todas as mensagens do chat
-                $messages = Messages::where('chat_id', $chat->first()->id)->get();
-
-                return response()->json([
-                    'status' => true,
-                    'data' => $messages,
-                ], 200);
-
-            } else {
+            if (!$chat) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Inicie o chat corretamente.',
+                    'message' => 'Protocolo inválido. Inicie o chat corretamente.',
                 ], 400);
             }
+
+            $validatedData = $request->validate([
+                'message' => 'required|string',
+                'attachment' => 'nullable|file',
+            ]);
+
+            // Armazenar o anexo, se enviado
+            $attachmentPath = null;
+            if ($request->hasFile('attachment') && $request->file('attachment')->isValid()) {
+                $attachmentPath = $request->file('attachment')->store('attachments', 'public');
+            }
+
+            // Cria a mensagem
+            Messages::create([
+                'message' => $validatedData['message'],
+                'attachment' => $attachmentPath,
+                'client_id' => $chat->client_id,
+                'chat_id' => $chat->id,
+            ]);
+
+            $messages = Messages::where('chat_id', $chat->id)
+                ->get();
+
+            return response()->json([
+                'status' => true,
+                'data' => $messages,
+            ], 200);
+
         } catch (\Exception $e) {
             Log::error('Erro ao enviar mensagem', ['exception' => $e]);
 
@@ -129,21 +139,18 @@ class ChatController extends Controller
         }
     }
 
-    private function getAvailableUser(): mixed
+    private function getAvailableUser()
     {
-        $userWithLeastChats = ChatQueue::select('user_id')
-            ->groupBy('user_id')
-            ->orderByRaw('COUNT(chat_id) ASC, MAX(created_at) ASC')
+        $user = DB::table('users')
+            ->leftJoin('chats', 'users.id', '=', 'chats.user_id')
+            ->select('users.id AS user_id')
+            ->where('users.role_id', 5)
+            ->groupBy('users.id')
+            ->orderByRaw('COUNT(chats.id) ASC')
+            ->orderByRaw('MIN(NULLIF(chats.created_at, "0000-00-00 00:00:00")) ASC')
+            ->orderBy('users.created_at', 'ASC')
             ->first();
 
-        if ($userWithLeastChats) {
-            return $userWithLeastChats->user_id;
-        }
-
-        $nextUser = User::orderBy('id')
-            ->where('role_id', 5)
-            ->first();
-
-        return $nextUser ? $nextUser->id : null;
+        return $user ? $user->user_id : null;
     }
 }
