@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Attendants;
 
+use App\Enums\ChatStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Chat\Chat;
+use App\Models\Chat\ChatStatus;
 use App\Services\Admin\AttendantsService;
 use Auth;
 use Illuminate\Http\Request;
@@ -63,7 +65,7 @@ class AttendantsController extends Controller
     public function viewChat($id)
     {
         $chatById = $this->attendantService->chatById($id);
-        return view('admin.attendants.initiate', compact('chatById'));
+        return view('admin.attendants.viewchat', compact('chatById'));
     }
 
     public function sendMessage(Request $request, $protocol)
@@ -73,6 +75,9 @@ class AttendantsController extends Controller
         $validatedData = $request->validate([
             'message' => 'required|string',
         ]);
+
+        $chat->chat_status_id = ChatStatus::where('name', ChatStatusEnum::Ativo->value)->first()->id;
+        $chat->save();
 
         $message = $chat->messages()->create([
             'message' => $validatedData['message'],

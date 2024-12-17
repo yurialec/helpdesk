@@ -1,9 +1,11 @@
 <template>
     <div class="container-fluid px-4 mt-2">
         <div class="card">
-
             <div class="card-header" style="height: 80px;">
                 <div class="row align-items-center h-100">
+                    <div class="col text-start">
+                        <a type="button" :href="urlMyChats" class="btn btn-secondary btn-sm">Voltar</a>
+                    </div>
                     <div class="col text-end">
                         <div class="d-inline-block me-3 text-center">
                             <a class="btn">
@@ -84,6 +86,7 @@ import dayjs from "dayjs";
 export default {
     props: {
         chatById: Object,
+        urlMyChats: String,
     },
     data() {
         return {

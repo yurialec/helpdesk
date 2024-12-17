@@ -1,6 +1,7 @@
 @extends('layouts.app_admin')
 @section('content')
-    <chat-initiate-component
+    <viewchat-component
+        url-my-chats="{{route('attendants.my.chats')}}"
         :chat-by-id="{{json_encode($chatById)}}">
-    </chat-initiate-component>
+    </viewchat-component>
 @endsection

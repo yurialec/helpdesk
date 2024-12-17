@@ -116,8 +116,8 @@ app.component('chat-index-component', ChatIndexComponent);
 //ATTENDENTS
 import AttendantsIndexComponent from './components/Admin/Attendants/AttendantsIndexComponent.vue';
 app.component('attendants-index-component', AttendantsIndexComponent);
-import ChatInitiateComponent from './components/Admin/Attendants/ChatInitiateComponent.vue';
-app.component('chat-initiate-component', ChatInitiateComponent);
+import ViewChatComponent from './components/Admin/Attendants/ViewChatComponent.vue';
+app.component('viewchat-component', ViewChatComponent);
 
 //MYCHATS
 import MyChatsComponent from './components/Admin/Attendants/MyChatsComponent.vue';
