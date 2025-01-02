@@ -139,7 +139,7 @@ Route::middleware(['auth'])->group(function () {
 
                 Route::get('/my-chats', [AttendantsController::class, 'myChats'])->name('attendants.my.chats');
                 Route::get('/list-my-chats', [AttendantsController::class, 'listMyChats'])->name('attendants.list.my.chats');
-                Route::get('/view-chat/{id}', [AttendantsController::class, 'viewChat'])->name('attendants.view.chat');
+                Route::get('/get-chat-by-id/{id}', [AttendantsController::class, 'getChatById'])->name('get.chat.by.id');
 
                 Route::post('/send-message/{protocol}', [AttendantsController::class, 'sendMessage'])->name('attendants.send.message');
             });

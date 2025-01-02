@@ -29,14 +29,14 @@
                         <tr>
                             <th scope="col">Nome</th>
                             <th scope="col">Quantidade</th>
-                            <th scope="col">Ações</th>
+                            <!-- <th scope="col">Ações</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="attendant in attendants.data" :key="attendant.id">
                             <td scope="row">{{ attendant.name }}</td>
-                            <td scope="row">336</td>
-                            <td scope="row">Listar meus chats</td>
+                            <td scope="row">{{ chatsMax(attendant.chats) }}</td>
+                            <!-- <td scope="row">Listar meus chats</td> -->
                         </tr>
                     </tbody>
                 </table>
@@ -99,6 +99,13 @@ export default {
         formatDate(date) {
             return dayjs(date).format('DD/MM/YYYY HH:mm:ss');
         },
+        chatsMax(chatsByAttendants) {
+            if (!Array.isArray(chatsByAttendants) || chatsByAttendants.length === 0) {
+                return '0';
+            }
+
+            return chatsByAttendants.length.toString();
+        }
     }
 }
 </script>

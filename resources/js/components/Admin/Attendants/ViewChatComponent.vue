@@ -25,8 +25,9 @@
             <div class="card-body">
                 <div v-if="loading" class="d-flex justify-content-center">
                     <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                        <span class="visually-hidden">Carregando...</span>
                     </div>
+                    <p class="mt-2">Carregando mensagens...</p>
                 </div>
 
                 <section v-else class="message-area">
@@ -50,9 +51,9 @@
                             </div>
                         </div>
 
-                        <div class="chat-body">
+                        <div ref="chatBody" class="chat-body" style="overflow-y: auto; height: 400px;">
                             <ul>
-                                <li v-for="message in chat.messages" :key="message.id"
+                                <li v-for="message in messages" :key="message.id"
                                     :class="message.client_id !== null ? 'client-message' : 'attendant-message'">
                                     <div class="message-bubble">
                                         <p>{{ message.message }}</p>
@@ -67,7 +68,7 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control" v-model="newMessage"
                                         placeholder="Escreva uma mensagem..." required />
-                                    <button type="submit" class="btn btn-primary btn-lg">
+                                    <button type="submit" class="btn btn-primary btn-lg" :disabled="!newMessage.trim()">
                                         <i class="fa fa-paper-plane" aria-hidden="true"></i> Enviar
                                     </button>
                                 </div>
@@ -85,55 +86,58 @@ import dayjs from "dayjs";
 
 export default {
     props: {
-        chatById: Object,
+        id: Number,
         urlMyChats: String,
     },
     data() {
         return {
-            chat: [],
+            chat: {},
             messages: [],
-            clientData: {
-                id: "",
-                name: "",
-                cpf_cnpj: "",
-                phone: "",
-            },
+            clientData: {},
             newMessage: "",
-            loading: null,
+            loading: true,
         };
     },
-    mounted() {
-        this.getMessagesByClient();
-    },
     methods: {
-        getMessagesByClient() {
-            this.chat = this.chatById;
-            this.messages = this.chat.messages;
-            this.clientData = this.chatById.client;
+        mounted() {
+            this.getChatById();
+        },
+        async getChatById() {
+            try {
+                const response = await axios.get(`admin/attendants/get-chat-by-id/${this.id}`);
+                this.chat = response.data.chatById;
+                this.messages = this.chat.messages;
+                this.clientData = this.chat.client;
+
+                this.configureEchoChannel();
+            } catch (error) {
+                console.error("Erro ao carregar chat:", error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        configureEchoChannel() {
+            window.Echo.private(`chat.${this.chat.id}`)
+                .listen('.new.message', (e) => {
+                    this.messages.push(e.message);
+                });
+        },
+        sendMessage() {
+            if (!this.newMessage.trim()) return;
+
+            axios.post(`admin/attendants/send-message/${this.chat.protocol}`, {
+                message: this.newMessage,
+            }).then(() => {
+                this.newMessage = "";
+            }).catch((error) => {
+                console.error("Erro ao enviar mensagem:", error);
+            });
         },
         formatDate(date) {
             return dayjs(date).format("DD/MM/YYYY HH:mm:ss");
         },
-        sendMessage() {
-            this.chat.messages.push({
-                id: Date.now(),
-                message: this.newMessage,
-                created_at: new Date(),
-                client_id: null,
-            });
-
-            axios.post('admin/attendants/send-message/' + this.chat.protocol, {
-                message: this.newMessage,
-            }).then((response) => {
-                this.getMessagesByClient();
-            }).catch((error) => {
-                console.error('Erro ao enviar mensagem', error.response || error.message);
-            });
-
-            this.newMessage = "";
-        },
         endChat() {
-            alert("Chat finalizado!");
+            alert('Chat finalizado');
         },
     },
 };

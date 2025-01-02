@@ -24,6 +24,7 @@ class AttendantsRepository implements AttendantsRepositoryInterface
     public function all($term): mixed
     {
         return $this->attendants
+            ->with('chats')
             ->when($term, function ($query) use ($term) {
                 return $query->where('name', 'like', '%' . $term . '%');
             })

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\ChatPriorityEnum;
 use App\Enums\ChatStatusEnum;
+use App\Events\NewMessageEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MessageResource;
 use App\Models\Chat\Chat;
@@ -14,6 +15,7 @@ use App\Models\Chat\Clients;
 use App\Models\Chat\Messages;
 use App\Models\User;
 use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Log;
 use Str;
@@ -113,12 +115,15 @@ class ChatController extends Controller
             }
 
             // Cria a mensagem
-            Messages::create([
+            $message = Messages::create([
                 'message' => $validatedData['message'],
                 'attachment' => $attachmentPath,
                 'client_id' => $chat->client_id,
                 'chat_id' => $chat->id,
             ]);
+
+            broadcast(new NewMessageEvent($message))->toOthers();
+            Log::info('Mensagem transmitida com sucesso', ['message_id' => $message->id]);
 
             $messages = Messages::where('chat_id', $chat->id)
                 ->get();
@@ -128,7 +133,7 @@ class ChatController extends Controller
                 'data' => $messages,
             ], 200);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Erro ao enviar mensagem', ['exception' => $e]);
 
             return response()->json([

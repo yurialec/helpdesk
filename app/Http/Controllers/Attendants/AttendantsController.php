@@ -64,8 +64,24 @@ class AttendantsController extends Controller
 
     public function viewChat($id)
     {
+        return view('admin.attendants.viewchat', compact('id'));
+    }
+
+    public function getChatById($id)
+    {
         $chatById = $this->attendantService->chatById($id);
-        return view('admin.attendants.viewchat', compact('chatById'));
+
+        if ($chatById) {
+            return response()->json([
+                'status' => true,
+                'chatById' => $chatById
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Nenhum registro encontrado.',
+                'status' => 204
+            ]);
+        }
     }
 
     public function sendMessage(Request $request, $protocol)
