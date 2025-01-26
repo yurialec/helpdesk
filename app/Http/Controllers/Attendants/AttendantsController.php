@@ -69,7 +69,7 @@ class AttendantsController extends Controller
 
     public function getChatById($id)
     {
-        $chatById = $this->attendantService->chatById($id);
+        $chatById = $this->attendantService->getChatById($id);
 
         if ($chatById) {
             return response()->json([

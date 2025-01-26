@@ -77,14 +77,14 @@ export default {
     },
     methods: {
         pesquisar() {
-            this.getAttendants('admin/attendants/list', this.searchFilter);
+            this.getAttendants('admin/chat/attendants/list', this.searchFilter);
         },
         pagination(url) {
             if (url) {
                 this.getAttendants(url);
             }
         },
-        getAttendants(url = 'admin/attendants/list') {
+        getAttendants(url = 'admin/chat/attendants/list') {
             this.loading = true;
             axios.get(url)
                 .then(response => {

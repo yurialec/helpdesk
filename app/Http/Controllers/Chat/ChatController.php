@@ -37,9 +37,25 @@ class ChatController extends Controller
         }
     }
 
-    public function initiate(Chat $chat)
+    public function view($id)
     {
-        $chatById = $chat->first();
-        return view('admin.chat.initiate', compact('chatById'));
+        return view('admin.chat.view', compact('id'));
+    }
+
+    public function getChatById($id)
+    {
+        $chatById = $this->chatService->getChatById($id);
+
+        if ($chatById) {
+            return response()->json([
+                'status' => true,
+                'chatById' => $chatById
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Nenhum registro encontrado.',
+                'status' => 204
+            ]);
+        }
     }
 }

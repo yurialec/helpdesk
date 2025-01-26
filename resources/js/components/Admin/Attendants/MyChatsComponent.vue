@@ -17,13 +17,11 @@
                 </div>
             </div>
             <div class="card-body">
-
                 <div v-if="loading" class="d-flex justify-content-center">
                     <div class="spinner-border" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </div>
-
                 <table v-else class="table table-sm table-hover">
                     <thead>
                         <tr>
@@ -45,7 +43,7 @@
                             </td>
                             <td scope="row">{{ formatDate(chat.created_at) }}</td>
                             <td scope="row">
-                                <a :href="urlInitiateChat.replace(':id', chat.id)" class="btn" data-toggle="tooltip"
+                                <a :href="urlViewChat.replace(':id', chat.id)" class="btn" data-toggle="tooltip"
                                     title="Iniciar Chat">
                                     <i style="color:green;" class="bi bi-chat-text"></i>
                                 </a>
@@ -74,7 +72,7 @@ import dayjs from 'dayjs';
 
 export default {
     props: {
-        urlInitiateChat: String,
+        urlViewChat: String,
     },
     data() {
         return {
@@ -94,14 +92,14 @@ export default {
     },
     methods: {
         pesquisar() {
-            this.getChats('admin/attendants/list-my-chats', this.searchFilter);
+            this.getChats('admin/list-my-chats', this.searchFilter);
         },
         pagination(url) {
             if (url) {
                 this.getChats(url);
             }
         },
-        getChats(url = 'admin/attendants/list-my-chats') {
+        getChats(url = 'admin/list-my-chats') {
             this.loading = true;
             axios.get(url)
                 .then(response => {

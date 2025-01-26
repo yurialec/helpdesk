@@ -19,8 +19,8 @@ class ChatService
         return $this->chatRepository->all($term);
     }
 
-    public function getById($id)
+    public function getChatById($id)
     {
-        return $this->chatRepository->find($id);
+        return $this->chatRepository->getChatById($id);
     }
 }

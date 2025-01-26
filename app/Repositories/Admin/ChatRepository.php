@@ -30,4 +30,10 @@ class ChatRepository implements ChatRepositoryInterface
             ->find($id)
             ->first();
     }
+
+    public function getChatById($id)
+    {
+        return $this->chat
+            ->findOrFail($id);
+    }
 }

@@ -39,7 +39,7 @@ class ChatController extends Controller
                 'protocolo' => $conversation,
             ], 200);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Erro no chat', ['exception' => $e]);
 
             return response()->json([
@@ -66,12 +66,13 @@ class ChatController extends Controller
             $clientId = $client->id;
             $protocol = $this->generateProtocol($client->id);
             $userId = $this->getAvailableUser();
+            $status = ChatStatus::where('name', ChatStatusEnum::Pendente)->first()->id;
 
             $chat = Chat::create([
                 'protocol' => $protocol,
                 'client_id' => $client->id,
                 'user_id' => $userId,
-                'chat_status_id' => ChatStatus::where('name', ChatStatusEnum::Pendente->value)->first()->id,
+                'chat_status_id' => $status,
             ]);
 
             ChatQueue::create([

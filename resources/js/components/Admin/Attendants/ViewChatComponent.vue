@@ -4,7 +4,7 @@
             <div class="card-header" style="height: 80px;">
                 <div class="row align-items-center h-100">
                     <div class="col text-start">
-                        <a type="button" :href="urlMyChats" class="btn btn-secondary btn-sm">Voltar</a>
+                        <a type="button" href="#" class="btn btn-secondary btn-sm">Voltar</a>
                     </div>
                     <div class="col text-end">
                         <div class="d-inline-block me-3 text-center">
@@ -29,18 +29,14 @@
                     </div>
                     <p class="mt-2">Carregando mensagens...</p>
                 </div>
-
                 <section v-else class="message-area">
                     <div class="chat-area">
                         <div class="msg-head">
                             <div class="row">
                                 <div class="col-md-8 col-sm-12">
-                                    <h3 class="protocol">Protocolo: {{ chat.protocol }}</h3>
+                                    <h3 class="protocol">Protocolo: </h3>
                                     <p class="client-name">Cliente: {{ clientData.name }}</p>
-                                    <p class="client-cpf">
-                                        {{ clientData.cpf_cnpj.length > 11 ? 'CNPJ: ' + clientData.cpf_cnpj : 'CPF: ' +
-                                            clientData.cpf_cnpj }}
-                                    </p>
+                                    <p class="client-cpf">CPF/CNPJ: {{ clientData.cpf_cnpj }}</p>
                                     <p class="client-phone">Telefone: {{ clientData.phone }}</p>
                                 </div>
                                 <div class="col-md-4 col-sm-12 text-md-end text-center">
@@ -50,7 +46,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div ref="chatBody" class="chat-body" style="overflow-y: auto; height: 400px;">
                             <ul>
                                 <li v-for="message in messages" :key="message.id"
@@ -62,7 +57,6 @@
                                 </li>
                             </ul>
                         </div>
-
                         <div class="send-box">
                             <form @submit.prevent="sendMessage">
                                 <div class="input-group">
@@ -83,11 +77,14 @@
 
 <script>
 import dayjs from "dayjs";
+import axios from "axios";
 
 export default {
     props: {
-        id: Number,
-        urlMyChats: String,
+        chatId: {
+            type: Number,
+            required: true,
+        }
     },
     data() {
         return {
@@ -98,46 +95,52 @@ export default {
             loading: true,
         };
     },
+    mounted() {
+        this.getChatById();
+    },
     methods: {
-        mounted() {
-            this.getChatById();
-        },
-        async getChatById() {
-            try {
-                const response = await axios.get(`admin/attendants/get-chat-by-id/${this.id}`);
-                this.chat = response.data.chatById;
-                this.messages = this.chat.messages;
-                this.clientData = this.chat.client;
-
-                this.configureEchoChannel();
-            } catch (error) {
-                console.error("Erro ao carregar chat:", error);
-            } finally {
-                this.loading = false;
-            }
-        },
-        configureEchoChannel() {
-            window.Echo.private(`chat.${this.chat.id}`)
-                .listen('.new.message', (e) => {
-                    this.messages.push(e.message);
+        getChatById() {
+            axios.get(`/admin/chat/get-chat-by-id/${this.chatId}`)
+                .then((response) => {
+                    this.chat = response.data.chatById;
+                    this.clientData = response.data.chatById.client;
+                    this.messages = response.data.chatById.messages;
+                })
+                .catch((error) => {
+                    console.log("Erro ao carregar o chat:", error);
+                })
+                .finally(() => {
+                    this.loading = false;
                 });
         },
         sendMessage() {
-            if (!this.newMessage.trim()) return;
+            if (!this.newMessage.trim()) {
+                return;
+            }
 
-            axios.post(`admin/attendants/send-message/${this.chat.protocol}`, {
+            axios.post(`admin/chat/send-message/${this.chat.protocol}`, {
                 message: this.newMessage,
             }).then(() => {
+                this.getChatById();
                 this.newMessage = "";
+                this.scrollToBottom();
             }).catch((error) => {
                 console.error("Erro ao enviar mensagem:", error);
+            });
+        },
+        scrollToBottom() {
+            this.$nextTick(() => {
+                const chatBody = this.$refs.chatBody;
+                if (chatBody) {
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                }
             });
         },
         formatDate(date) {
             return dayjs(date).format("DD/MM/YYYY HH:mm:ss");
         },
         endChat() {
-            alert('Chat finalizado');
+            alert("Chat finalizado");
         },
     },
 };
