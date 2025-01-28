@@ -153,7 +153,6 @@ class ChatController extends Controller
             ->where('users.role_id', 5)
             ->groupBy('users.id')
             ->orderByRaw('COUNT(chats.id) ASC')
-            ->orderByRaw('MIN(NULLIF(chats.created_at, "0000-00-00 00:00:00")) ASC')
             ->orderBy('users.created_at', 'ASC')
             ->first();
 

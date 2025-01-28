@@ -109,5 +109,38 @@ class MenusSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        DB::table('menus')->insert([
+            'label' => 'Chat',
+            'icon' => 'bi bi-chat',
+            'url' => '#',
+            'active' => 1,
+            'son' => null,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        $chatMenuId = DB::getPdo()->lastInsertId();
+
+        DB::table('menus')->insert([
+            [
+                'label' => 'Chats',
+                'icon' => 'bi bi-chat-left-dots',
+                'url' => '/admin/chat/',
+                'active' => 1,
+                'son' => $chatMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'label' => 'Atendentes',
+                'icon' => 'bi bi-person-lines-fill',
+                'url' => '/admin/attendants/',
+                'active' => 1,
+                'son' => $chatMenuId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+        ]);
     }
 }
