@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\ChatPriorityEnum;
 use App\Enums\ChatStatusEnum;
+use App\Events\NewEventMessage;
 use App\Events\NewMessageEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MessageResource;
@@ -123,8 +124,7 @@ class ChatController extends Controller
                 'chat_id' => $chat->id,
             ]);
 
-            broadcast(new NewMessageEvent($message))->toOthers();
-            Log::info('Mensagem transmitida com sucesso', ['message_id' => $message->id]);
+            NewEventMessage::dispatch($message);
 
             $messages = Messages::where('chat_id', $chat->id)
                 ->get();
