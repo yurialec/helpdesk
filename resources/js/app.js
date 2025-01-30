@@ -3,20 +3,6 @@ import { createApp } from 'vue';
 import axios from 'axios';
 import store from './store';
 import { mask } from 'vue-the-mask';
-import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
-
-window.Pusher = Pusher;
-
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-    wsHost: window.location.hostname,
-    wsPort: 6001,
-    forceTLS: false,
-    disableStats: true,
-});
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
 if (token) {

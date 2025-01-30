@@ -21,35 +21,36 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @vite(['resources/sass/chat.scss', 'resources/js/app.js'])
+
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
 <body class="sb-nav-fixed">
     <div id="app">
         @section('header')
-            @include('admin.theme.header')
-
-            <div id="layoutSidenav">
+        @include('admin.theme.header')
+        <div id="layoutSidenav">
             @section('sidebar')
-                @include('admin.theme.sidebar')
-                <div id="layoutSidenav_content">
-                    <main>
-                        @yield('content')
-                    </main>
-                    <footer class="py-4 bg-light mt-auto">
-                        <div class="container-fluid px-4">
-                            <div class="d-flex align-items-center justify-content-between small">
-                                <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                                <div>
-                                    <a href="#">Privacy Policy</a>
-                                    &middot;
-                                    <a href="#">Terms &amp; Conditions</a>
-                                </div>
+            @include('admin.theme.sidebar')
+            <div id="layoutSidenav_content">
+                <main>
+                    @yield('content')
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
                             </div>
                         </div>
-                    </footer>
-                </div>
+                    </div>
+                </footer>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 
-    </html>
+</html>
