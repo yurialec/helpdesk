@@ -4,18 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\ChatPriorityEnum;
 use App\Enums\ChatStatusEnum;
-use App\Events\MessageSent;
-use App\Events\NewEventMessage;
-use App\Events\NewMessageEvent;
+use App\Events\NewChatMessage;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\MessageResource;
 use App\Models\Chat\Chat;
 use App\Models\Chat\ChatPriority;
 use App\Models\Chat\ChatQueue;
 use App\Models\Chat\ChatStatus;
 use App\Models\Chat\Clients;
 use App\Models\Chat\Messages;
-use App\Models\User;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -125,7 +121,7 @@ class ChatController extends Controller
                 'chat_id' => $chat->id,
             ]);
 
-            broadcast(new MessageSent($message))->toOthers();
+            broadcast(new NewChatMessage($message))->toOthers();
 
             $messages = Messages::where('chat_id', $chat->id)
                 ->get();

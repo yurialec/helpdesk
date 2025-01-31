@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid px-4 mt-2">
         <div class="card">
-            <div class="card-header" style="height: 80px;">
+            <div style="height: 80px; margin-left: 25px; margin-right: 25px;">
                 <div class="row align-items-center h-100">
                     <div class="col text-start">
                         <a type="button" href="#" class="btn btn-secondary btn-sm">Voltar</a>
@@ -105,6 +105,8 @@ export default {
                     this.chat = response.data.chatById;
                     this.clientData = response.data.chatById.client;
                     this.messages = response.data.chatById.messages;
+
+                    this.scrollToBottom();
                 })
                 .catch((error) => {
                     console.log("Erro ao carregar o chat:", error);

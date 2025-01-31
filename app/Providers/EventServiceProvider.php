@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Events\NewEventMessage;
 use App\Listeners\UpdateChat;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -20,7 +19,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        MessageSent::class => [],
+        'App\Events\NewChatMessage' => [
+            'App\Listeners\SendChatMessageNotification'
+        ],
     ];
 
     /**

@@ -22,6 +22,16 @@ import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 window.Pusher = Pusher;
 
+// import Echo from 'laravel-echo';
+// import Pusher from 'pusher-js';
+
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.PUSHER_APP_CLUSTER,
+//     forceTLS: true,
+// });
+
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
@@ -33,13 +43,14 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
 });
 
+// Pusher.logToConsole = true;
+
 window.Echo.connector.pusher.connection.bind('connected', () => {
     console.log('Conectado ao Pusher!');
 });
 
-console.log(window.Echo.channel('chat-channel'));
-
-
-// window.Echo.channel('chat-channel').listen('MessageSent', (e) => {
-//     console.log('Nova mensagem recebida:', e);
-// });
+window.Echo
+    .private("chat.2")
+    .listen(".message-sent", (event) => {
+        console.log("Evento recebido corretamente:", event);
+    });

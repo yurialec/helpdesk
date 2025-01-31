@@ -19,10 +19,8 @@
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    @vite(['resources/sass/chat.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/sass/chat.scss', 'resources/sass/site.scss', 'resources/js/app.js'])
 
-    @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
 <body class="sb-nav-fixed">
