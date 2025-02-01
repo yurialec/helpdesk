@@ -48,9 +48,3 @@ window.Echo = new Echo({
 window.Echo.connector.pusher.connection.bind('connected', () => {
     console.log('Conectado ao Pusher!');
 });
-
-window.Echo
-    .private("chat.2")
-    .listen(".message-sent", (event) => {
-        console.log("Evento recebido corretamente:", event);
-    });

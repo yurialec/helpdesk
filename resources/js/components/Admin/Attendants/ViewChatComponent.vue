@@ -97,6 +97,14 @@ export default {
     },
     mounted() {
         this.getChatById();
+
+        window.Echo
+            .private("chat." + this.chatId)
+            .listen(".message-sent", (event) => {
+                console.log("Evento recebido corretamente");
+
+                this.messages.push(event);
+            });
     },
     methods: {
         getChatById() {
