@@ -14,11 +14,7 @@
                         </div>
                         <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
                             role="alert">
-                            <i class="fa-regular fa-circle-xmark"></i> Erro ao atualizar registro
-                            <hr>
-                            <ul v-for="msg in messages.data.errors">
-                                <li>{{ msg[0] }}</li>
-                            </ul>
+                            <i class="fa-regular fa-circle-xmark"></i> {{ this.messages }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         <div v-if="loading" class="d-flex justify-content-center">
@@ -26,23 +22,14 @@
                                 <span class="visually-hidden">Loading...</span>
                             </div>
                         </div>
-                        <form v-else method="POST" action="" @submit.prevent="salvar">
+                        <div v-else>
                             <div class="form-group">
                                 <label>Nome</label>
                                 <input type="text" class="form-control" disabled v-model="role.role.name">
                             </div>
-                            <div class="form-group">
-                                <label>Módulo</label>
-                                <select class="form-select" v-model="module_id" @change="changeModule">
-                                    <option v-for="module in modules" :key="module.id" :value="module.id">
-                                        {{ module.name }}
-                                    </option>
-                                </select>
-                            </div>
-                            <br>
-                            <div class="form-group">
-                                <multiselect v-model="role.permissionsSelected" :options="filteredPermissions"
-                                    :multiple="true" label="label" track-by="id">
+                            <div class="form-group mt-3">
+                                <multiselect label="label" track-by="id" v-model="permissionsSelected"
+                                    :options="permissions" :multiple="true">
                                 </multiselect>
                             </div>
                             <div class="row">
@@ -53,13 +40,13 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="text-end" style="margin-top: 10px;">
-                                        <a href="#" class="btn btn-primary btn-sm" @click="salvar">
+                                        <a href="#" class="btn btn-primary btn-sm" @click="salvar()">
                                             Salvar Alterações
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,40 +71,31 @@ export default {
         return {
             role: {
                 role: JSON.parse(this.roleById),
-                permissionsSelected: [],
             },
+            permissionsSelected: [],
             alertStatus: null,
-            messages: [],
+            messages: '',
             permissions: [],
-            modules: [],
-            module_id: '',
             loading: null,
-            filteredPermissions: [],
         };
     },
+    computed: {
+    },
     mounted() {
-        this.getPermissions();
-        this.getModules();
-        this.changeModule();
+        this.listPermissions();
     },
     methods: {
-        changeModule() {
-            const filteredPermissions = this.permissions.filter(permission => permission.module_id === this.module_id);
-            this.filteredPermissions = [
-                ...filteredPermissions,
-                ...this.role.permissionsSelected.filter(permission => !filteredPermissions.some(p => p.id === permission.id))
-            ];
-        },
         salvar() {
-            const permissionsIds = this.role.permissionsSelected.map(permission => permission.id);
 
-            const dataToSend = {
-                role_id: this.role.role.id,
-                name: this.role.role.name,
-                permissions: permissionsIds
-            };
+            if (this.permissionsSelected?.length === 0) {
+                this.alertStatus = false;
+                this.messages = 'Nenhuma permissão selecionada';
+                return;
+            }
 
-            axios.post('/admin/roles/update/' + this.role.role.id, dataToSend)
+            let arrItems = this.permissionsSelected.map((p) => p.id);
+
+            axios.post('/admin/roles/update/' + this.role.role.id, { permissions: arrItems })
                 .then(response => {
                     this.alertStatus = true;
                 })
@@ -126,38 +104,18 @@ export default {
                     this.messages = errors.response;
                 });
         },
-        getModules() {
-            this.loading = true;
-            axios.get('/admin/modules/list')
-                .then(response => {
-                    this.modules = response.data.modules;
-                })
-                .catch(errors => {
-                    this.alertStatus = false;
-                    this.messages = errors.response;
-                }).finally(() => {
-                    this.loading = false;
-                });
-        },
-        getPermissions() {
+        listPermissions() {
             this.loading = true;
             axios.get('/admin/roles/list-permissions')
                 .then(response => {
                     this.permissions = response.data.permissions;
-                    this.setSelectedPermissions();
                 })
                 .catch(errors => {
 
                 }).finally(() => {
                     this.loading = false;
                 });
-        },
-        setSelectedPermissions() {
-            const selectedPermissions = this.role.role.permissions.map(permission => {
-                return this.permissions.find(p => p.id === permission.id);
-            });
-            this.role.permissionsSelected = selectedPermissions;
-        },
+        }
     }
 }
 </script>

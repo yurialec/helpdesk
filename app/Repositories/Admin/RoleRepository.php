@@ -4,9 +4,12 @@ namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\RoleRepositoryInterface;
 use App\Models\Admin\Permissions;
+use App\Models\Admin\PermissionsRoles;
 use App\Models\Admin\Roles;
+use DB;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class RoleRepository implements RoleRepositoryInterface
 {
@@ -44,35 +47,33 @@ class RoleRepository implements RoleRepositoryInterface
     public function update($id, $data)
     {
         $role = $this->role->find($id);
-        if ($role) {
+        if (!empty($role)) {
 
-            $role->update($data);
+            try {
+                DB::beginTransaction();
 
-            if (isset($data['permissions']) && is_array($data['permissions'])) {
-
-                $currentPermissions = $this->permissionRoles->all()->where('role_id', $role->id)->pluck('permission_id')->toArray();
-
-                $permissionsToRemove = array_diff($currentPermissions, $data['permissions']);
-
-                $permissionsToAdd = array_diff($data['permissions'], $currentPermissions);
-
-                foreach ($permissionsToRemove as $permissionId) {
-                    $this->permissionRoles->delete($permissionId, $role->id);
+                foreach ($data['permissions'] as $key => $value) {
+                    PermissionsRoles::create(
+                        [
+                            'permission_id' => $value,
+                            'role_id' => $id,
+                        ]
+                    );
                 }
+                DB::commit();
 
-                foreach ($permissionsToAdd as $permissionId) {
-                    try {
-                        $this->permissionRoles->create([
-                            'permission_id' => $permissionId,
-                            'role_id' => $role->id
-                        ]);
-                    } catch (Exception $err) {
-                        return $err;
-                    }
-                }
+                return response()->json([
+                    true,
+                ], 200);
+            } catch (Exception $e) {
+                DB::rollBack();
+                Log::error('Erro ao cadastrar permissão no perfil: ' . $e->getMessage(), [
+                ]);
             }
-
-            return $role;
+        } else {
+            return response()->json([
+                'message' => 'Perfil não encontrado',
+            ], 400);
         }
     }
 

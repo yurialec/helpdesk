@@ -23,9 +23,8 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => [
+            'permissions' => [
                 'required',
-                "unique:roles,name,{$this->id},id"
             ],
         ];
     }
@@ -33,8 +32,7 @@ class UpdateRoleRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'O campo nome é obrigatório.',
-            'name.unique' => 'Esse perfil já está cadastrado.',
+            'name.required' => 'Selecione as permissões.',
         ];
     }
 }

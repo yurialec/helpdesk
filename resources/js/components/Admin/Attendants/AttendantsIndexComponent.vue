@@ -28,6 +28,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Nome</th>
+                            <th scope="col">E-mail</th>
                             <th scope="col">Quantidade</th>
                             <!-- <th scope="col">Ações</th> -->
                         </tr>
@@ -35,6 +36,7 @@
                     <tbody>
                         <tr v-for="attendant in attendants.data" :key="attendant.id">
                             <td scope="row">{{ attendant.name }}</td>
+                            <td scope="row">{{ attendant.email }}</td>
                             <td scope="row">{{ chatsMax(attendant.chats) }}</td>
                             <!-- <td scope="row">Listar meus chats</td> -->
                         </tr>

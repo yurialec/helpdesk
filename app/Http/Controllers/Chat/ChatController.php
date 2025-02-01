@@ -39,7 +39,7 @@ class ChatController extends Controller
 
     public function view($id)
     {
-        return view('admin.chat.view', compact('id'));
+        return view('admin.attendants.viewchat', compact('id'));
     }
 
     public function getChatById($id)

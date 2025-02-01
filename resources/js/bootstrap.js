@@ -46,5 +46,5 @@ window.Echo = new Echo({
 // Pusher.logToConsole = true;
 
 window.Echo.connector.pusher.connection.bind('connected', () => {
-    console.log('Conectado ao Pusher!');
+    // console.log('Conectado ao Pusher!');
 });

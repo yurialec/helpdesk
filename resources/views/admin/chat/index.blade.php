@@ -1,6 +1,6 @@
 @extends('layouts.app_admin')
 @section('content')
 <chat-index-component
-    url-initiate-chat="{{ route('chat.initiate', ['id' => ':id']) }}">
+    url-view-chat="{{ route('chat.view', ['id' => ':id']) }}">
 </chat-index-component>
 @endsection

@@ -71,7 +71,7 @@ class RoleController extends Controller
         }
     }
 
-    public function update(UpdateRoleRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         $role = $this->roleService->updateRole($id, $request->all());
 

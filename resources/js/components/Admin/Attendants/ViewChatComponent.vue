@@ -4,7 +4,7 @@
             <div style="height: 80px; margin-left: 25px; margin-right: 25px;">
                 <div class="row align-items-center h-100">
                     <div class="col text-start">
-                        <a type="button" href="#" class="btn btn-secondary btn-sm">Voltar</a>
+                        <a type="button" :href="urlMyChats" class="btn btn-secondary btn-sm">Voltar</a>
                     </div>
                     <div class="col text-end">
                         <div class="d-inline-block me-3 text-center">
@@ -34,7 +34,7 @@
                         <div class="msg-head">
                             <div class="row">
                                 <div class="col-md-8 col-sm-12">
-                                    <h3 class="protocol">Protocolo: </h3>
+                                    <h3 class="protocol">Protocolo: {{ chat.protocol }}</h3>
                                     <p class="client-name">Cliente: {{ clientData.name }}</p>
                                     <p class="client-cpf">CPF/CNPJ: {{ clientData.cpf_cnpj }}</p>
                                     <p class="client-phone">Telefone: {{ clientData.phone }}</p>
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div ref="chatBody" class="chat-body" style="overflow-y: auto; height: 400px;">
+                        <div id="chatBody" ref="chatBody" class="chat-body" style="overflow-y: auto; height: 400px;">
                             <ul>
                                 <li v-for="message in messages" :key="message.id"
                                     :class="message.client_id !== null ? 'client-message' : 'attendant-message'">
@@ -57,7 +57,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="send-box">
+                        <div class="send-box" v-if="userId === chat.user.id">
                             <form @submit.prevent="sendMessage">
                                 <div class="input-group">
                                     <input type="text" class="form-control" v-model="newMessage"
@@ -81,10 +81,15 @@ import axios from "axios";
 
 export default {
     props: {
-        chatId: {
+        id: {
             type: Number,
             required: true,
-        }
+        },
+        userId: {
+            type: Number,
+            required: true,
+        },
+        urlMyChats: String,
     },
     data() {
         return {
@@ -99,22 +104,26 @@ export default {
         this.getChatById();
 
         window.Echo
-            .private("chat." + this.chatId)
+            .private("chat." + this.id)
             .listen(".message-sent", (event) => {
-                console.log("Evento recebido corretamente");
-
-                this.messages.push(event);
+                // console.log(event);
+                this.messages.push(event.message);
+                this.$nextTick(() => {
+                    this.scrollToBottom();
+                });
             });
     },
     methods: {
         getChatById() {
-            axios.get(`/admin/chat/get-chat-by-id/${this.chatId}`)
+            axios.get(`/admin/chat/get-chat-by-id/${this.id}`)
                 .then((response) => {
+                    this.$nextTick(() => {
+                        this.scrollToBottom();
+                    });
+
                     this.chat = response.data.chatById;
                     this.clientData = response.data.chatById.client;
                     this.messages = response.data.chatById.messages;
-
-                    this.scrollToBottom();
                 })
                 .catch((error) => {
                     console.log("Erro ao carregar o chat:", error);
