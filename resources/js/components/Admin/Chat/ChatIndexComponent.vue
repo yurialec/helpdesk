@@ -82,13 +82,11 @@
                         <strong>Selecione o atendente!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-
                     <div class="row">
                         <div class="d-flex justify-content-end mb-3">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="d-flex justify-content-start">
                             <select class="form-select" v-model="selectedAttendant">
@@ -111,6 +109,7 @@
 <script>
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { Modal } from 'bootstrap';
 
 export default {
     props: {
@@ -129,11 +128,17 @@ export default {
             loading: null,
             attendants: [],
             selectedAttendant: '',
+            selectedChat: '',
         };
+    },
+    computed: {
+        filteredAttendants() {
+            if (!this.chatSelecionado) return this.attendants;
+            return this.attendants.filter(attendant => attendant.id !== this.chatSelecionado.user.id);
+        }
     },
     mounted() {
         this.getChats();
-        this.listAttendants();
     },
     methods: {
         pesquisar() {
@@ -169,20 +174,22 @@ export default {
                     return 'badge text-bg-secondary';
             }
         },
-        listAttendants() {
+        transferir(chat) {
+            this.listAttendants(chat);
+            this.selectedChat = chat.id;
+            this.alertStatus = null;
+        },
+        listAttendants(chat) {
             axios.get('admin/chat/attendants/list')
                 .then(response => {
-                    this.attendants = response.data.attendants.data;
+                    this.attendants = response.data.attendants.data
+                        .filter(attendant => attendant.id !== chat.user.id);
                 })
                 .catch(errors => {
-
+                    console.log(errors);
                 }).finally(() => {
                     this.loading = false
                 });
-        },
-        transferir(chat) {
-            this.selectedChat = chat;
-            this.alertStatus = null;
         },
         confirmarTransferencia() {
             if (!this.selectedAttendant) {
@@ -190,22 +197,23 @@ export default {
                 return;
             }
 
-            //     axios.post('admin/chat/transfer', {
-            //         chat_id: this.selectedChat.id,
-            //         new_attendant_id: this.selectedAttendant
-            //     })
-            //         .then(response => {
-            //             alert('Chat transferido com sucesso!');
-            //             this.getChats(); // Atualiza a lista de chats
-            //             this.selectedChat = null;
-            //             this.selectedAttendant = '';
-            //             let modal = new Modal(document.getElementById('modalTransferirChat'));
-            //             modal.hide(); // Fecha a modal
-            //         })
-            //         .catch(error => {
-            //             alert('Erro ao transferir chat.');
-            //         });
-            // }
+            axios.post('admin/chat/transfer/' + this.selectedChat + '/' + this.selectedAttendant)
+                .then(response => {
+                    this.getChats();
+                    this.selectedChat = null;
+                    this.selectedAttendant = '';
+
+                    const modal = Modal.getInstance(document.getElementById('modalTransferirChat'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                })
+                .catch(error => {
+                    const modal = Modal.getInstance(document.getElementById('modalTransferirChat'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                });
         }
     }
 }

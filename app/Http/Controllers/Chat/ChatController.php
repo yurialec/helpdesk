@@ -58,4 +58,20 @@ class ChatController extends Controller
             ]);
         }
     }
+
+    public function transfer($chat_id, $user_id)
+    {
+        $transfer = $this->chatService->transfer($chat_id, $user_id);
+
+        if ($transfer) {
+            return response()->json([
+                true,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Erro ao transferir chat.',
+                'status' => 204
+            ]);
+        }
+    }
 }

@@ -136,7 +136,7 @@ Route::middleware(['auth'])->group(function () {
             Route::prefix('chat')->group(function () {
                 Route::get('/', [ChatController::class, 'index'])->name('chat.index');
                 Route::get('/list', [ChatController::class, 'list'])->name('chat.list');
-
+                Route::post('transfer/{chat}/{user}', [ChatController::class, 'transfer'])->name('chat.transfer');
                 Route::prefix('attendants')->group(function () {
                     Route::get('/', [AttendantsController::class, 'index'])->name('attendants.index');
                     Route::get('/list', [AttendantsController::class, 'list'])->name('attendants.list');
@@ -148,7 +148,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/list-my-chats', [AttendantsController::class, 'listMyChats'])->name('attendants.list.my.chats');
         Route::get('/chat/view/{id}', [ChatController::class, 'view'])->name('chat.view');
         Route::get('/chat/get-chat-by-id/{id}', [ChatController::class, 'getChatById'])->name('get.chat.by.id');
-        
+
         Route::post('/chat/send-message/{protocol}', [AttendantsController::class, 'sendMessage'])->name('attendants.send.message');
 
         //CONSULTA CEP

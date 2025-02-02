@@ -4,6 +4,8 @@ namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\ChatRepositoryInterface;
 use App\Models\Chat\Chat;
+use Exception;
+use Log;
 
 class ChatRepository implements ChatRepositoryInterface
 {
@@ -26,14 +28,26 @@ class ChatRepository implements ChatRepositoryInterface
 
     public function find($id)
     {
-        return $this->chat
-            ->find($id)
-            ->first();
+        return $this->chat->find($id);
     }
 
     public function getChatById($id)
     {
         return $this->chat
             ->findOrFail($id);
+    }
+
+    public function transfer($chat_id, $user_id)
+    {
+        try {
+            $chat = $this->chat->find($chat_id);
+            $chat->user_id = $user_id;
+            $chat->save();
+
+            return true;
+        } catch (Exception $err) {
+            Log::error('Erro ao tranferir atendente', ['message' => $err->getMessage]);
+        }
+
     }
 }
