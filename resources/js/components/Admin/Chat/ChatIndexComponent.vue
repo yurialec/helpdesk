@@ -49,9 +49,11 @@
                                     title="Iniciar Chat">
                                     <i style="color:green;" class="bi bi-chat-text"></i>
                                 </a>
-                                <a class="btn" data-toggle="tooltip" title="Transferir para outro atendente">
+                                <button @click="transferir(chat)" data-bs-toggle="modal"
+                                    data-bs-target="#modalTransferirChat" class="btn" data-toggle="tooltip"
+                                    title="Transferir para outro atendente">
                                     <i style="color:#87CEFA;" class="bi bi-person-fill-gear"></i>
-                                </a>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -69,6 +71,41 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalTransferirChat" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div v-if="alertStatus === false" class="alert alert-danger alert-dismissible fade show"
+                        role="alert">
+                        <strong>Selecione o atendente!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div class="row">
+                        <div class="d-flex justify-content-end mb-3">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="d-flex justify-content-start">
+                            <select class="form-select" v-model="selectedAttendant">
+                                <option disabled value="">Selecione o novo atendente</option>
+                                <option v-for="attendant in attendants" :key="attendant.id" :value="attendant.id">
+                                    {{ attendant.name }}
+                                </option>
+                            </select>
+                            <button class="btn btn-primary btn-sm ms-2"
+                                @click="confirmarTransferencia">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -90,10 +127,13 @@ export default {
             alertStatus: null,
             msg: [],
             loading: null,
+            attendants: [],
+            selectedAttendant: '',
         };
     },
     mounted() {
         this.getChats();
+        this.listAttendants();
     },
     methods: {
         pesquisar() {
@@ -129,6 +169,44 @@ export default {
                     return 'badge text-bg-secondary';
             }
         },
+        listAttendants() {
+            axios.get('admin/chat/attendants/list')
+                .then(response => {
+                    this.attendants = response.data.attendants.data;
+                })
+                .catch(errors => {
+
+                }).finally(() => {
+                    this.loading = false
+                });
+        },
+        transferir(chat) {
+            this.selectedChat = chat;
+            this.alertStatus = null;
+        },
+        confirmarTransferencia() {
+            if (!this.selectedAttendant) {
+                this.alertStatus = false;
+                return;
+            }
+
+            //     axios.post('admin/chat/transfer', {
+            //         chat_id: this.selectedChat.id,
+            //         new_attendant_id: this.selectedAttendant
+            //     })
+            //         .then(response => {
+            //             alert('Chat transferido com sucesso!');
+            //             this.getChats(); // Atualiza a lista de chats
+            //             this.selectedChat = null;
+            //             this.selectedAttendant = '';
+            //             let modal = new Modal(document.getElementById('modalTransferirChat'));
+            //             modal.hide(); // Fecha a modal
+            //         })
+            //         .catch(error => {
+            //             alert('Erro ao transferir chat.');
+            //         });
+            // }
+        }
     }
 }
 </script>
