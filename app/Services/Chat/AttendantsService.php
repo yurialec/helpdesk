@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services\Chat;
 
-use App\Repositories\Admin\AttendantsRepository;
+use App\Repositories\Chat\AttendantsRepository;
 use Illuminate\Support\Facades\Auth;
 
 class AttendantsService

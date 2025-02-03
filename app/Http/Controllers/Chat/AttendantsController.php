@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Attendants;
+namespace App\Http\Controllers\Chat;
 
 use App\Enums\ChatStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Chat\Chat;
 use App\Models\Chat\ChatStatus;
-use App\Services\Admin\AttendantsService;
+use App\Services\Chat\AttendantsService;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -20,7 +20,7 @@ class AttendantsController extends Controller
 
     public function index()
     {
-        return view('admin.attendants.index');
+        return view('chat.attendants.index');
     }
 
     public function list(Request $request)
@@ -42,7 +42,7 @@ class AttendantsController extends Controller
 
     public function myChats()
     {
-        return view('admin.attendants.mychats');
+        return view('chat.attendants.mychats');
     }
 
     public function listMyChats(Request $request)
@@ -64,7 +64,7 @@ class AttendantsController extends Controller
 
     public function viewChat($id)
     {
-        return view('admin.attendants.viewchat', compact('id'));
+        return view('chat.attendants.viewchat', compact('id'));
     }
 
     public function getChatById($id)

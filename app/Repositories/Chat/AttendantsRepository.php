@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\Chat;
 
-use App\Interfaces\Admin\AttendantsRepositoryInterface;
+use App\Interfaces\Chat\AttendantsRepositoryInterface;
 use App\Models\Chat\Chat;
 use App\Models\User;
 use Auth;

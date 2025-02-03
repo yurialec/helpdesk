@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Admin;
+namespace App\Repositories\CHAT;
 
-use App\Interfaces\Admin\ChatRepositoryInterface;
+use App\Interfaces\Chat\ChatRepositoryInterface;
 use App\Models\Chat\Chat;
 use Exception;
 use Log;
@@ -46,7 +46,7 @@ class ChatRepository implements ChatRepositoryInterface
 
             return true;
         } catch (Exception $err) {
-            Log::error('Erro ao tranferir atendente', ['message' => $err->getMessage]);
+            Log::error('Erro ao tranferir atendente', ['message' => $err->getMessage()]);
         }
 
     }

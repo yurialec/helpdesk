@@ -1,14 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\ValidRoutesController;
-use App\Http\Controllers\Attendants\AttendantsController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Chat\AttendantsController;
 use App\Http\Controllers\Chat\ChatController;
+use App\Http\Controllers\Chat\ClientController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\LogoController;
@@ -140,6 +139,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::prefix('attendants')->group(function () {
                     Route::get('/', [AttendantsController::class, 'index'])->name('attendants.index');
                     Route::get('/list', [AttendantsController::class, 'list'])->name('attendants.list');
+                });
+
+                Route::prefix('clients')->group(function () {
+                    Route::get('/', [ClientController::class, 'index'])->name('clients.index');
+                    Route::get('/list', [ClientController::class, 'list'])->name('clients.list');
                 });
             });
         });

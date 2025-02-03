@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services\Chat;
 
-use App\Repositories\Admin\ChatRepository;
-
+use App\Repositories\Chat\ChatRepository;
 
 class ChatService
 {

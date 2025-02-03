@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Chat;
 
 use App\Http\Controllers\Controller;
-use App\Models\Chat\Chat;
-use App\Services\Admin\ChatService;
+use App\Services\Chat\ChatService;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
@@ -17,7 +16,7 @@ class ChatController extends Controller
 
     public function index()
     {
-        return view('admin.chat.index');
+        return view('chat.chat.index');
     }
 
     public function list(Request $request)
@@ -39,7 +38,7 @@ class ChatController extends Controller
 
     public function view($id)
     {
-        return view('admin.attendants.viewchat', compact('id'));
+        return view('chat.attendants.viewchat', compact('id'));
     }
 
     public function getChatById($id)
