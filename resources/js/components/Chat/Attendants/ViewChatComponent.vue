@@ -33,12 +33,11 @@
                                     <p class="client-cpf">CPF/CNPJ: {{ clientData.cpf_cnpj }}</p>
                                     <p class="client-phone">Telefone: {{ clientData.phone }}</p>
                                 </div>
-
                                 <div v-if="isChatFinished" class="col-md-4 col-sm-12 text-md-end text-center">
                                     O chat foi finalizado.
                                 </div>
-
-                                <div v-else class="col-md-4 col-sm-12 text-md-end text-center">
+                                <div v-else v-if="userId === chat.user.id"
+                                    class="col-md-4 col-sm-12 text-md-end text-center">
                                     <button class="btn btn-sm btn-outline-secondary" @click="endChat">
                                         Finalizar Chat
                                     </button>
