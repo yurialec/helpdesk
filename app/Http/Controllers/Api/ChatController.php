@@ -7,6 +7,7 @@ use App\Enums\ChatStatusEnum;
 use App\Events\NewChatMessage;
 use App\Http\Controllers\Controller;
 use App\Models\Chat\Chat;
+use App\Models\Chat\ChatHistory;
 use App\Models\Chat\ChatPriority;
 use App\Models\Chat\ChatQueue;
 use App\Models\Chat\ChatStatus;
@@ -77,6 +78,12 @@ class ChatController extends Controller
                 'user_id' => $userId,
                 'chat_id' => $chat->id,
                 'priority_id' => ChatPriority::where('name', ChatPriorityEnum::Media->value)->first()->id,
+            ]);
+
+            ChatHistory::create([
+                'chat_id' => $chat->id,
+                'client_id' => $clientId,
+                'started_at' => $chat->created_at,
             ]);
 
             return $chat->protocol;
