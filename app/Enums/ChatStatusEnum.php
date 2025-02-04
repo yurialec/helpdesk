@@ -6,5 +6,5 @@ enum ChatStatusEnum: string
 {
     case Pendente = 'Pendente';
     case Ativo = 'Ativo';
-    case Inativo = 'Finalizado';
+    case Finalizado = 'Finalizado';
 }

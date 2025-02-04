@@ -27,4 +27,9 @@ class ChatService
     {
         return $this->chatRepository->transfer($chat_id, $user_id);
     }
+
+    public function end($id)
+    {
+        return $this->chatRepository->end($id);
+    }
 }

@@ -7,12 +7,6 @@
                         <a type="button" :href="urlMyChats" class="btn btn-secondary btn-sm">Voltar</a>
                     </div>
                     <div class="col text-end">
-                        <div class="d-inline-block me-3 text-center">
-                            <a class="btn">
-                                <i style="color:#87CEFA;" class="bi bi-person-fill-gear h5"></i>
-                            </a>
-                            <p class="small text-muted mb-0">Transferir</p>
-                        </div>
                         <div class="d-inline-block text-center">
                             <a class="btn">
                                 <i style="color:#87CEFA;" class="bi bi-file-earmark-ruled h5"></i>
@@ -39,7 +33,12 @@
                                     <p class="client-cpf">CPF/CNPJ: {{ clientData.cpf_cnpj }}</p>
                                     <p class="client-phone">Telefone: {{ clientData.phone }}</p>
                                 </div>
-                                <div class="col-md-4 col-sm-12 text-md-end text-center">
+
+                                <div v-if="isChatFinished" class="col-md-4 col-sm-12 text-md-end text-center">
+                                    O chat foi finalizado.
+                                </div>
+
+                                <div v-else class="col-md-4 col-sm-12 text-md-end text-center">
                                     <button class="btn btn-sm btn-outline-secondary" @click="endChat">
                                         Finalizar Chat
                                     </button>
@@ -57,16 +56,19 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="send-box" v-if="userId === chat.user.id">
-                            <form @submit.prevent="sendMessage">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" v-model="newMessage"
-                                        placeholder="Escreva uma mensagem..." required />
-                                    <button type="submit" class="btn btn-primary btn-lg" :disabled="!newMessage.trim()">
-                                        <i class="fa fa-paper-plane" aria-hidden="true"></i> Enviar
-                                    </button>
-                                </div>
-                            </form>
+                        <div v-show="!isChatFinished">
+                            <div class="send-box" v-if="userId === chat.user.id">
+                                <form @submit.prevent="sendMessage">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" v-model="newMessage"
+                                            placeholder="Escreva uma mensagem..." required />
+                                        <button type="submit" class="btn btn-primary btn-lg"
+                                            :disabled="!newMessage.trim()">
+                                            <i class="fa fa-paper-plane" aria-hidden="true"></i> Enviar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -100,13 +102,17 @@ export default {
             loading: true,
         };
     },
+    computed: {
+        isChatFinished() {
+            return this.chat && this.chat.status && this.chat.status.id === 3;
+        }
+    },
     mounted() {
         this.getChatById();
 
         window.Echo
             .private("chat." + this.id)
             .listen(".message-sent", (event) => {
-                // console.log(event);
                 this.messages.push(event.message);
                 this.$nextTick(() => {
                     this.scrollToBottom();
@@ -159,7 +165,12 @@ export default {
             return dayjs(date).format("DD/MM/YYYY HH:mm:ss");
         },
         endChat() {
-            alert("Chat finalizado");
+            axios.post(`admin/chat/end/${this.chat.id}`)
+                .then((response) => {
+                    this.getChatById();
+                }).catch((error) => {
+                    console.error("Erro ao finalizar o chat:", error);
+                });
         },
     },
 };

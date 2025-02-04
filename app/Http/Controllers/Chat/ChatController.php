@@ -73,4 +73,9 @@ class ChatController extends Controller
             ]);
         }
     }
+
+    public function end($id)
+    {
+        $end = $this->chatService->end($id);
+    }
 }
