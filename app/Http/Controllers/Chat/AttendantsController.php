@@ -86,23 +86,17 @@ class AttendantsController extends Controller
 
     public function sendMessage(Request $request, $protocol)
     {
-        $chat = Chat::where('protocol', $protocol)->first();
+        $sended = $this->attendantService->sendMessage($request->all(), $protocol);
 
-        $validatedData = $request->validate([
-            'message' => 'required|string',
-        ]);
-
-        $chat->chat_status_id = ChatStatus::where('name', ChatStatusEnum::Ativo->value)->first()->id;
-        $chat->save();
-
-        $message = $chat->messages()->create([
-            'message' => $validatedData['message'],
-            'user_id' => Auth::id(),
-            'chat_id' => $chat->id,
-        ]);
-
-        return response()->json([
-            'data' => $message
-        ], 201);
+        if ($sended) {
+            return response()->json([
+                'data' => $sended
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => 'Erro ao enviar mensagem.',
+                'status' => 204
+            ]);
+        }
     }
 }

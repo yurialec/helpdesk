@@ -28,4 +28,9 @@ class AttendantsService
     {
         return $this->attendantsRepository->chatById($id);
     }
+
+    public function sendMessage($data, $protocol)
+    {
+        return $this->attendantsRepository->sendMessage($data, $protocol);
+    }
 }
