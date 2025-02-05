@@ -27,6 +27,9 @@
 
 <body class="index-page">
     @yield('content')
+
+    <!-- <iframe src="http://localhost:8000/chat-widget" width="320" height="450" frameborder="0" style="border: none; position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></iframe> -->
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 </body>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Chat\AttendantsController;
 use App\Http\Controllers\Chat\ChatController;
+use App\Http\Controllers\Chat\ClientChatController;
 use App\Http\Controllers\Chat\ClientController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\ContactController;
@@ -33,6 +34,8 @@ Auth::routes();
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('index.site');
 Route::get('/sobre', [SiteController::class, 'about'])->name('about');
 Route::get('/contato', [SiteController::class, 'contact'])->name('contact');
+
+Route::get('/chat-widget', [ClientChatController::class, 'showWidget']);
 
 Route::middleware(['auth'])->group(function () {
 
