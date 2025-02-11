@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interfaces\Ticket;
+namespace App\Interfaces\GeneralConfig;
 
 interface CompanyRepositoryInterface
 {

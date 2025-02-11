@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Ticket;
+namespace App\Http\Controllers\GeneralConfig;
 
 use App\Http\Controllers\Controller;
-use App\Services\Ticket\CompanyService;
+use App\Services\GeneralConfig\CompanyService;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -17,7 +17,7 @@ class CompanyController extends Controller
 
     public function index()
     {
-        return view('ticket.companies.index');
+        return view('generalconfig.companies.index');
     }
 
     public function list()
@@ -39,7 +39,7 @@ class CompanyController extends Controller
 
     public function create()
     {
-        return view('ticket.companies.create');
+        return view('generalconfig.companies.create');
     }
 
     public function store(Request $request)
@@ -61,7 +61,7 @@ class CompanyController extends Controller
 
     public function edit($id)
     {
-        return view('ticket.companies.edit', compact('id'));
+        return view('generalconfig.companies.edit', compact('id'));
     }
 
     public function find($id)

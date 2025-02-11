@@ -14,7 +14,7 @@ use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\LogoController;
 use App\Http\Controllers\Site\SiteAboutController;
 use App\Http\Controllers\SiteController;
-use App\Http\Controllers\Ticket\CompanyController;
+use App\Http\Controllers\GeneralConfig\CompanyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Ticket;
+namespace App\Repositories\GeneralConfig;
 
-use App\Interfaces\Ticket\CompanyRepositoryInterface;
-use App\Models\Ticket\Company;
+use App\Interfaces\GeneralConfig\CompanyRepositoryInterface;
+use App\Models\GeneralConfig\Company;
 use Carbon\Carbon;
 use Exception;
 use Log;

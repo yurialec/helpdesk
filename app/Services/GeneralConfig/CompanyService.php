@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Ticket;
+namespace App\Services\GeneralConfig;
 
-use App\Repositories\Ticket\CompanyRepository;
+use App\Repositories\GeneralConfig\CompanyRepository;
 
 class CompanyService
 {
