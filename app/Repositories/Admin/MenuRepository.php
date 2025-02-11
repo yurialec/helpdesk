@@ -39,15 +39,21 @@ class MenuRepository implements MenuRepositoryInterface
 
     public function create(array $data)
     {
-        return $this->menu->create([
-            'label' => $data['label'],
-            'icon' => $data['icon'],
-            'url' => '#',
-            'active' => 1,
-            'son' => null,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        try {
+            return $this->menu->create([
+                'label' => $data['label'],
+                'icon' => $data['icon'],
+                'url' => '#',
+                'active' => 1,
+                'son' => null,
+                'order' => $this->menu->whereNull('son')->max('order') + 1,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        } catch (Exception $err) {
+            Log::error('ERRO AO CADASTRAR MENU', ['erro', $err->getMessage()]);
+            return $err->getMessage();
+        }
     }
 
     public function update($id, $data)

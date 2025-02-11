@@ -14,6 +14,7 @@ use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\LogoController;
 use App\Http\Controllers\Site\SiteAboutController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\Ticket\CompanyController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -151,12 +152,22 @@ Route::middleware(['auth'])->group(function () {
             });
         });
 
+        Route::middleware(['acl:manter-ticket'])->group(callback: function () {
+            Route::prefix('tickets')->group(function () {
+                Route::prefix('companies')->group(function () {
+                    Route::get('/', [CompanyController::class, 'index'])->name('company.index');
+                    Route::get('/list', [CompanyController::class, 'list'])->name('company.list');
+                    Route::get('/create', [CompanyController::class, 'create'])->name('company.create');
+                    Route::post('/store', [CompanyController::class, 'store'])->name('company.store');
+                });
+            });
+        });
+
         Route::get('/chat/my-chats', [AttendantsController::class, 'myChats'])->name('attendants.my.chats');
         Route::get('/list-my-chats', [AttendantsController::class, 'listMyChats'])->name('attendants.list.my.chats');
         Route::get('/chat/view/{id}', [ChatController::class, 'view'])->name('chat.view');
         Route::get('/chat/get-chat-by-id/{id}', [ChatController::class, 'getChatById'])->name('get.chat.by.id');
         Route::post('/chat/end/{id}', [ChatController::class, 'end'])->name('chat.end');
-
         Route::post('/chat/send-message/{protocol}', [AttendantsController::class, 'sendMessage'])->name('attendants.send.message');
 
         //CONSULTA CEP
