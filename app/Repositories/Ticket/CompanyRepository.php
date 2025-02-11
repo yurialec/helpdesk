@@ -4,6 +4,7 @@ namespace App\Repositories\Ticket;
 
 use App\Interfaces\Ticket\CompanyRepositoryInterface;
 use App\Models\Ticket\Company;
+use Carbon\Carbon;
 use Exception;
 use Log;
 
@@ -27,15 +28,19 @@ class CompanyRepository implements CompanyRepositoryInterface
 
     public function find($id)
     {
-        return Company::find($id);
+        try {
+            return $this->company->find($id);
+        } catch (Exception $err) {
+            Log::error('Erro ao localizar empresa', ['erro' => $err->getMessage()]);
+            return $err->getMessage();
+        }
     }
 
     public function create(array $data)
     {
         try {
-            return Company::create($data);
+            return $this->company->create($data);
         } catch (Exception $err) {
-
             Log::error('Erro ao cadastrar empresa', ['erro' => $err->getMessage()]);
             return $err->getMessage();
         }
@@ -43,16 +48,32 @@ class CompanyRepository implements CompanyRepositoryInterface
 
     public function update($id, array $data)
     {
-        $model = Company::find($id);
-        if ($model) {
-            $model->update($data);
-            return $model;
+
+        try {
+            $company = $this->company->find($id);
+
+            $company->address = $data['address'];
+            $company->cnpj = $data['cnpj'];
+            $company->email = $data['email'];
+            $company->name = $data['name'];
+            $company->phone = $data['phone'];
+            $company->responsible_manager = $data['responsible_manager'];
+            $company->updated_at = Carbon::now();
+            $company->save();
+
+        } catch (Exception $err) {
+            Log::error('Erro ao editar empresa', ['erro' => $err->getMessage()]);
+            $err->getMessage();
         }
-        return null;
     }
 
     public function delete($id)
     {
-        return Company::destroy($id);
+        try {
+            $this->company->find($id)->delete();
+        } catch (Exception $err) {
+            Log::error('Erro ao deletar empresa', ['erro' => $err->getMessage()]);
+            return $err->getMessage();
+        }
     }
 }

@@ -22,4 +22,19 @@ class CompanyService
     {
         return $this->CompanyRepository->create($data);
     }
+
+    public function find($id)
+    {
+        return $this->CompanyRepository->find($id);
+    }
+
+    public function update($id, $data)
+    {
+        return $this->CompanyRepository->update($id, $data);
+    }
+
+    public function delete($id)
+    {
+        return $this->CompanyRepository->delete($id);
+    }
 }

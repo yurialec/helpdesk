@@ -20,15 +20,22 @@ class CompanyController extends Controller
         return view('ticket.companies.index');
     }
 
-    public function list(Request $request)
+    public function list()
     {
-        $companies = $this->CompanyService->all($term = null);
+        $companies = $this->CompanyService->all();
 
-        return response()->json([
-            'companies' => $companies,
-        ]);
+        if ($companies) {
+            return response()->json([
+                'status' => true,
+                'companies' => $companies,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao localizar empresas'
+            ], 204);
+        }
     }
-
 
     public function create()
     {
@@ -50,5 +57,48 @@ class CompanyController extends Controller
                 'message' => 'Erro ao cadastrar empresa'
             ], 204);
         }
+    }
+
+    public function edit($id)
+    {
+        return view('ticket.companies.edit', compact('id'));
+    }
+
+    public function find($id)
+    {
+        $company = $this->CompanyService->find($id);
+
+        if ($company) {
+            return response()->json([
+                'company' => $company,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao cadastrar empresa'
+            ], 204);
+        }
+    }
+
+    public function update($id, Request $request)
+    {
+        $data = $request->data;
+        $company = $this->CompanyService->update($id, $data);
+
+        if ($company) {
+            return response()->json([
+                'company' => $company,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao atualizar empresa'
+            ], 204);
+        }
+    }
+
+    public function delete($id)
+    {
+        return $this->CompanyService->delete($id);
     }
 }

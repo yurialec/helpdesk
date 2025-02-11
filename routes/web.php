@@ -159,6 +159,10 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/list', [CompanyController::class, 'list'])->name('company.list');
                     Route::get('/create', [CompanyController::class, 'create'])->name('company.create');
                     Route::post('/store', [CompanyController::class, 'store'])->name('company.store');
+                    Route::get('/edit/{id}', [CompanyController::class, 'edit'])->name('company.edit');
+                    Route::get('/find/{id}', [CompanyController::class, 'find'])->name('company.find');
+                    Route::put('/update/{id}', [CompanyController::class, 'update'])->name('company.update');
+                    Route::delete('/delete/{id}', [CompanyController::class, 'delete'])->name('company.delete');
                 });
             });
         });
