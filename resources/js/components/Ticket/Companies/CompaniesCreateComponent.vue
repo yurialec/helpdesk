@@ -111,7 +111,7 @@ export default {
             this.validEmail = emailPattern.test(this.company.email);
         },
         save() {
-            axios.post('admin/tickets/companies/store', this.company)
+            axios.post('admin/general-configs/companies/store', this.company)
                 .then(response => {
                     this.alertStatus = true;
                     this.messages = response.data;

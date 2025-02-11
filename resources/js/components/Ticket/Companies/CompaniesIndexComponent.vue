@@ -193,14 +193,14 @@ export default {
     },
     methods: {
         pesquisar() {
-            this.getCompanies('admin/tickets/companies/list', this.searchFilter);
+            this.getCompanies('admin/general-configs/companies/list', this.searchFilter);
         },
         pagination(url) {
             if (url) {
                 this.getCompanies(url);
             }
         },
-        getCompanies(url = 'admin/tickets/companies/list') {
+        getCompanies(url = 'admin/general-configs/companies/list') {
             this.loading = true;
             axios.get(url)
                 .then(response => {
@@ -243,7 +243,7 @@ export default {
         },
         excluirRegistro() {
             if (this.companyToDelete !== null) {
-                axios.delete(`admin/tickets/companies/delete/${this.companyToDelete}`)
+                axios.delete(`admin/general-configs/companies/delete/${this.companyToDelete}`)
                     .then(() => {
                         this.getCompanies();
                         this.fecharModal('modalDeleteCompany');

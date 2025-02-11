@@ -109,7 +109,7 @@ export default {
     methods: {
         findCompany() {
             this.loading = true;
-            axios.get('/admin/tickets/companies/find/' + this.id)
+            axios.get('/admin/general-configs/companies/find/' + this.id)
                 .then(response => {
                     this.company = response.data.company;
                 })
@@ -121,7 +121,7 @@ export default {
         },
         updateCompany() {
             this.loading = true;
-            axios.put('/admin/tickets/companies/update/' + this.id, { data: this.company })
+            axios.put('/admin/general-configs/companies/update/' + this.id, { data: this.company })
                 .then(response => {
                     this.alertStatus = true;
                 })

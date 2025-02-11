@@ -154,6 +154,12 @@ Route::middleware(['auth'])->group(function () {
 
         Route::middleware(['acl:manter-ticket'])->group(callback: function () {
             Route::prefix('tickets')->group(function () {
+                
+            });
+        });
+
+        Route::middleware(['acl:manter-config-gerais'])->group(callback: function () {
+            Route::prefix('general-configs')->group(function () {
                 Route::prefix('companies')->group(function () {
                     Route::get('/', [CompanyController::class, 'index'])->name('company.index');
                     Route::get('/list', [CompanyController::class, 'list'])->name('company.list');
