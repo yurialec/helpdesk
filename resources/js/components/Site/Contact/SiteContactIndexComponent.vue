@@ -118,8 +118,6 @@ export default {
             axios.get('admin/site/contact/list')
                 .then(response => {
                     this.contacts = response.data.contacts;
-                    console.log(this.contacts);
-
                 })
                 .catch(errors => {
                     this.alertStatus = 'error';

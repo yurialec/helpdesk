@@ -169,10 +169,6 @@ export default {
                 axios.get('admin/cep/' + this.contact.contact.zipcode)
                     .then(response => {
                         this.dataZipCode = response.data;
-
-                        console.log(this.dataZipCode);
-
-
                         if (this.dataZipCode) {
                             this.contact.contact.city = this.dataZipCode.localidade
                             this.contact.contact.state = this.dataZipCode.uf

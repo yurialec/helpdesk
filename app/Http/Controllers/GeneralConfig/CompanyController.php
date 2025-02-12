@@ -66,11 +66,9 @@ class CompanyController extends Controller
 
     public function find($id)
     {
-        $company = $this->CompanyService->find($id);
-
-        if ($company) {
+        if ($this->CompanyService->find($id)) {
             return response()->json([
-                'company' => $company,
+                'company' => $this->CompanyService->find($id),
             ], 200);
         } else {
             return response()->json([
@@ -82,23 +80,42 @@ class CompanyController extends Controller
 
     public function update($id, Request $request)
     {
-        $data = $request->data;
-        $company = $this->CompanyService->update($id, $data);
+        $data = $request->input('data');
+        $departments = $request->input('departments', []);
 
-        if ($company) {
+        $companyUpdated = $this->CompanyService->update($id, $data, $departments);
+
+        if ($companyUpdated) {
             return response()->json([
-                'company' => $company,
+                'status' => true,
+                'message' => 'Empresa atualizada com sucesso'
             ], 200);
         } else {
             return response()->json([
                 'status' => false,
                 'message' => 'Erro ao atualizar empresa'
-            ], 204);
+            ], 400);
         }
     }
 
     public function delete($id)
     {
         return $this->CompanyService->delete($id);
+    }
+
+    public function listDepartments()
+    {
+        $departments = $this->CompanyService->listDepartments();
+
+        if ($departments) {
+            return response()->json([
+                'departments' => $departments,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao localizar departamentos'
+            ], 204);
+        }
     }
 }

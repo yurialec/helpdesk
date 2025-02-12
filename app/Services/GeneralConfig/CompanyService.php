@@ -28,13 +28,18 @@ class CompanyService
         return $this->CompanyRepository->find($id);
     }
 
-    public function update($id, $data)
+    public function update($id, $data, $departments)
     {
-        return $this->CompanyRepository->update($id, $data);
+        return $this->CompanyRepository->update($id, $data, $departments);
     }
 
     public function delete($id)
     {
         return $this->CompanyRepository->delete($id);
+    }
+
+    public function listDepartments()
+    {
+        return $this->CompanyRepository->listDepartments();
     }
 }

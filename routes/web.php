@@ -9,6 +9,7 @@ use App\Http\Controllers\Chat\AttendantsController;
 use App\Http\Controllers\Chat\ChatController;
 use App\Http\Controllers\Chat\ClientChatController;
 use App\Http\Controllers\Chat\ClientController;
+use App\Http\Controllers\GeneralConfig\DepartmentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\LogoController;
@@ -154,12 +155,13 @@ Route::middleware(['auth'])->group(function () {
 
         Route::middleware(['acl:manter-ticket'])->group(callback: function () {
             Route::prefix('tickets')->group(function () {
-                
+
             });
         });
 
-        Route::middleware(['acl:manter-config-gerais'])->group(callback: function () {
-            Route::prefix('general-configs')->group(function () {
+        Route::prefix('general-configs')->group(function () {
+
+            Route::middleware(['acl:manter-empresas'])->group(callback: function () {
                 Route::prefix('companies')->group(function () {
                     Route::get('/', [CompanyController::class, 'index'])->name('company.index');
                     Route::get('/list', [CompanyController::class, 'list'])->name('company.list');
@@ -169,6 +171,20 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/find/{id}', [CompanyController::class, 'find'])->name('company.find');
                     Route::put('/update/{id}', [CompanyController::class, 'update'])->name('company.update');
                     Route::delete('/delete/{id}', [CompanyController::class, 'delete'])->name('company.delete');
+                    Route::get('/list-departments', [CompanyController::class, 'listDepartments'])->name('company.list.departments');
+                });
+            });
+
+            Route::middleware(['acl:manter-departamento'])->group(callback: function () {
+                Route::prefix('department')->group(function () {
+                    Route::get('/', [DepartmentController::class, 'index'])->name('department.index');
+                    Route::get('/list', [DepartmentController::class, 'list'])->name('department.list');
+                    Route::get('/create', [DepartmentController::class, 'create'])->name('department.create');
+                    Route::post('/store', [DepartmentController::class, 'store'])->name('department.store');
+                    Route::get('/edit/{id}', [DepartmentController::class, 'edit'])->name('department.edit');
+                    Route::get('/find/{id}', [DepartmentController::class, 'find'])->name('department.find');
+                    Route::put('/update/{id}', [DepartmentController::class, 'update'])->name('department.update');
+                    Route::delete('/delete/{id}', [DepartmentController::class, 'delete'])->name('department.delete');
                 });
             });
         });

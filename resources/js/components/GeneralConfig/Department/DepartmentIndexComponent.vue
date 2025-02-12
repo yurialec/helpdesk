@@ -4,7 +4,7 @@
             <div class="card-header">
                 <div class="row align-items-center">
                     <div class="col-12 col-md-3 text-md-left text-center mb-2 mb-md-0">
-                        <h3>Empresas</h3>
+                        <h3>Setores</h3>
                     </div>
                     <div class="col-12 col-md-6 text-center mb-2 mb-md-0">
                         <div class="input-group">
@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-md-3 text-md-end text-end">
-                        <a :href="urlCreateCompanies" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
+                        <a :href="urlCreateDepartment" type="button" class="btn btn-primary btn-sm">Cadastrar</a>
                     </div>
                 </div>
             </div>
@@ -30,30 +30,28 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Nome</th>
-                            <th scope="col">CNPJ</th>
-                            <th scope="col">E-mail</th>
+                            <th scope="col">Criado em</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="company in companies.data" :key="company.id">
-                            <td scope="row">{{ company.id }}</td>
-                            <td scope="row">{{ company.name }}</td>
-                            <td scope="row">{{ company.cnpj }}</td>
-                            <td scope="row">{{ company.email }}</td>
+                        <tr v-for="department in departments.data" :key="department.id">
+                            <td scope="row">{{ department.id }}</td>
+                            <td scope="row">{{ department.name }}</td>
+                            <td scope="row">{{ formatDate(department.created_at) }}</td>
                             <td scope="row">
                                 <button style="color: #333; padding: 0;" type="button" class="btn"
-                                    @click="detailsToModal(company)" data-bs-toggle="modal"
+                                    @click="detailsToModal(department)" data-bs-toggle="modal"
                                     data-bs-target="#modalDetails">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <a :href="urlEditCompanies.replace(':id', company.id)"
+                                <a :href="urlEditDepartment.replace(':id', department.id)"
                                     style="color: #0D6EFD; padding: 0;" class="btn">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                                 <button type="button" style="color: red; padding: 0;" class="btn"
-                                    @click="confirmarExclusao(company.id)" data-bs-toggle="modal"
-                                    data-bs-target="#modalDeleteCompany">
+                                    @click="confirmarExclusao(department.id)" data-bs-toggle="modal"
+                                    data-bs-target="#modalDeleteDepartment">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </td>
@@ -64,7 +62,7 @@
             <div class="card-footer">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li v-for="(link, key) in companies.links" :key="key" class="page-item"
+                        <li v-for="(link, key) in departments.links" :key="key" class="page-item"
                             :class="{ 'active': link.active }">
                             <a class="page-link" href="#" @click.prevent="pagination(link.url)" v-html="link.label"></a>
                         </li>
@@ -72,12 +70,13 @@
                 </nav>
             </div>
         </div>
-        <div class="modal fade" id="modalDeleteCompany" tabindex="-1" aria-labelledby="modalDeleteCompanyLabel"
+
+        <div class="modal fade" id="modalDeleteDepartment" tabindex="-1" aria-labelledby="modalDeleteDepartmentLabel"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalDeleteCompanyLabel">Confirmação de Exclusão</h5>
+                        <h5 class="modal-title" id="modalDeleteDepartmentLabel">Confirmação de Exclusão</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -90,12 +89,14 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal DETAILS-->
         <div class="modal fade" id="modalDetails" name="modalDetails" tabindex="-1" aria-labelledby="modalDetailsLabel"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="modalDetailsLabel">Dados da Empresa</h1>
+                        <h1 class="modal-title fs-5" id="modalDetailsLabel">Dados do Departamento</h1>
                         <button type="button" @click="closeModal()" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
@@ -111,37 +112,8 @@
                                     <td>{{ modalData.name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>CNPJ</th>
-                                    <td>{{ modalData.cnpj }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Endereço</th>
-                                    <td>{{ modalData.address || 'Não informado' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>E-mail</th>
-                                    <td>{{ modalData.email }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Telefone</th>
-                                    <td>{{ modalData.phone || 'Não informado' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Responsável</th>
-                                    <td>{{ modalData.responsible_manager || 'Não informado' }}</td>
-                                </tr>
-                                <tr>
                                     <th>Criado em</th>
                                     <td>{{ formatDate(modalData.created_at) }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Atualizado em</th>
-                                    <td>{{ formatDate(modalData.updated_at) }}</td>
-                                </tr>
-                                <tr>
-                                    Setores:
-                                    <span style="margin: 1px;" v-for="department in this.modalData.departments"
-                                        class="badge text-bg-success">{{ department.name }}</span>
                                 </tr>
                             </tbody>
                         </table>
@@ -162,12 +134,12 @@ import dayjs from 'dayjs';
 
 export default {
     props: {
-        urlCreateCompanies: String,
-        urlEditCompanies: String,
+        urlCreateDepartment: String,
+        urlEditDepartment: String,
     },
     data() {
         return {
-            companies: {
+            departments: {
                 data: [],
                 links: []
             },
@@ -177,39 +149,32 @@ export default {
             loading: null,
             modalData: {
                 id: '',
-                cnpj: '',
-                address: '',
-                email: '',
                 name: '',
-                phone: '',
-                responsible_manager: '',
                 created_at: '',
-                updated_at: '',
-                departments: [],
             },
-            companyToDelete: null,
+            departmentToDelete: null,
         };
     },
     computed: {
 
     },
     mounted() {
-        this.getCompanies();
+        this.getDepartments();
     },
     methods: {
         pesquisar() {
-            this.getCompanies('admin/general-configs/companies/list', this.searchFilter);
+            this.getDepartments('admin/general-configs/department/list', this.searchFilter);
         },
         pagination(url) {
             if (url) {
-                this.getCompanies(url);
+                this.getDepartments(url);
             }
         },
-        getCompanies(url = 'admin/general-configs/companies/list') {
+        getDepartments(url = 'admin/general-configs/department/list') {
             this.loading = true;
             axios.get(url)
                 .then(response => {
-                    this.companies = response.data.companies;
+                    this.departments = response.data.departments;
                 })
                 .catch(errors => {
 
@@ -220,42 +185,28 @@ export default {
         formatDate(date) {
             return dayjs(date).format('DD/MM/YYYY HH:mm:ss');
         },
-        detailsToModal(company) {
-
-            this.modalData.id = company.id;
-            this.modalData.cnpj = company.cnpj;
-            this.modalData.address = company.address;
-            this.modalData.email = company.email;
-            this.modalData.name = company.name;
-            this.modalData.phone = company.phone;
-            this.modalData.responsible_manager = company.responsible_manager;
-            this.modalData.created_at = company.created_at;
-            this.modalData.updated_at = company.updated_at;
-            this.modalData.departments = company.departments;
+        detailsToModal(department) {
+            this.modalData.id = department.id;
+            this.modalData.name = department.name;
+            this.modalData.created_at = department.created_at;
         },
         closeModal() {
             this.modalData.id = '';
-            this.modalData.cnpj = '';
-            this.modalData.address = '';
-            this.modalData.email = '';
             this.modalData.name = '';
-            this.modalData.phone = '';
-            this.modalData.responsible_manager = '';
             this.modalData.created_at = '';
-            this.modalData.updated_at = '';
         },
-        confirmarExclusao(companyId) {
-            this.companyToDelete = companyId;
+        confirmarExclusao(departmentId) {
+            this.departmentToDelete = departmentId;
         },
         excluirRegistro() {
-            if (this.companyToDelete !== null) {
-                axios.delete(`admin/general-configs/companies/delete/${this.companyToDelete}`)
+            if (this.departmentToDelete !== null) {
+                axios.delete(`admin/general-configs/department/delete/${this.departmentToDelete}`)
                     .then(() => {
-                        this.getCompanies();
-                        this.fecharModal('modalDeleteCompany');
+                        this.getDepartments();
+                        this.fecharModal('modalDeleteDepartment');
                     })
                     .catch(() => {
-                        this.fecharModal('modalDeleteCompany');
+                        this.fecharModal('modalDeleteDepartment');
                     });
             }
         },

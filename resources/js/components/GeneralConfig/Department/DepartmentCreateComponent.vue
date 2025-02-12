@@ -1,17 +1,12 @@
 <template>
     <div class="container-fluid px-4 mt-2">
-        <div v-if="loading" class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-        <div v-else class="card">
+        <div class="card">
             <div class="card-header">
-                <h4>Editar Empresa</h4>
+                <h4>Cadastrar Departamento</h4>
             </div>
             <div class="card-body">
                 <div class="d-flex justify-content-center">
-                    <form method="POST" action="" @submit.prevent="updateCompany()" class="col-lg-8" autocomplete="off">
+                    <form method="POST" action="" @submit.prevent="save()" class="col-lg-8" autocomplete="off">
                         <div v-if="alertStatus === true" class="alert alert-success alert-dismissible fade show"
                             role="alert">
                             <i class="fa-regular fa-circle-check"></i> Registro cadastrado com sucesso
@@ -67,16 +62,6 @@
                                         v-model="company.responsible_manager">
                                 </div>
                             </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Setores</label>
-                                    <multiselect label="name" track-by="id" v-model="departmentsSelected"
-                                        :options="departments" :multiple="true">
-                                    </multiselect>
-                                </div>
-                            </div>
-
                         </div>
                         <div class="row mt-5">
                             <div class="col-sm-6">
@@ -86,7 +71,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-end">
-                                    <button class="btn btn-primary btn-sm" type="submit">Atualizar</button>
+                                    <button class="btn btn-primary btn-sm" type="submit">Cadastrar</button>
                                 </div>
                             </div>
                         </div>
@@ -98,78 +83,46 @@
 </template>
 <script>
 import axios from 'axios';
-import Multiselect from 'vue-multiselect';
 
 export default {
-    components: { Multiselect },
     props: {
-        id: Number,
         urlIndexCompanies: String,
     },
     data() {
         return {
-            loading: false,
-            company: [],
+            company: {
+                name: '',
+                cnpj: '',
+                address: '',
+                email: '',
+                phone: '',
+                responsible_manager: '',
+            },
             validEmail: null,
             messages: [],
             alertStatus: [],
-            departmentsSelected: [],
-            departments: [],
-        }
+        };
     },
     mounted() {
-        this.findCompany();
-        this.listDepartments();
     },
     methods: {
-        findCompany() {
-            this.loading = true;
-            axios.get('/admin/general-configs/companies/find/' + this.id)
-                .then(response => {
-                    this.company = response.data.company;
-                    this.departmentsSelected = this.company.departments.map(department => {
-                        return {
-                            id: department.id,
-                            name: department.name
-                        };
-                    });
-                })
-                .catch(errors => {
-
-                }).finally(() => {
-                    this.loading = false
-                });
+        validateEmail() {
+            const emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            this.validEmail = emailPattern.test(this.company.email);
         },
-        listDepartments() {
-            this.loading = true;
-            axios.get('/admin/general-configs/companies/list-departments/')
+        save() {
+            axios.post('admin/general-configs/companies/store', this.company)
                 .then(response => {
-                    this.departments = response.data.departments;
+                    this.alertStatus = true;
+                    this.messages = response.data;
+                    window.scrollTo(0, 0);
                 })
                 .catch(errors => {
-
-                }).finally(() => {
-                    this.loading = false
+                    this.alertStatus = false;
+                    this.messages = errors.response;
                 });
+
         },
-        updateCompany() {
-            this.loading = true;
-
-            axios.put('/admin/general-configs/companies/update/' + this.id, { data: this.company, departments: this.departmentsSelected })
-                .then(response => {
-                    if (response.data.status) {
-                        this.alertStatus = true;
-                    } else {
-                        console.error('Erro ao atualizar empresa:', response.data.message);
-                    }
-                })
-                .catch(errors => {
-                    console.log(errors);
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-        }
     }
 }
 </script>

@@ -14,4 +14,16 @@ class Company extends Model
         'phone',
         'responsible_manager',
     ];
+
+    public function departments()
+    {
+        return $this->hasManyThrough(
+            Department::class,
+            CompanyDepartment::class,
+            'company_id',
+            'id',
+            'id',
+            'department_id'
+        );
+    }
 }

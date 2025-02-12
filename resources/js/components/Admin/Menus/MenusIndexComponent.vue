@@ -180,7 +180,7 @@ export default {
                     this.getMenus();
                 })
                 .catch(errors => {
-                    console.log(errors.response.data);
+                    
                 });
         }
     }

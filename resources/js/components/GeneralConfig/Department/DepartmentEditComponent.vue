@@ -7,7 +7,7 @@
         </div>
         <div v-else class="card">
             <div class="card-header">
-                <h4>Editar Empresa</h4>
+                <h4>Cadastrar Departamento</h4>
             </div>
             <div class="card-body">
                 <div class="d-flex justify-content-center">
@@ -67,16 +67,6 @@
                                         v-model="company.responsible_manager">
                                 </div>
                             </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Setores</label>
-                                    <multiselect label="name" track-by="id" v-model="departmentsSelected"
-                                        :options="departments" :multiple="true">
-                                    </multiselect>
-                                </div>
-                            </div>
-
                         </div>
                         <div class="row mt-5">
                             <div class="col-sm-6">
@@ -98,10 +88,8 @@
 </template>
 <script>
 import axios from 'axios';
-import Multiselect from 'vue-multiselect';
 
 export default {
-    components: { Multiselect },
     props: {
         id: Number,
         urlIndexCompanies: String,
@@ -113,13 +101,10 @@ export default {
             validEmail: null,
             messages: [],
             alertStatus: [],
-            departmentsSelected: [],
-            departments: [],
         }
     },
     mounted() {
         this.findCompany();
-        this.listDepartments();
     },
     methods: {
         findCompany() {
@@ -127,24 +112,6 @@ export default {
             axios.get('/admin/general-configs/companies/find/' + this.id)
                 .then(response => {
                     this.company = response.data.company;
-                    this.departmentsSelected = this.company.departments.map(department => {
-                        return {
-                            id: department.id,
-                            name: department.name
-                        };
-                    });
-                })
-                .catch(errors => {
-
-                }).finally(() => {
-                    this.loading = false
-                });
-        },
-        listDepartments() {
-            this.loading = true;
-            axios.get('/admin/general-configs/companies/list-departments/')
-                .then(response => {
-                    this.departments = response.data.departments;
                 })
                 .catch(errors => {
 
@@ -154,20 +121,14 @@ export default {
         },
         updateCompany() {
             this.loading = true;
-
-            axios.put('/admin/general-configs/companies/update/' + this.id, { data: this.company, departments: this.departmentsSelected })
+            axios.put('/admin/general-configs/companies/update/' + this.id, { data: this.company })
                 .then(response => {
-                    if (response.data.status) {
-                        this.alertStatus = true;
-                    } else {
-                        console.error('Erro ao atualizar empresa:', response.data.message);
-                    }
+                    this.alertStatus = true;
                 })
                 .catch(errors => {
                     console.log(errors);
-                })
-                .finally(() => {
-                    this.loading = false;
+                }).finally(() => {
+                    this.loading = false
                 });
         }
     }
