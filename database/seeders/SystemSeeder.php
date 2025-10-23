@@ -23,14 +23,14 @@ class SystemSeeder extends Seeder
 
         $systems = [
             [
-                'name' => 'Emissão de notas fiscais',
-                'description' => 'Sistema de emissão de NF-e, NFC-e e NFS-e com controle financeiro integrado.',
+                'name' => 'HealthTech',
+                'description' => 'Sistema Hospitalar.',
                 'category_id' => $financeiroId,
                 'company_id' => $companyId,
             ],
             [
-                'name' => 'Manutenção Predial',
-                'description' => 'Sistema de gestão de ordens de serviço e manutenção para condomínios e prédios comerciais.',
+                'name' => 'Fintech',
+                'description' => 'Sistema de gestão financeiro.',
                 'category_id' => $condominioId,
                 'company_id' => $companyId,
             ],

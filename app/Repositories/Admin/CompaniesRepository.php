@@ -20,8 +20,8 @@ class CompaniesRepository implements CompaniesRepositoryInterface
     {
         try {
             return $this->companies
+                ->with('systems.category')
                 ->when($term, function ($query) use ($term) {
-                    // ajuste seus campos de busca aqui
                     return $query->where('name', 'like', '%' . $term . '%');
                 })
                 ->paginate(10);
@@ -34,7 +34,7 @@ class CompaniesRepository implements CompaniesRepositoryInterface
     public function find($id)
     {
         try {
-            return $this->companies->find($id);
+            return $this->companies->with('systems.category')->find($id);
         } catch (Exception $err) {
             Log::error('Erro ao localizar registro Companies', [$err->getMessage()]);
             return false;

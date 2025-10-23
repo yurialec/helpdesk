@@ -11,12 +11,12 @@
                         <form @submit.prevent="save" autocomplete="off">
                             <div class="mb-3">
                                 <label class="form-label">Nome</label>
-                                <input type="text" class="form-control" v-model="companie.name" required>
+                                <input type="text" class="form-control" v-model="company.name" required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">CNPJ</label>
-                                <input type="text" class="form-control" v-model="companie.cnpj" required
+                                <input type="text" class="form-control" v-model="company.cnpj" required
                                     @input="validateCnpj" v-mask="'##.###.###/####-##'">
                                 <div v-if="validCnpj === false" class="alert alert-danger mt-2 mb-0 p-2 py-1"
                                     role="alert">
@@ -26,7 +26,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">E-mail</label>
-                                <input type="email" class="form-control" v-model="companie.email" required
+                                <input type="email" class="form-control" v-model="company.email" required
                                     @input="validateEmail">
                                 <div v-if="validEmail === false" class="alert alert-danger mt-2 mb-0 p-2 py-1"
                                     role="alert">
@@ -36,7 +36,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Telefone</label>
-                                <input type="text" class="form-control" v-model="companie.phone" @input="onPhoneInput"
+                                <input type="text" class="form-control" v-model="company.phone" @input="onPhoneInput"
                                     v-mask="['(##) #####-####', '(##) ####-####']" required />
                                 <div v-if="validPhone === false" class="alert alert-danger mt-2 mb-0 p-2 py-1">
                                     Telefone inválido
@@ -44,7 +44,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Endereço</label>
-                                <input type="text" class="form-control" v-model="companie.address" required>
+                                <input type="text" class="form-control" v-model="company.address" required>
                             </div>
 
                             <div class="d-flex justify-content-between mt-4">
@@ -72,7 +72,7 @@ export default {
             validEmail: null,
             validCnpj: null,
             validPhone: null,
-            companie: {
+            company: {
                 name: '',
                 cnpj: '',
                 email: '',
@@ -84,11 +84,11 @@ export default {
     methods: {
         validateEmail() {
             const pattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
-            this.validEmail = pattern.test(this.companie.email);
+            this.validEmail = pattern.test(this.company.email);
         },
         validateCnpj() {
 
-            let cnpj = this.companie.cnpj.replace(/[^\d]+/g, '');
+            let cnpj = this.company.cnpj.replace(/[^\d]+/g, '');
 
             let tamanho = cnpj.length - 2;
             let numeros = cnpj.substring(0, tamanho);
@@ -173,14 +173,14 @@ export default {
             }
 
             const data = {
-                name: this.companie.name,
-                cnpj: this.companie.cnpj.replace(/[^0-9]/g, ''),
-                email: this.companie.email,
-                phone: this.companie.phone.replace(/[^0-9]/g, ''),
-                address: this.companie.address,
+                name: this.company.name,
+                cnpj: this.company.cnpj.replace(/[^0-9]/g, ''),
+                email: this.company.email,
+                phone: this.company.phone.replace(/[^0-9]/g, ''),
+                address: this.company.address,
             };
 
-            axios.post('/admin/companies/store', data)
+            axios.post('/admin/companys/store', data)
                 .then(res => {
                     this.alertSuccess('Operação realizada com sucesso!');
                     window.scrollTo(0, 0);
@@ -195,11 +195,11 @@ export default {
                 });
         },
         clearForm() {
-            this.companie.name = '';
-            this.companie.cnpj = '';
-            this.companie.email = '';
-            this.companie.phone = '';
-            this.companie.address = '';
+            this.company.name = '';
+            this.company.cnpj = '';
+            this.company.email = '';
+            this.company.phone = '';
+            this.company.address = '';
 
             this.validEmail = null;
             this.validCnpj = null;

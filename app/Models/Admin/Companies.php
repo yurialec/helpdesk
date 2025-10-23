@@ -15,4 +15,9 @@ class Companies extends Model
         'address',
         'active',
     ];
+
+    public function systems()
+    {
+        return $this->hasMany(Systems::class, 'company_id');
+    }
 }
