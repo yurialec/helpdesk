@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,24 +14,23 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('roles')->insert([
-            'id' => 1,
-            'name' => 'Desenvolvedor',
-        ]);
+        $roles = [
+            ['name' => 'Desenvolvedor'],
+            ['name' => 'Administrador'],
+            ['name' => 'Gestor'],
+            ['name' => 'Backoffice'],
+            ['name' => 'Técnico Nível 2'],
+            ['name' => 'Técnico Nível 1'],
+        ];
 
-        DB::table('roles')->insert([
-            'id' => 2,
-            'name' => 'Admin',
-        ]);
-
-        DB::table('roles')->insert([
-            'id' => 3,
-            'name' => 'Auxiliar',
-        ]);
-
-        DB::table('roles')->insert([
-            'id' => 4,
-            'name' => 'Cliente',
-        ]);
+        foreach ($roles as $role) {
+            DB::table('roles')->updateOrInsert(
+                ['name' => $role['name']],
+                [
+                    'updated_at' => Carbon::now(),
+                    'created_at' => Carbon::now(),
+                ]
+            );
+        }
     }
 }
