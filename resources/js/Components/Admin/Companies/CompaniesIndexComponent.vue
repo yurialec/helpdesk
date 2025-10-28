@@ -38,18 +38,23 @@
                     </thead>
                     <tbody>
                         <!-- Placeholder de linha (sem dados ainda) -->
-                        <tr v-for="companie in companies.data">
-                            <td>{{ companie.id }}</td>
-                            <td>{{ companie.name }}</td>
-                            <td>{{ companie.email }}</td>
-                            <td>{{ companie.cnpj }}</td>
-                            <td>{{ companie.phone }}</td>
-                            <td>{{ companie.active }}</td>
+                        <tr v-for="company in companies.data">
+                            <td>{{ company.id }}</td>
+                            <td>{{ company.name }}</td>
+                            <td>{{ company.email }}</td>
+                            <td>{{ company.cnpj }}</td>
+                            <td>{{ company.phone }}</td>
                             <td>
-                                <a :href="urlEdit.replace('_id', companie.id)" class="btn btn-sm btn-outline-primary">
+                                <span>
+                                    <span v-if="!company.active" class="badge text-bg-danger">Desativado</span>
+                                    <span v-else class="badge text-bg-success">Ativado</span>
+                                </span>
+                            </td>
+                            <td>
+                                <a :href="urlEdit.replace('_id', company.id)" class="btn btn-sm btn-outline-primary">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <button class="btn btn-sm btn-outline-danger ms-1">
+                                <button class="btn btn-sm btn-outline-danger ms-1" @click="deleteRegister(company.id)">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </td>
@@ -112,21 +117,21 @@ export default {
                     this.loading = false;
                 });
         },
-        // deleteRegister(id) {
-        //     this.confirmYesNo('Excluir usuário?').then(() => {
-        //         this.loading = true;
-        //         axios.delete('/admin/users/delete/' + id)
-        //             .then(response => {
-        //                 this.getCompanies();
-        //                 this.alertSuccess('Excluido com sucesso!');
-        //             })
-        //             .catch(errors => {
-        //                 this.alertDanger(errors);
-        //             }).finally(() => {
-        //                 this.loading = false;
-        //             });
-        //     });
-        // },
+        deleteRegister(id) {
+            this.confirmYesNo('Excluir Empresa?').then(() => {
+                this.loading = true;
+                axios.delete('/admin/companies/delete/' + id)
+                    .then(response => {
+                        this.getCompanies();
+                        this.alertSuccess('Excluido com sucesso!');
+                    })
+                    .catch(errors => {
+                        this.alertDanger(errors);
+                    }).finally(() => {
+                        this.loading = false;
+                    });
+            });
+        },
     }
 }
 </script>

@@ -216,5 +216,6 @@ Route::middleware(['auth','acl:keep-companies'])->prefix('admin/companies')->gro
     Route::get('/find/{id}',        [App\Http\Controllers\Admin\CompaniesController::class, 'find'])->name('companies.find');
     Route::post('/update/{id}',     [App\Http\Controllers\Admin\CompaniesController::class, 'update'])->name('companies.update');
     Route::delete('/delete/{id}',   [App\Http\Controllers\Admin\CompaniesController::class, 'delete'])->name('companies.delete');
+    Route::get('/list-system-categories',   [App\Http\Controllers\Admin\CompaniesController::class, 'listSystemCategories'])->name('companies.listSystemCategories');
 });
 // === [/AUTO] Admin / Companies ===

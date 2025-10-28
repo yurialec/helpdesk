@@ -34,17 +34,23 @@ class CompaniesService
             "address" => $data['address'],
         ];
 
-        return $this->companiesRepository->create($companieData);
+        $systemsData = $data['systems'];
+
+        return $this->companiesRepository->create($companieData, $systemsData);
     }
 
     public function update($id, $data)
     {
-        // solicitado: repassar $data sem tratamento
         return $this->companiesRepository->update($id, $data);
     }
 
     public function delete($id)
     {
         return $this->companiesRepository->delete($id);
+    }
+
+    public function listSystemCategories()
+    {
+        return $this->companiesRepository->listSystemCategories();
     }
 }

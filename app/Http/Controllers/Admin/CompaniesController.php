@@ -76,8 +76,32 @@ class CompaniesController extends Controller
         $deleted = $this->companiesService->delete($id);
 
         if ($deleted) {
-            return response()->json(['status' => true, 'message' => 'Registro excluído com sucesso'], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'Registro excluído com sucesso'
+            ], 200);
         }
-        return response()->json(['status' => false, 'message' => 'Erro ao excluir registro'], 500);
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Erro ao excluir registro'
+        ], 500);
+    }
+
+    public function listSystemCategories()
+    {
+        $items = $this->companiesService->listSystemCategories();
+
+        if ($items) {
+            return response()->json([
+                'status' => true,
+                'items' => $items
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Nenhum registro encontrado.',
+            'status' => 500
+        ]);
     }
 }

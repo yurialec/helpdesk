@@ -28,6 +28,11 @@ class StoreCompanieRequest extends FormRequest
             'phone' => ['required', 'string', 'max:20'],
             'address' => ['required', 'string', 'max:255'],
             'active' => ['boolean'],
+
+            'systems' => ['array'],
+            'systems.*.name' => ['required', 'string', 'max:255'],
+            'systems.*.description' => ['nullable', 'string', 'max:500'],
+            'systems.*.category_id' => ['required', 'integer', 'exists:system_categories,id'],
         ];
     }
 
@@ -55,8 +60,14 @@ class StoreCompanieRequest extends FormRequest
             'address.required' => 'O endereço é obrigatório.',
             'address.max' => 'O endereço não pode ter mais que 255 caracteres.',
 
-            'active.required' => 'O status ativo/inativo é obrigatório.',
             'active.boolean' => 'O campo ativo deve ser verdadeiro ou falso.',
+
+            'systems.array' => 'Os sistemas devem ser enviados em formato de lista.',
+            'systems.*.name.required' => 'O nome do sistema é obrigatório.',
+            'systems.*.name.max' => 'O nome do sistema não pode ter mais que 255 caracteres.',
+            'systems.*.description.max' => 'A descrição do sistema não pode ter mais que 500 caracteres.',
+            'systems.*.category_id.required' => 'A categoria do sistema é obrigatória.',
+            'systems.*.category_id.exists' => 'A categoria informada não é válida.',
         ];
     }
 }
