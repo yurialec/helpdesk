@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\Companie;
+namespace App\Http\Requests\Admin\Company;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreCompanieRequest extends FormRequest
+class UpdateCompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,15 +22,28 @@ class StoreCompanieRequest extends FormRequest
      */
     public function rules(): array
     {
+        $companyId = $this->route('id') ?? $this->route('company'); // ajusta conforme nome da rota
+
         return [
             'name' => ['required', 'string', 'max:255'],
-            'cnpj' => ['required', 'string', 'max:18', 'unique:companies,cnpj'],
-            'email' => ['required', 'email', 'max:255', 'unique:companies,email'],
+            'cnpj' => [
+                'required',
+                'string',
+                'max:18',
+                Rule::unique('companies', 'cnpj')->ignore($companyId),
+            ],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('companies', 'email')->ignore($companyId),
+            ],
             'phone' => ['required', 'string', 'max:20'],
             'address' => ['required', 'string', 'max:255'],
             'active' => ['boolean'],
 
             'systems' => ['array'],
+            'systems.*.id' => ['nullable', 'integer', 'exists:systems,id'],
             'systems.*.name' => ['required', 'string', 'max:255'],
             'systems.*.description' => ['nullable', 'string', 'max:500'],
             'systems.*.category_id' => ['required', 'integer', 'exists:system_categories,id'],
@@ -63,6 +77,7 @@ class StoreCompanieRequest extends FormRequest
             'active.boolean' => 'O campo ativo deve ser verdadeiro ou falso.',
 
             'systems.array' => 'Os sistemas devem ser enviados em formato de lista.',
+            'systems.*.id.exists' => 'O sistema informado não é válido.',
             'systems.*.name.required' => 'O nome do sistema é obrigatório.',
             'systems.*.name.max' => 'O nome do sistema não pode ter mais que 255 caracteres.',
             'systems.*.description.max' => 'A descrição do sistema não pode ter mais que 500 caracteres.',

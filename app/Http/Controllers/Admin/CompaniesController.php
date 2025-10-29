@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Companie\StoreCompanieRequest;
+use App\Http\Requests\Admin\Company\StoreCompanyRequest;
+use App\Http\Requests\Admin\Company\UpdateCompanyRequest;
 use App\Services\Admin\CompaniesService;
 use Illuminate\Http\Request;
 
@@ -36,7 +37,7 @@ class CompaniesController extends Controller
         return view('admin.companies.create');
     }
 
-    public function store(StoreCompanieRequest $request)
+    public function store(StoreCompanyRequest $request)
     {
         $item = $this->companiesService->create($request->all());
 
@@ -61,14 +62,21 @@ class CompaniesController extends Controller
         return response()->json(['status' => false, 'message' => 'Registro não encontrado'], 500);
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateCompanyRequest $request, string $id)
     {
         $item = $this->companiesService->update($id, $request->all());
 
         if ($item) {
-            return response()->json(['status' => true, 'item' => $item], 200);
+            return response()->json([
+                'status' => true,
+                'item' => $item
+            ], 200);
         }
-        return response()->json(['status' => false, 'message' => 'Erro ao atualizar registro'], 500);
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Erro ao atualizar registro'
+        ], 500);
     }
 
     public function delete(string $id)
@@ -79,6 +87,23 @@ class CompaniesController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Registro excluído com sucesso'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Erro ao excluir registro'
+        ], 500);
+    }
+
+    public function disable(string $id)
+    {
+        $item = $this->companiesService->disable($id);
+
+        if ($item) {
+            return response()->json([
+                'status' => true,
+                'item' => $item
             ], 200);
         }
 

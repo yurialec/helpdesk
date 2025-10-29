@@ -3,7 +3,7 @@
         <div class="card-header py-2">
             <div class="row align-items-center g-2">
                 <div class="col-md-3 col-12">
-                    <h5 class="mb-0">Companies</h5>
+                    <h5 class="mb-0">Empresas</h5>
                 </div>
                 <div class="col-md-6 col-12">
                     <div class="input-group">
@@ -56,6 +56,11 @@
                                 </a>
                                 <button class="btn btn-sm btn-outline-danger ms-1" @click="deleteRegister(company.id)">
                                     <i class="bi bi-trash"></i>
+                                </button>
+                                <button
+                                    :class="['btn btn-sm ms-1', company.active ? 'btn-outline-danger' : 'btn-outline-success']"
+                                    @click="disable(company)">
+                                    <i :class="company.active ? 'bi bi-x-circle' : 'bi bi-check-circle'"></i>
                                 </button>
                             </td>
                         </tr>
@@ -132,6 +137,22 @@ export default {
                     });
             });
         },
+        disable(company) {
+            let word = company.active ? 'desativar' : 'ativar';
+            this.confirmYesNo(`Deseja realmente ${word} a empresa?`).then(() => {
+                axios.post(`/admin/companies/disable/${company.id}`)
+                    .then(response => {
+                        const updated = response.data.item;
+                        const index = this.companies.data.findIndex(c => c.ID === updated.id);
+                        this.companies.data.splice(index, 1, updated);
+                    })
+                    .catch(errors => {
+                        this.alertDanger(errors);
+                    }).finally(() => {
+
+                    });
+            });
+        }
     }
 }
 </script>

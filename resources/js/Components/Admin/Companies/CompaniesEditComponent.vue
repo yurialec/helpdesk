@@ -86,10 +86,8 @@
                                         </option>
                                     </select>
                                 </div>
-
                                 <textarea class="form-control mt-2" rows="2" v-model="system.description"
                                     placeholder="Descrição (opcional)"></textarea>
-
                                 <button type="submit" class="btn btn-primary btn-sm mt-2">
                                     <i class="bi bi-plus-lg"></i> Adicionar
                                 </button>
@@ -103,13 +101,17 @@
                                     <li v-for="(s, i) in company.systems" :key="i"
                                         class="list-group-item d-flex justify-content-between align-items-center">
                                         <div>
-                                            <strong>{{ s.name }}</strong>
-                                            <small class="d-block text-muted">
-                                                {{ getCategoryName(s.category_id) }}
-                                            </small>
-                                            <small v-if="s.description" class="text-muted">
-                                                {{ s.description }}
-                                            </small>
+                                            <input type="text" class="form-control form-control-sm mb-1"
+                                                v-model="s.name">
+                                            <select class="form-select form-select-sm mb-1 " v-model="s.category_id"
+                                                required>
+                                                <option value="" disabled>Categoria</option>
+                                                <option v-for="cat in system_categories" :key="cat.id" :value="cat.id">
+                                                    {{ cat.name }}
+                                                </option>
+                                            </select>
+                                            <textarea class="form-control form-control-sm" rows="2"
+                                                v-model="s.description"></textarea>
                                         </div>
                                         <button class="btn btn-outline-danger btn-sm" @click="removeSystem(i)">
                                             <i class="bi bi-trash"></i> Remover

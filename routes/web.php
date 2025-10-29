@@ -192,30 +192,31 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 // === [AUTO] Admin / Feedback ===
-Route::middleware(['auth','acl:keep-feedback'])->prefix('admin/feedback')->group(function () {
-    Route::get('/',                 [App\Http\Controllers\Admin\FeedbackController::class, 'index'])->name('feedback.index');
-    Route::post('/list',             [App\Http\Controllers\Admin\FeedbackController::class, 'list'])->name('feedback.list');
-    Route::get('/create',           [App\Http\Controllers\Admin\FeedbackController::class, 'create'])->name('feedback.create');
-    Route::post('/store',           [App\Http\Controllers\Admin\FeedbackController::class, 'store'])->name('feedback.store');
+Route::middleware(['auth', 'acl:keep-feedback'])->prefix('admin/feedback')->group(function () {
+    Route::get('/', [App\Http\Controllers\Admin\FeedbackController::class, 'index'])->name('feedback.index');
+    Route::post('/list', [App\Http\Controllers\Admin\FeedbackController::class, 'list'])->name('feedback.list');
+    Route::get('/create', [App\Http\Controllers\Admin\FeedbackController::class, 'create'])->name('feedback.create');
+    Route::post('/store', [App\Http\Controllers\Admin\FeedbackController::class, 'store'])->name('feedback.store');
     Route::put('/update-status-feedback/{feedback}', [App\Http\Controllers\Admin\FeedbackController::class, 'updateStatusFeedback'])->name('feedback.update.status');
     Route::get('/evidence/{id}/download', [App\Http\Controllers\Admin\FeedbackController::class, 'downloadEvidence'])->name('feedback.update.downloadEvidence');
-    Route::get('/edit/{id}',        [App\Http\Controllers\Admin\FeedbackController::class, 'edit'])->name('feedback.edit');
-    Route::get('/find/{id}',        [App\Http\Controllers\Admin\FeedbackController::class, 'find'])->name('feedback.find');
-    Route::post('/update/{id}',     [App\Http\Controllers\Admin\FeedbackController::class, 'update'])->name('feedback.update');
-    Route::delete('/delete/{id}',   [App\Http\Controllers\Admin\FeedbackController::class, 'delete'])->name('feedback.delete');
+    Route::get('/edit/{id}', [App\Http\Controllers\Admin\FeedbackController::class, 'edit'])->name('feedback.edit');
+    Route::get('/find/{id}', [App\Http\Controllers\Admin\FeedbackController::class, 'find'])->name('feedback.find');
+    Route::post('/update/{id}', [App\Http\Controllers\Admin\FeedbackController::class, 'update'])->name('feedback.update');
+    Route::delete('/delete/{id}', [App\Http\Controllers\Admin\FeedbackController::class, 'delete'])->name('feedback.delete');
 });
 // === [/AUTO] Admin / Feedback ===
 
 // === [AUTO] Admin / Companies ===
-Route::middleware(['auth','acl:keep-companies'])->prefix('admin/companies')->group(function () {
-    Route::get('/',                 [App\Http\Controllers\Admin\CompaniesController::class, 'index'])->name('companies.index');
-    Route::get('/list',             [App\Http\Controllers\Admin\CompaniesController::class, 'list'])->name('companies.list');
-    Route::get('/create',           [App\Http\Controllers\Admin\CompaniesController::class, 'create'])->name('companies.create');
-    Route::post('/store',           [App\Http\Controllers\Admin\CompaniesController::class, 'store'])->name('companies.store');
-    Route::get('/edit/{id}',        [App\Http\Controllers\Admin\CompaniesController::class, 'edit'])->name('companies.edit');
-    Route::get('/find/{id}',        [App\Http\Controllers\Admin\CompaniesController::class, 'find'])->name('companies.find');
-    Route::post('/update/{id}',     [App\Http\Controllers\Admin\CompaniesController::class, 'update'])->name('companies.update');
-    Route::delete('/delete/{id}',   [App\Http\Controllers\Admin\CompaniesController::class, 'delete'])->name('companies.delete');
-    Route::get('/list-system-categories',   [App\Http\Controllers\Admin\CompaniesController::class, 'listSystemCategories'])->name('companies.listSystemCategories');
+Route::middleware(['auth', 'acl:keep-companies'])->prefix('admin/companies')->group(function () {
+    Route::get('/', [App\Http\Controllers\Admin\CompaniesController::class, 'index'])->name('companies.index');
+    Route::get('/list', [App\Http\Controllers\Admin\CompaniesController::class, 'list'])->name('companies.list');
+    Route::get('/create', [App\Http\Controllers\Admin\CompaniesController::class, 'create'])->name('companies.create');
+    Route::post('/store', [App\Http\Controllers\Admin\CompaniesController::class, 'store'])->name('companies.store');
+    Route::get('/edit/{id}', [App\Http\Controllers\Admin\CompaniesController::class, 'edit'])->name('companies.edit');
+    Route::get('/find/{id}', [App\Http\Controllers\Admin\CompaniesController::class, 'find'])->name('companies.find');
+    Route::put('/update/{id}', [App\Http\Controllers\Admin\CompaniesController::class, 'update'])->name('companies.update');
+    Route::delete('/delete/{id}', [App\Http\Controllers\Admin\CompaniesController::class, 'delete'])->name('companies.delete');
+    Route::post('/disable/{id}', [App\Http\Controllers\Admin\CompaniesController::class, 'disable'])->name('companies.disable');
+    Route::get('/list-system-categories', [App\Http\Controllers\Admin\CompaniesController::class, 'listSystemCategories'])->name('companies.listSystemCategories');
 });
 // === [/AUTO] Admin / Companies ===

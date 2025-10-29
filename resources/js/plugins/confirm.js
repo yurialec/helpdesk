@@ -72,27 +72,28 @@ export default {
 
                 const wrapper = document.createElement('div');
                 wrapper.innerHTML = `
-          <div class="modal fade qf-confirm-modal" id="${id}" tabindex="-1" aria-labelledby="${labelId}" aria-hidden="true">
-            <div class="modal-dialog modal-sm modal-dialog-centered">
-              <div class="modal-content">
-                <div class="qf-confirm-body">
-                  <div class="qf-icon-warning" aria-hidden="true"></div>
-                  <p class="qf-message" id="${labelId}">${mensagem}</p>
-                  <div class="qf-actions">
-                    <button type="button" class="qf-btn qf-btn-secondary" data-bs-dismiss="modal" id="cancelarBtn">Cancelar</button>
-                    <button type="button" class="qf-btn qf-btn-primary" id="confirmarBtn">Sim</button>
+                <div class="modal fade qf-confirm-modal" id="${id}" tabindex="-1" aria-labelledby="${labelId}" aria-hidden="true">
+                  <div class="modal-dialog modal-sm modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="qf-confirm-body">
+                        <div class="qf-icon-warning" aria-hidden="true"></div>
+                        <p class="qf-message" id="${labelId}">${mensagem}</p>
+                        <div class="qf-actions">
+                          <button type="button" class="qf-btn qf-btn-secondary" data-bs-dismiss="modal" id="cancelarBtn">Cancelar</button>
+                          <button type="button" class="qf-btn qf-btn-primary" id="confirmarBtn">Sim</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>`;
+                </div>`;
+                
                 const modalRoot = wrapper.firstElementChild;
                 document.body.appendChild(modalRoot);
 
                 const bsModal = new Modal(modalRoot);
                 bsModal.show();
 
-                let settled = false; // evita dupla resolução
+                let settled = false;
 
                 const confirmarBtn = modalRoot.querySelector('#confirmarBtn');
                 const cancelarBtn = modalRoot.querySelector('#cancelarBtn');
@@ -100,7 +101,7 @@ export default {
                 confirmarBtn.addEventListener('click', () => {
                     if (settled) return;
                     settled = true;
-                    // resolve somente no "Sim"
+                    document.activeElement?.blur();
                     resolve(true);
                     bsModal.hide();
                 });
@@ -108,12 +109,10 @@ export default {
                 cancelarBtn.addEventListener('click', () => {
                     if (settled) return;
                     settled = true;
-                    // rejeita no "Cancelar"
+                    document.activeElement?.blur();
                     reject(new Error('cancelled'));
-                    // o data-bs-dismiss já vai fechar
                 });
 
-                // Fechamentos por ESC, clique no backdrop, X, etc => tratar como cancelado
                 modalRoot.addEventListener('hidden.bs.modal', () => {
                     modalRoot.remove();
                     if (!settled) {

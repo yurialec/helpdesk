@@ -70,13 +70,51 @@ class CompaniesRepository implements CompaniesRepositoryInterface
         }
     }
 
-    public function update($id, array $data)
+    public function update($id, array $data, array $systemsData)
     {
+        DB::beginTransaction();
         try {
-            $item = $this->companies->find($id);
-            $item->update($data);
-            return $item;
+            $company = $this->companies->findOrFail($id);
+            $company->update($data);
+
+            $existingSystems = $this->systems->where('company_id', $company->id)->get();
+
+            $incomingIds = collect($systemsData)
+                ->pluck('id')
+                ->filter()
+                ->toArray();
+
+            $systemsToDelete = $existingSystems->whereNotIn('id', $incomingIds);
+            foreach ($systemsToDelete as $system) {
+                $system->delete();
+            }
+
+            foreach ($systemsData as $systemData) {
+                if (isset($systemData['id'])) {
+                    $system = $this->systems->find($systemData['id']);
+                    if ($system) {
+                        $system->update([
+                            'name' => $systemData['name'],
+                            'description' => $systemData['description'] ?? null,
+                            'category_id' => $systemData['category_id'],
+                        ]);
+                    }
+                } else {
+                    $this->systems->create([
+                        'company_id' => $company->id,
+                        'name' => $systemData['name'],
+                        'description' => $systemData['description'] ?? null,
+                        'category_id' => $systemData['category_id'],
+                        'active' => true,
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return $company;
+
         } catch (Exception $err) {
+            DB::rollBack();
             Log::error('Erro ao atualizar Companies', [$err->getMessage()]);
             return false;
         }
@@ -88,6 +126,18 @@ class CompaniesRepository implements CompaniesRepositoryInterface
             $item = $this->companies->find($id);
             $item->delete();
             return true;
+        } catch (Exception $err) {
+            Log::error('Erro ao excluir Companies', [$err->getMessage()]);
+            return false;
+        }
+    }
+
+    public function disable($id)
+    {
+        try {
+            $item = $this->companies->find($id);
+            $item->update(['active' => !$item->active]);
+            return $item;
         } catch (Exception $err) {
             Log::error('Erro ao excluir Companies', [$err->getMessage()]);
             return false;

@@ -26,7 +26,7 @@ class CompaniesService
 
     public function create($data)
     {
-        $companieData = [
+        $companyData = [
             "name" => $data['name'],
             "cnpj" => Formatter::onlyNumbers($data['cnpj']),
             "email" => $data['email'],
@@ -36,17 +36,31 @@ class CompaniesService
 
         $systemsData = $data['systems'];
 
-        return $this->companiesRepository->create($companieData, $systemsData);
+        return $this->companiesRepository->create($companyData, $systemsData);
     }
 
     public function update($id, $data)
     {
-        return $this->companiesRepository->update($id, $data);
+        $companyData = [
+            "name" => $data['name'],
+            "cnpj" => Formatter::onlyNumbers($data['cnpj']),
+            "email" => $data['email'],
+            "phone" => Formatter::onlyNumbers($data['phone']),
+            "address" => $data['address'],
+        ];
+
+        $systemsData = $data['systems'];
+
+        return $this->companiesRepository->update($id, $companyData, $systemsData);
     }
 
     public function delete($id)
     {
         return $this->companiesRepository->delete($id);
+    }
+    public function disable($id)
+    {
+        return $this->companiesRepository->disable($id);
     }
 
     public function listSystemCategories()
