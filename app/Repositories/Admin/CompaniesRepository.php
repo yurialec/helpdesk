@@ -4,7 +4,7 @@ namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\CompaniesRepositoryInterface;
 use App\Models\Admin\Companies;
-use App\Models\Admin\SystemCategories;
+use App\Models\Admin\SystemCategory;
 use App\Models\Admin\Systems;
 use DB;
 use Exception;
@@ -16,7 +16,7 @@ class CompaniesRepository implements CompaniesRepositoryInterface
     protected $systemCategories;
     protected $systems;
 
-    public function __construct(Companies $companies, SystemCategories $systemCategories, Systems $systems)
+    public function __construct(Companies $companies, SystemCategory $systemCategories, Systems $systems)
     {
         $this->companies = $companies;
         $this->systemCategories = $systemCategories;

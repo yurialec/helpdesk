@@ -220,3 +220,17 @@ Route::middleware(['auth', 'acl:keep-companies'])->prefix('admin/companies')->gr
     Route::get('/list-system-categories', [App\Http\Controllers\Admin\CompaniesController::class, 'listSystemCategories'])->name('companies.listSystemCategories');
 });
 // === [/AUTO] Admin / Companies ===
+
+// === [AUTO] Admin / SystemCategory ===
+Route::middleware(['auth', 'acl:keep-system-category'])->prefix('admin/system-category')->group(function () {
+    Route::get('/', [App\Http\Controllers\Admin\SystemCategoryController::class, 'index'])->name('system-category.index');
+    Route::get('/list', [App\Http\Controllers\Admin\SystemCategoryController::class, 'list'])->name('system-category.list');
+    Route::get('/create', [App\Http\Controllers\Admin\SystemCategoryController::class, 'create'])->name('system-category.create');
+    Route::post('/store', [App\Http\Controllers\Admin\SystemCategoryController::class, 'store'])->name('system-category.store');
+    Route::get('/edit/{id}', [App\Http\Controllers\Admin\SystemCategoryController::class, 'edit'])->name('system-category.edit');
+    Route::get('/find/{id}', [App\Http\Controllers\Admin\SystemCategoryController::class, 'find'])->name('system-category.find');
+    Route::put('/update/{id}', [App\Http\Controllers\Admin\SystemCategoryController::class, 'update'])->name('system-category.update');
+    Route::delete('/delete/{id}', [App\Http\Controllers\Admin\SystemCategoryController::class, 'delete'])->name('system-category.delete');
+    Route::post('/disable/{id}', [App\Http\Controllers\Admin\SystemCategoryController::class, 'disable'])->name('system-category.disable');
+});
+// === [/AUTO] Admin / SystemCategory ===
