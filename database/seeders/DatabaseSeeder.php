@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionSeeder::class);
         $this->call(OrderMenuSeeder::class);
         $this->call(SystemCategorySeeder::class);
-        $this->call(SystemSeeder::class);
+        $this->call(StatusSeeder::class);
+        $this->call(PrioritySeeder::class);
+        $this->call(TicketSeeder::class);
     }
 }
