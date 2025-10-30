@@ -10,6 +10,8 @@ class TicketStatus extends Model
     use HasFactory;
     protected $table = 'ticket_statuses';
 
+    const STATUS_OPEN = 1; 
+
     protected $fillable = [
         'name',
         'color_code',

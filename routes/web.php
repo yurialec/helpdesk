@@ -234,3 +234,20 @@ Route::middleware(['auth', 'acl:keep-system-category'])->prefix('admin/system-ca
     Route::post('/disable/{id}', [App\Http\Controllers\Admin\SystemCategoryController::class, 'disable'])->name('system-category.disable');
 });
 // === [/AUTO] Admin / SystemCategory ===
+
+// === [AUTO] Admin / Tickets ===
+Route::middleware(['auth','acl:keep-tickets'])->prefix('admin/tickets')->group(function () {
+    Route::get('/',                 [App\Http\Controllers\Admin\TicketsController::class, 'index'])->name('tickets.index');
+    Route::get('/list',             [App\Http\Controllers\Admin\TicketsController::class, 'list'])->name('tickets.list');
+    Route::get('/create',           [App\Http\Controllers\Admin\TicketsController::class, 'create'])->name('tickets.create');
+    Route::post('/store',           [App\Http\Controllers\Admin\TicketsController::class, 'store'])->name('tickets.store');
+    Route::get('/edit/{id}',        [App\Http\Controllers\Admin\TicketsController::class, 'edit'])->name('tickets.edit');
+    Route::get('/find/{id}',        [App\Http\Controllers\Admin\TicketsController::class, 'find'])->name('tickets.find');
+    Route::get('/list-priorities',        [App\Http\Controllers\Admin\TicketsController::class, 'listPriorities'])->name('tickets.listPriorities');
+    Route::get('/list-status',        [App\Http\Controllers\Admin\TicketsController::class, 'listStatus'])->name('tickets.listStatus');
+    Route::get('/list-companies',        [App\Http\Controllers\Admin\TicketsController::class, 'listCompanies'])->name('tickets.listCompanies');
+    Route::get('/list-systems/{id}',        [App\Http\Controllers\Admin\TicketsController::class, 'listSystems'])->name('tickets.listSystems');
+    Route::put('/update/{id}',     [App\Http\Controllers\Admin\TicketsController::class, 'update'])->name('tickets.update');
+    Route::delete('/delete/{id}',   [App\Http\Controllers\Admin\TicketsController::class, 'delete'])->name('tickets.delete');
+});
+// === [/AUTO] Admin / Tickets ===
