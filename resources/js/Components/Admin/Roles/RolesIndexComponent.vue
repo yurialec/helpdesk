@@ -34,6 +34,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nome</th>
+                                <th>Descrição</th>
                                 <th>Permissões</th>
                                 <th>Ações</th>
                             </tr>
@@ -42,6 +43,9 @@
                             <tr v-for="role in this.roles.data" :key="role.id">
                                 <th>{{ role.id }}</th>
                                 <td>{{ role.name }}</td>
+                                <td style="white-space: normal !important; word-wrap: break-word; ">
+                                    {{ role.description }}
+                                </td>
                                 <td>
                                     <span v-for="permission in role['permissions']" class="badge bg-success"
                                         id="span-role-permissions">{{ permission.label }}</span>&nbsp;

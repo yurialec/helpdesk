@@ -4,8 +4,8 @@ namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\UserRepositoryInterface;
 use App\Models\User;
+use Auth;
 use Exception;
-use Illuminate\Support\Facades\Hash;
 use Log;
 
 class UserRepository implements UserRepositoryInterface
@@ -21,8 +21,12 @@ class UserRepository implements UserRepositoryInterface
     {
         try {
             return $this->user
+                ->whereHas('role', function ($q) {
+                    $q->where('level', '>=', Auth::user()->role->level);
+                })
+                ->with('role')
                 ->when($term, function ($query) use ($term) {
-                    return $query->where('name', 'like', '%' . $term . '%');
+                    $query->where('name', 'like', '%' . $term . '%');
                 })
                 ->paginate(10);
         } catch (Exception $err) {

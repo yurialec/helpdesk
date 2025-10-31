@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Admin\Roles;
 use Auth;
 use Closure;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ class AclMiddleware
 {
     public function handle(Request $request, Closure $next, $permission = null)
     {
-        if (session('role') === 'Desenvolvedor') {
+        if (session('role_id') === Roles::SERVICE_MANAGER_ID) {
             return $next($request);
         }
 

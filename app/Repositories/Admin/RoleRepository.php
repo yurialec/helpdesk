@@ -5,8 +5,8 @@ namespace App\Repositories\Admin;
 use App\Interfaces\Admin\RoleRepositoryInterface;
 use App\Models\Admin\Permissions;
 use App\Models\Admin\Roles;
+use Auth;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use Log;
 
 class RoleRepository implements RoleRepositoryInterface
@@ -26,10 +26,11 @@ class RoleRepository implements RoleRepositoryInterface
     {
         try {
             return $this->role
+                ->where('level', '>=', Auth::user()->role->level)
                 ->when($term, function ($query) use ($term) {
                     return $query->where('name', 'like', '%' . $term . '%');
                 })
-                ->where('id', '>=', Auth::user()->role_id)
+                ->orderBy('level', 'ASC')
                 ->paginate(10);
         } catch (Exception $err) {
             Log::error('Erro ao listar perfis', [$err->getMessage()]);

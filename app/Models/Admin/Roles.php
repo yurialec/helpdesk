@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Roles extends Model
 {
     use HasFactory;
+    
+    const SERVICE_MANAGER_ID = 1;
 
     protected $fillable = [
-        'name'
+        'name',
+        'description',
+        'level'
     ];
 
     protected $with = 'permissions';

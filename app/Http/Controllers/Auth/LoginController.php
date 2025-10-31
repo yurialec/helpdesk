@@ -42,7 +42,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         $user = $user->toArray();
-        $request->session()->put('role', $user['role']['name']);
+        $request->session()->put('role_id', $user['role']['id']);
 
         $permissions = $this->getPermissions($user['role']['permissions']);
 
