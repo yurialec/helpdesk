@@ -1,4 +1,4 @@
-<footer class="section-padding bg-dark text-white">
+    <footer class="section-padding bg-dark text-white">
     <div class="container">
         <div class="row">
             {{-- Redes sociais --}}

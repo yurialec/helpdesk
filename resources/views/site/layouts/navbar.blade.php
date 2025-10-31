@@ -5,7 +5,7 @@
     <div class="container">
         <a class="navbar-brand text-primary" href="#home">
             @if ($logo)
-                <img width="100" src="{{ asset('/storage/' . $logo->image) }}">
+                <img width="100" class="rounded" src="{{ asset('/storage/' . $logo->image) }}">
             @else
                 Home
             @endif
@@ -26,6 +26,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#contact">Contato</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('login') }}">Área Restrita</a>
                 </li>
             </ul>
         </div>

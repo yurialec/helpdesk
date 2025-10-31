@@ -3,13 +3,13 @@
         <div class="card-header py-2">
             <div class="row align-items-center g-2">
                 <div class="col-md-3 col-12">
-                    <h5 class="mb-0">Tickets</h5>
+                    <h5 class="mb-0">Chamados</h5>
                 </div>
 
                 <div class="col-md-6 col-12">
                     <div class="input-group">
                         <input type="text" class="form-control form-control-sm" v-model="searchFilter"
-                            placeholder="Buscar por protocolo, empresa ou assunto..." @keyup.enter="search" />
+                            placeholder="Protocolo" @keyup.enter="search" />
                         <button type="button" class="btn btn-sm btn-primary" @click="search">
                             <i class="bi bi-search"></i>
                         </button>
@@ -51,12 +51,12 @@
                             </td>
                             <td>
                                 <span class="badge" :style="{ backgroundColor: ticket.priority?.color_code }">
-                                    {{ ticket.priority?.name }}
+                                    {{ convertPriority(ticket.priority?.name) }}
                                 </span>
                             </td>
                             <td>
                                 <span class="badge" :style="{ backgroundColor: ticket.status?.color_code }">
-                                    {{ ticket.status?.name }}
+                                    {{ convertStatus(ticket.status?.name) }}
                                 </span>
                             </td>
                             <td>{{ formatDate(ticket.due_date) }}</td>
@@ -142,6 +142,32 @@ export default {
         viewTicket(ticket) {
             alert(`Ticket ${ticket.protocol}\n\nAssunto: ${ticket.subject}\nEmpresa: ${ticket.company?.name}`);
         },
+        convertPriority(name) {
+            switch (name) {
+                case 'Low':
+                    return 'Baixo';
+                case 'Medium':
+                    return 'Médio';
+                case 'High':
+                    return 'Alto';
+                case 'Urgent':
+                    return 'Urgente';
+            }
+        },
+        convertStatus(name) {
+            switch (name) {
+                case 'Open':
+                    return 'Aberto';
+                case 'In Progress':
+                    return 'Em Progresso';
+                case 'Awaiting Client':
+                    return 'Aguardando Cliente';
+                case 'Resolved':
+                    return 'Resolvido';
+                case 'Closed':
+                    return 'F';
+            }
+        }
     },
 };
 </script>
