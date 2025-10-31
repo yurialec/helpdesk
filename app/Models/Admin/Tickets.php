@@ -2,6 +2,7 @@
 
 namespace App\Models\Admin;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Tickets extends Model
@@ -50,5 +51,10 @@ class Tickets extends Model
     public function system()
     {
         return $this->belongsTo(Systems::class, 'system_id');
+    }
+
+    public function requester()
+    {
+        return $this->belongsTo(User::class, 'requester_id');
     }
 }

@@ -32,7 +32,7 @@ class TicketsRepository implements TicketsRepositoryInterface
     public function all($term)
     {
         try {
-            return $this->tickets->with(['company', 'system', 'status', 'priority'])
+            return $this->tickets->with(['company', 'system', 'status', 'priority', 'requester'])
                 ->when($term, function ($query) use ($term) {
                     return $query->where('id', 'like', '%' . $term . '%');
                 })

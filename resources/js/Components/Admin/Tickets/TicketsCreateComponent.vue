@@ -44,7 +44,6 @@
                                         </option>
                                     </select>
                                 </div> -->
-
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Prioridade</label>
                                     <select class="form-select" v-model="ticket.priority_id" required>
@@ -54,13 +53,11 @@
                                         </option>
                                     </select>
                                 </div>
-
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Prazo</label>
                                     <input type="date" class="form-control" v-model="ticket.due_date">
                                 </div>
                             </div>
-                            
                             <div class="d-flex justify-content-between mt-4">
                                 <a :href="urlIndex" class="btn btn-outline-secondary btn-sm">Voltar</a>
                                 <button type="submit" class="btn btn-primary btn-sm" :disabled="loading">
@@ -93,7 +90,8 @@ export default {
             },
             priorities: {},
             status: {},
-            companies: {}
+            companies: {},
+            systems: {}
         };
     },
     mounted() {
