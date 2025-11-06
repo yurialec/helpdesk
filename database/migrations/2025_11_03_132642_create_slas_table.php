@@ -10,11 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('ticket_priorities', function (Blueprint $table) {
+        Schema::create('slas', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->integer('level')->unique()->comment('Numeric level for sorting');
-            $table->string('color_code')->nullable();
+            $table->string('name');
+            $table->integer('response_time');
+            $table->integer('resolution_time');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_priorities');
+        Schema::dropIfExists('slas');
     }
 };

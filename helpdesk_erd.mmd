@@ -1,0 +1,87 @@
+erDiagram
+
+    TICKET_STATUSES {
+        bigint id PK
+        string name
+        string color_code
+        string description
+    }
+
+    TICKET_PRIORITIES {
+        bigint id PK
+        string name
+        int level
+        string color_code
+    }
+
+    SLAS {
+        bigint id PK
+        string name
+        int response_time
+        int resolution_time
+        text description
+    }
+
+    TICKET_CATEGORIES {
+        bigint id PK
+        string name
+        bigint parent_id FK
+    }
+
+    SUPPORT_GROUPS {
+        bigint id PK
+        string name
+        text description
+    }
+
+    TICKETS {
+        bigint id PK
+        string protocol
+        bigint company_id FK
+        bigint system_id FK
+        bigint requester_id FK
+        bigint agent_id FK
+        bigint group_id FK
+        bigint status_id FK
+        bigint priority_id FK
+        bigint sla_id FK
+        bigint category_id FK
+        enum type
+        enum impact
+        enum urgency
+        string closure_code
+        string subject
+        text description
+        timestamp due_date
+        timestamp resolved_at
+    }
+
+    TICKET_LOGS {
+        bigint id PK
+        bigint ticket_id FK
+        bigint user_id FK
+        string action
+        text old_value
+        text new_value
+    }
+
+    PROBLEMS {
+        bigint id PK
+        string title
+        text description
+        enum status
+    }
+
+    PROBLEM_TICKET {
+        bigint problem_id FK
+        bigint ticket_id FK
+    }
+
+    TICKETS ||--o{ TICKET_LOGS : "possui"
+    TICKET_STATUSES ||--o{ TICKETS : "define status"
+    TICKET_PRIORITIES ||--o{ TICKETS : "define prioridade"
+    SLAS ||--o{ TICKETS : "define SLA"
+    TICKET_CATEGORIES ||--o{ TICKETS : "classifica"
+    SUPPORT_GROUPS ||--o{ TICKETS : "atribui grupo"
+    PROBLEMS ||--o{ PROBLEM_TICKET : "associa tickets"
+    TICKETS ||--o{ PROBLEM_TICKET : "relaciona problemas"

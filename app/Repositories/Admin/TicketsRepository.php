@@ -4,9 +4,12 @@ namespace App\Repositories\Admin;
 
 use App\Interfaces\Admin\TicketsRepositoryInterface;
 use App\Models\Admin\Companies;
+use App\Models\Admin\Sla;
+use App\Models\Admin\SupportGroup;
 use App\Models\Admin\Systems;
+use App\Models\Admin\Ticket;
+use App\Models\Admin\TicketCategory;
 use App\Models\Admin\TicketPriority;
-use App\Models\Admin\Tickets;
 use App\Models\Admin\TicketStatus;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -18,24 +21,49 @@ class TicketsRepository implements TicketsRepositoryInterface
     protected $status;
     protected $companies;
     protected $system;
+    protected $sla;
+    protected $category;
+    protected $groups;
 
 
-    public function __construct(Tickets $tickets, TicketPriority $priority, TicketStatus $status, Companies $companies, Systems $system)
+    public function __construct(Ticket $tickets, TicketPriority $priority, TicketStatus $status, Companies $companies, Systems $system, Sla $sla, TicketCategory $category, SupportGroup $groups)
     {
         $this->tickets = $tickets;
         $this->priority = $priority;
         $this->status = $status;
         $this->companies = $companies;
         $this->system = $system;
+        $this->sla = $sla;
+        $this->category = $category;
+        $this->groups = $groups;
     }
 
-    public function all($term)
+    public function all($filters)
     {
         try {
-            return $this->tickets->with(['company', 'system', 'status', 'priority', 'requester'])
-                ->when($term, function ($query) use ($term) {
-                    return $query->where('id', 'like', '%' . $term . '%');
+            return $this->tickets->with(['status', 'priority', 'requester', 'company', 'system'])
+                ->when($filters, function ($query) use ($filters) {
+                    if (isset($filters['company_id'])) {
+                        $query->where('company_id', $filters['company_id']);
+                    }
+                    if (isset($filters['system_id'])) {
+                        $query->where('system_id', $filters['system_id']);
+                    }
+                    if (isset($filters['priority_id'])) {
+                        $query->where('priority_id', $filters['priority_id']);
+                    }
+                    if (isset($filters['status_id'])) {
+                        $query->where('status_id', $filters['status_id']);
+                    }
+                    if (isset($filters['due_date'])) {
+                        $query->whereDate('due_date', $filters['due_date']);
+                    }
+                    if (isset($filters['protocol'])) {
+                        $query->where('protocol', $filters['protocol']);
+                    }
+                    return $query;
                 })
+                ->orderBy('id', 'desc')
                 ->paginate(10);
         } catch (Exception $err) {
             Log::error('Erro ao listar registros Tickets', [$err->getMessage()]);
@@ -121,6 +149,35 @@ class TicketsRepository implements TicketsRepositoryInterface
     {
         try {
             return $this->system->select(['id', 'name'])->where('company_id', $id)->get();
+        } catch (Exception $err) {
+            Log::error('Erro ao exibir lista de status', [$err->getMessage()]);
+            return false;
+        }
+    }
+
+    public function listSla()
+    {
+        try {
+            return $this->sla->select(['id', 'name'])->get();
+        } catch (Exception $err) {
+            Log::error('Erro ao exibir lista de status', [$err->getMessage()]);
+            return false;
+        }
+    }
+
+    public function listCategory()
+    {
+        try {
+            return $this->category->select(['id', 'name'])->get();
+        } catch (Exception $err) {
+            Log::error('Erro ao exibir lista de status', [$err->getMessage()]);
+            return false;
+        }
+    }
+    public function listGroups()
+    {
+        try {
+            return $this->groups->select(['id', 'name'])->get();
         } catch (Exception $err) {
             Log::error('Erro ao exibir lista de status', [$err->getMessage()]);
             return false;

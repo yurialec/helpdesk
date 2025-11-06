@@ -9,12 +9,14 @@ class TicketPriority extends Model
 {
     use HasFactory;
 
-    protected $table = 'ticket_priorities';
-
     protected $fillable = [
         'name',
         'level',
         'color_code',
     ];
 
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'priority_id');
+    }
 }

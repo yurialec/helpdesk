@@ -5,23 +5,19 @@ namespace App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TicketStatus extends Model
+class Sla extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'color_code',
+        'response_time',
+        'resolution_time',
         'description',
     ];
 
-    const STATUS_OPEN = 1;
-    const STATUS_IN_PROGRESS = 2;
-    const STATUS_RESOLVED = 3;
-    const STATUS_CLOSED = 4;
-
     public function tickets()
     {
-        return $this->hasMany(Ticket::class, 'status_id');
+        return $this->hasMany(Ticket::class, 'sla_id');
     }
 }

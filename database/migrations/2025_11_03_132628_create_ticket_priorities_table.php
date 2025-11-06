@@ -10,10 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('ticket_statuses', function (Blueprint $table) {
+        Schema::create('ticket_priorities', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('color_code')->nullable()->comment('Hex code or class name for UI styling');
+            $table->integer('level')->unique();
+            $table->string('color_code')->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_statuses');
+        Schema::dropIfExists('ticket_priorities');
     }
 };

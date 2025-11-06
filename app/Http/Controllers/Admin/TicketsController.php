@@ -22,7 +22,8 @@ class TicketsController extends Controller
 
     public function list(Request $request)
     {
-        $items = $this->ticketsService->getAll($request->input('search'));
+        $filtros = $request->all();
+        $items = $this->ticketsService->getAll($filtros);
 
         if ($items) {
             return response()->json(['status' => true, 'items' => $items], 200);
@@ -89,7 +90,7 @@ class TicketsController extends Controller
         }
         return response()->json(['status' => false, 'message' => 'Registro não encontrado'], 500);
     }
-    
+
     public function listStatus()
     {
         $item = $this->ticketsService->listStatus();
@@ -114,6 +115,36 @@ class TicketsController extends Controller
 
         if ($item) {
             return response()->json(['status' => true, 'item' => $item], 200);
+        }
+        return response()->json(['status' => false, 'message' => 'Registro não encontrado'], 500);
+    }
+
+    public function listSla()
+    {
+        $items = $this->ticketsService->listSla();
+
+        if ($items) {
+            return response()->json(['status' => true, 'items' => $items], 200);
+        }
+        return response()->json(['status' => false, 'message' => 'Registro não encontrado'], 500);
+    }
+
+    public function listCategory()
+    {
+        $items = $this->ticketsService->listCategory();
+
+        if ($items) {
+            return response()->json(['status' => true, 'items' => $items], 200);
+        }
+        return response()->json(['status' => false, 'message' => 'Registro não encontrado'], 500);
+    }
+
+    public function listGroups()
+    {
+        $items = $this->ticketsService->listGroups();
+
+        if ($items) {
+            return response()->json(['status' => true, 'items' => $items], 200);
         }
         return response()->json(['status' => false, 'message' => 'Registro não encontrado'], 500);
     }

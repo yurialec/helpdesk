@@ -247,6 +247,9 @@ Route::middleware(['auth','acl:keep-tickets'])->prefix('admin/tickets')->group(f
     Route::get('/list-status',        [App\Http\Controllers\Admin\TicketsController::class, 'listStatus'])->name('tickets.listStatus');
     Route::get('/list-companies',        [App\Http\Controllers\Admin\TicketsController::class, 'listCompanies'])->name('tickets.listCompanies');
     Route::get('/list-systems/{id}',        [App\Http\Controllers\Admin\TicketsController::class, 'listSystems'])->name('tickets.listSystems');
+    Route::get('/list-sla',        [App\Http\Controllers\Admin\TicketsController::class, 'listSla'])->name('tickets.listSla');
+    Route::get('/list-category',        [App\Http\Controllers\Admin\TicketsController::class, 'listCategory'])->name('tickets.listCategory');
+    Route::get('/list-groups',        [App\Http\Controllers\Admin\TicketsController::class, 'listGroups'])->name('tickets.listGroups');
     Route::put('/update/{id}',     [App\Http\Controllers\Admin\TicketsController::class, 'update'])->name('tickets.update');
     Route::delete('/delete/{id}',   [App\Http\Controllers\Admin\TicketsController::class, 'delete'])->name('tickets.delete');
 });

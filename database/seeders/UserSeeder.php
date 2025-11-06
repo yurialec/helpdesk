@@ -3,10 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Admin\Roles;
-use App\Models\User;
-use Faker\Factory;
 use Hash;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -24,37 +21,37 @@ class UserSeeder extends Seeder
                 'name' => 'Desenvolvedor',
                 'email' => 'dev@system.com',
                 'password' => $password,
-                'role_name' => 'Desenvolvedor',
+                'role_name' => 'Gerente de Serviço',
             ],
             [
                 'name' => 'Administrador Master',
                 'email' => 'admin@system.com',
                 'password' => $password,
-                'role_name' => 'Administrador',
+                'role_name' => 'Gerente de Service Desk',
             ],
             [
                 'name' => 'Gestor de Equipe',
                 'email' => 'gestor@system.com',
                 'password' => $password,
-                'role_name' => 'Gestor',
+                'role_name' => 'Especialista de Sistema (L3)',
             ],
             [
                 'name' => 'Suporte Backoffice',
                 'email' => 'backoffice@system.com',
                 'password' => $password,
-                'role_name' => 'Backoffice',
+                'role_name' => 'Analista de Problemas',
             ],
             [
                 'name' => 'Tecnico Nivel 2',
                 'email' => 'tech2@system.com',
                 'password' => $password,
-                'role_name' => 'Técnico Nível 2',
+                'role_name' => 'Técnico de Suporte Nível 2',
             ],
             [
                 'name' => 'Tecnico Nivel 1',
                 'email' => 'tech1@system.com',
                 'password' => $password,
-                'role_name' => 'Técnico Nível 1',
+                'role_name' => 'Agente de Service Desk (Nível 1)',
             ],
         ];
 

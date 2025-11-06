@@ -13,4 +13,6 @@ interface TicketsRepositoryInterface
     public function listStatus();
     public function listCompanies();
     public function listSystems($id);
+    public function listSla();
+    public function listCategory();
 }
