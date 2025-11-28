@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Roles::class);
     }
+
+    public function scopeAgents($query)
+    {
+        return $query->where('role_id', Roles::AGENT_LEVEL_1_ID);
+    }
 }

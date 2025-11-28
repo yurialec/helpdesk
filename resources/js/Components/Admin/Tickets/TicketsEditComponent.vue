@@ -48,7 +48,15 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Prazo</label>
-                                <input type="datetime-local" class="form-control" v-model="ticket.due_date" disabled>
+                                <input type="datetime-local" class="form-control" :value="formatDateLocal(ticket.due_date)" disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Responsável</label>
+                                <select class="form-select" v-model="ticket.agent_id" required>
+                                    <option v-for="agent in agents" :key="agent.id" :value="agent.id">
+                                        {{ agent.name }}
+                                    </option>
+                                </select>
                             </div>
                             <div class="d-flex justify-content-between mt-4">
                                 <a :href="urlIndex" class="btn btn-outline-secondary btn-sm">Voltar</a>
@@ -78,16 +86,19 @@ export default {
                 company: {},
                 system: {},
                 status: {},
-                priority: {}
+                priority: {},
+                agent: {},
             },
             priorities: {},
-            status: {}
+            status: {},
+            agents: {}
         };
     },
     mounted() {
         this.find(this.id);
         this.listPriorities();
         this.listStatus();
+        this.listAgents();
     },
     methods: {
         find(id) {
@@ -129,6 +140,19 @@ export default {
                     this.loading = false;
                 });
         },
+        listAgents() {
+            this.loading = true;
+            axios.get('/admin/tickets/list-agents/')
+                .then(response => {
+                    this.agents = response.data.item;
+                })
+                .catch(errors => {
+                    this.alertDanger(errors);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
         save() {
             this.loading = true;
             axios.put(`/admin/tickets/update/${this.ticket.id}`, this.ticket)
@@ -141,6 +165,19 @@ export default {
                 .finally(() => {
                     this.loading = false;
                 });
+        },
+        formatDateLocal(datetime) {
+            if (!datetime) return '';
+
+            const d = new Date(datetime);
+
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            const hours = String(d.getHours()).padStart(2, '0');
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
         }
     }
 }

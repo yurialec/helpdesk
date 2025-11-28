@@ -100,6 +100,16 @@ class TicketsController extends Controller
         }
         return response()->json(['status' => false, 'message' => 'Registro não encontrado'], 500);
     }
+    public function listAgents()
+    {
+        $item = $this->ticketsService->listAgents();
+
+        if ($item) {
+            return response()->json(['status' => true, 'item' => $item], 200);
+        }
+        return response()->json(['status' => false, 'message' => 'Registro não encontrado'], 500);
+    }
+
     public function listCompanies()
     {
         $item = $this->ticketsService->listCompanies();

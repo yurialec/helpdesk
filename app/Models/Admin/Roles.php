@@ -10,6 +10,7 @@ class Roles extends Model
     use HasFactory;
     
     const SERVICE_MANAGER_ID = 1;
+    const AGENT_LEVEL_1_ID = 6;
 
     protected $fillable = [
         'name',

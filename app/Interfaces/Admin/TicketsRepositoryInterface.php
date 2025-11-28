@@ -11,6 +11,7 @@ interface TicketsRepositoryInterface
     public function delete($id);
     public function listPriorities();
     public function listStatus();
+    public function listAgents();
     public function listCompanies();
     public function listSystems($id);
     public function listSla();

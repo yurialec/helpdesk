@@ -11,6 +11,7 @@ use App\Models\Admin\Ticket;
 use App\Models\Admin\TicketCategory;
 use App\Models\Admin\TicketPriority;
 use App\Models\Admin\TicketStatus;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -24,10 +25,20 @@ class TicketsRepository implements TicketsRepositoryInterface
     protected $sla;
     protected $category;
     protected $groups;
+    protected $users;
 
 
-    public function __construct(Ticket $tickets, TicketPriority $priority, TicketStatus $status, Companies $companies, Systems $system, Sla $sla, TicketCategory $category, SupportGroup $groups)
-    {
+    public function __construct(
+        Ticket $tickets,
+        TicketPriority $priority,
+        TicketStatus $status,
+        Companies $companies,
+        Systems $system,
+        Sla $sla,
+        TicketCategory $category,
+        SupportGroup $groups,
+        User $users
+    ) {
         $this->tickets = $tickets;
         $this->priority = $priority;
         $this->status = $status;
@@ -36,12 +47,13 @@ class TicketsRepository implements TicketsRepositoryInterface
         $this->sla = $sla;
         $this->category = $category;
         $this->groups = $groups;
+        $this->users = $users;
     }
 
     public function all($filters)
     {
         try {
-            return $this->tickets->with(['status', 'priority', 'requester', 'company', 'system'])
+            return $this->tickets->with(['status', 'priority', 'requester', 'company', 'system', 'agent'])
                 ->when($filters, function ($query) use ($filters) {
                     if (isset($filters['company_id'])) {
                         $query->where('company_id', $filters['company_id']);
@@ -63,7 +75,7 @@ class TicketsRepository implements TicketsRepositoryInterface
                     }
                     return $query;
                 })
-                ->orderBy('id', 'desc')
+                ->orderBy('priority_id', 'desc')
                 ->paginate(10);
         } catch (Exception $err) {
             Log::error('Erro ao listar registros Tickets', [$err->getMessage()]);
@@ -74,7 +86,7 @@ class TicketsRepository implements TicketsRepositoryInterface
     public function find($id)
     {
         try {
-            return $this->tickets->with(['company', 'system', 'status', 'priority'])->find($id);
+            return $this->tickets->with(['company', 'system', 'status', 'priority', 'agent'])->find($id);
         } catch (Exception $err) {
             Log::error('Erro ao localizar registro Tickets', [$err->getMessage()]);
             return false;
@@ -131,6 +143,16 @@ class TicketsRepository implements TicketsRepositoryInterface
             return $this->status->get();
         } catch (Exception $err) {
             Log::error('Erro ao exibir lista de status', [$err->getMessage()]);
+            return false;
+        }
+    }
+
+    public function listAgents()
+    {
+        try {
+            return $this->users->select(['id', 'name'])->agents()->get();
+        } catch (Exception $err) {
+            Log::error('Erro ao exibir lista de agentes', [$err->getMessage()]);
             return false;
         }
     }

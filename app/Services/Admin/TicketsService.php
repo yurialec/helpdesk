@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Utils\Agents;
 use App\Models\Admin\TicketStatus;
 use App\Repositories\Admin\TicketsRepository;
 use App\Utils\GenetateProtocol;
@@ -44,6 +45,7 @@ class TicketsService
             'sla_id' => $data['sla_id'],
             'category_id' => $data['category_id'],
             'group_id' => $data['group_id'],
+            'agent_id' => Agents::next(),
         ];
 
         return $this->ticketsRepository->create($ticketData);
@@ -66,6 +68,10 @@ class TicketsService
     public function listStatus()
     {
         return $this->ticketsRepository->listStatus();
+    }
+    public function listAgents()
+    {
+        return $this->ticketsRepository->listAgents();
     }
     public function listCompanies()
     {

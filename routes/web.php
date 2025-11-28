@@ -245,6 +245,7 @@ Route::middleware(['auth','acl:keep-tickets'])->prefix('admin/tickets')->group(f
     Route::get('/find/{id}',        [App\Http\Controllers\Admin\TicketsController::class, 'find'])->name('tickets.find');
     Route::get('/list-priorities',        [App\Http\Controllers\Admin\TicketsController::class, 'listPriorities'])->name('tickets.listPriorities');
     Route::get('/list-status',        [App\Http\Controllers\Admin\TicketsController::class, 'listStatus'])->name('tickets.listStatus');
+    Route::get('/list-agents',        [App\Http\Controllers\Admin\TicketsController::class, 'listAgents'])->name('tickets.listAgents');
     Route::get('/list-companies',        [App\Http\Controllers\Admin\TicketsController::class, 'listCompanies'])->name('tickets.listCompanies');
     Route::get('/list-systems/{id}',        [App\Http\Controllers\Admin\TicketsController::class, 'listSystems'])->name('tickets.listSystems');
     Route::get('/list-sla',        [App\Http\Controllers\Admin\TicketsController::class, 'listSla'])->name('tickets.listSla');
