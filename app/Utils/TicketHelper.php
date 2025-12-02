@@ -1,15 +1,41 @@
 <?php
-
 namespace App\Utils;
 
 use App\Models\Admin\Roles;
 use App\Models\Admin\Ticket;
 use App\Models\User;
+use Carbon\Carbon;
 use DB;
 
-class Agents
+class TicketHelper
 {
-    public static function next()
+    /**
+     * Gera o numero de protocolo
+     * @return string
+     */
+    public static function generateProtocol(): string
+    {
+        $dt = Carbon::now()->format('my');
+
+        $currentMonth = Carbon::now();
+        $tickets = Ticket::whereMonth('created_at', $currentMonth->month)->count() + 1;
+
+        if ((strlen($tickets) === 1)) {
+            $value = '0000' . $tickets;
+        } else {
+            $trimmedString = substr('0000', 0, -strlen($tickets));
+            $value = $trimmedString . $tickets;
+        }
+
+
+        return 'P' . $value . $dt;
+    }
+
+    /**
+     * proximo agente disponivel
+     * @return int|null
+     */
+    public static function nextAgent(): int|null
     {
         $agents = User::where('role_id', Roles::AGENT_LEVEL_1_ID)->get();
         if ($agents->isEmpty()) {

@@ -23,6 +23,5 @@ class DatabaseSeeder extends Seeder
         $this->call(SlaSeeder::class);
         $this->call(TicketCategorySeeder::class);
         $this->call(SupportGroupSeeder::class);
-        $this->call(TicketSeeder::class);
     }
 }

@@ -2,10 +2,9 @@
 
 namespace App\Services\Admin;
 
-use App\Utils\Agents;
 use App\Models\Admin\TicketStatus;
 use App\Repositories\Admin\TicketsRepository;
-use App\Utils\GenetateProtocol;
+use App\Utils\TicketHelper;
 use Auth;
 
 class TicketsService
@@ -30,7 +29,7 @@ class TicketsService
     public function create($data)
     {
         $ticketData = [
-            'protocol' => GenetateProtocol::generate(),
+            'protocol' => TicketHelper::generateProtocol(),
             'company_id' => $data['company_id'],
             'system_id' => $data['system_id'],
             'requester_id' => Auth::id(),
@@ -45,7 +44,7 @@ class TicketsService
             'sla_id' => $data['sla_id'],
             'category_id' => $data['category_id'],
             'group_id' => $data['group_id'],
-            'agent_id' => Agents::next(),
+            'agent_id' => TicketHelper::nextAgent(),
         ];
 
         return $this->ticketsRepository->create($ticketData);

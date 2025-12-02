@@ -15,12 +15,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'keep-roles', 'label' => 'Manter Perfis'],
             ['name' => 'keep-permissions', 'label' => 'Manter Permissões'],
             ['name' => 'keep-menu', 'label' => 'Manter Menus'],
-            ['name' => 'keep-logo', 'label' => 'Manter Logo'],
-            ['name' => 'keep-main-text', 'label' => 'Manter Texto Principal'],
-            ['name' => 'keep-carousel', 'label' => 'Manter Carrousel'],
-            ['name' => 'keep-site-about', 'label' => 'Manter Sobre'],
-            ['name' => 'keep-contact', 'label' => 'Manter Contato'],
-            ['name' => 'keep-social-media', 'label' => 'Manter Midias Sociais'],
+            ['name' => 'keep-site', 'label' => 'Manter Site'],
         ];
 
         foreach ($permissions as $permission) {

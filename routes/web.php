@@ -111,6 +111,16 @@ Route::middleware(['auth'])->group(function () {
         return $response->json();
     });
 });
+
+// === [AUTO] Admin / Site ===
+Route::middleware(['auth','acl:keep-site'])->prefix('admin/site')->group(function () {
+    Route::get('/',                 [App\Http\Controllers\Admin\SiteController::class, 'index'])->name('site.index');
+    Route::get('/list',             [App\Http\Controllers\Admin\SiteController::class, 'list'])->name('site.list');
+    Route::get('/edit',        [App\Http\Controllers\Admin\SiteController::class, 'edit'])->name('site.edit');
+    Route::post('/save',     [App\Http\Controllers\Admin\SiteController::class, 'save'])->name('site.save');
+});
+// === [/AUTO] Admin / Site ===
+
 // === [AUTO] Admin / Feedback ===
 Route::middleware(['auth', 'acl:keep-feedback'])->prefix('admin/feedback')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\FeedbackController::class, 'index'])->name('feedback.index');

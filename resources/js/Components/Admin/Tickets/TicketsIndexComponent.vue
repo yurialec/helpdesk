@@ -94,6 +94,7 @@
                         <tr>
                             <th>#</th>
                             <th>Protocolo</th>
+                            <th>Atendente</th>
                             <th>Empresa/Sistema</th>
                             <th>Assunto</th>
                             <th class="text-center">Prioridade</th>
@@ -106,6 +107,7 @@
                         <tr v-for="ticket in tickets.data" :key="ticket.id">
                             <td>{{ ticket.id }}</td>
                             <td>{{ ticket.protocol }}</td>
+                            <td>{{ ticket.agent.name }}</td>
                             <td>{{ ticket.company.name }}/{{ ticket.system.name }}</td>
                             <td class="text-truncate" style="max-width: 200px;" :title="ticket.subject">
                                 {{ ticket.subject }}
