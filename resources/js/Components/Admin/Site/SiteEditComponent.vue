@@ -23,22 +23,70 @@
                             <div class="col-12 col-md-8 col-lg-7">
                                 <!-- STEP 0 - SOBRE NÓS -->
                                 <div v-if="step === 0">
-                                    <h5 class="mb-3 fw-semibold">Sobre Nós</h5>
+                                    <h5 class="mb-3 fw-semibold">Logo</h5>
+                                    <input type="file" class="form-control" @change="handleImage($event, 'logo')">
+                                    <div class="text-center mt-3" v-if="logo.imagePreview || logo.oldImage">
+                                        <img :src="logo.imagePreview || (logo.oldImage ? `/storage/${logo.oldImage}` : null)"
+                                            class="rounded border"
+                                            style="max-width:220px;max-height:220px;object-fit:contain;">
+                                        <button type="button" class="btn btn-outline-danger btn-sm mt-2"
+                                            @click="clearImage('logo')">
+                                            Remover logo
+                                        </button>
+                                    </div>
+                                </div>
 
+                                <!-- STEP 1 - Principal -->
+                                <div v-if="step === 1">
+                                    <h5 class="mb-3 fw-semibold">Texto Principal</h5>
+                                    <div class="mb-3">
+                                        <label class="form-label">Título</label>
+                                        <input type="text" class="form-control" v-model="main.title">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Texto</label>
+                                        <textarea class="form-control" v-model="main.text" rows="3"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- STEP 2 - Carrousel -->
+                                <div v-if="step === 2">
+                                    <h5 class="mb-3 fw-semibold">Carrousel</h5>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Adicionar novas imagens</label>
+                                        <input type="file" class="form-control" multiple @change="addCarouselImages">
+                                    </div>
+                                    <div class="row g-3 mt-3">
+                                        <div v-for="img in carousel" :key="img.id || img.tempId"
+                                            class="col-6 col-md-4 col-lg-3">
+                                            <div class="position-relative">
+                                                <button
+                                                    class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 rounded-circle"
+                                                    @click="removeCarousel(img)"
+                                                    style="z-index:10;width:26px;height:26px;display:flex;align-items:center;justify-content:center;">×
+                                                </button>
+                                                <img :src="img.preview || `/storage/${img.path}`"
+                                                    class="img-fluid rounded border"
+                                                    style="height:140px;object-fit:cover;width:100%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- STEP 3 - SOBRE -->
+                                <div v-if="step === 3">
+                                    <h5 class="mb-3 fw-semibold">Sobre Nós</h5>
                                     <div class="mb-3">
                                         <label class="form-label">Título</label>
                                         <input type="text" class="form-control" v-model="about.title">
                                     </div>
-
                                     <div class="mb-3">
                                         <label class="form-label">Descrição</label>
                                         <textarea class="form-control" v-model="about.description" rows="5"></textarea>
                                     </div>
-
                                     <div class="mb-3">
                                         <label class="form-label">Imagem</label>
                                         <input type="file" class="form-control" @change="handleImage($event, 'about')">
-
                                         <div class="text-center mt-3" v-if="about.imagePreview || about.oldImage">
                                             <img :src="about.imagePreview || (about.oldImage ? `/storage/${about.oldImage}` : null)"
                                                 class="rounded border"
@@ -51,37 +99,9 @@
                                     </div>
                                 </div>
 
-                                <!-- STEP 1 - CAROUSEL -->
-                                <div v-if="step === 1">
-                                    <h5 class="mb-3 fw-semibold">Carrousel</h5>
-
-                                    <div class="mb-3">
-                                        <label class="form-label fw-semibold">Adicionar novas imagens</label>
-                                        <input type="file" class="form-control" multiple @change="addCarouselImages">
-                                    </div>
-
-                                    <div class="row g-3 mt-3">
-                                        <div v-for="img in carousel" :key="img.id || img.tempId"
-                                            class="col-6 col-md-4 col-lg-3">
-                                            <div class="position-relative">
-                                                <button
-                                                    class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 rounded-circle"
-                                                    @click="removeCarousel(img)"
-                                                    style="z-index:10;width:26px;height:26px;display:flex;align-items:center;justify-content:center;">
-                                                    ×
-                                                </button>
-                                                <img :src="img.preview || `/storage/${img.path}`"
-                                                    class="img-fluid rounded border"
-                                                    style="height:140px;object-fit:cover;width:100%;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- STEP 2 - CONTATO -->
-                                <div v-if="step === 2">
+                                <!-- STEP 4 - Contato -->
+                                <div v-if="step === 4">
                                     <h5 class="mb-3 fw-semibold">Contato</h5>
-
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label">Telefone</label>
@@ -110,63 +130,26 @@
                                     </div>
                                 </div>
 
-                                <!-- STEP 3 - LOGO -->
-                                <div v-if="step === 3">
-                                    <h5 class="mb-3 fw-semibold">Logo</h5>
-
-                                    <input type="file" class="form-control" @change="handleImage($event, 'logo')">
-
-                                    <div class="text-center mt-3" v-if="logo.imagePreview || logo.oldImage">
-                                        <img :src="logo.imagePreview || (logo.oldImage ? `/storage/${logo.oldImage}` : null)"
-                                            class="rounded border"
-                                            style="max-width:220px;max-height:220px;object-fit:contain;">
-                                        <button type="button" class="btn btn-outline-danger btn-sm mt-2"
-                                            @click="clearImage('logo')">
-                                            Remover logo
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- STEP 4 - TEXTO PRINCIPAL -->
-                                <div v-if="step === 4">
-                                    <h5 class="mb-3 fw-semibold">Texto Principal</h5>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Título</label>
-                                        <input type="text" class="form-control" v-model="main.title">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Texto</label>
-                                        <textarea class="form-control" v-model="main.text" rows="3"></textarea>
-                                    </div>
-                                </div>
-
                                 <!-- STEP 5 - REDES SOCIAIS -->
                                 <div v-if="step === 5">
                                     <h5 class="mb-3 fw-semibold">Redes Sociais</h5>
-
                                     <div class="mb-3">
                                         <label class="form-label">Nome</label>
                                         <input type="text" class="form-control" v-model="socialTemp.name">
                                     </div>
-
                                     <div class="mb-3">
                                         <label class="form-label">URL</label>
                                         <input type="text" class="form-control" v-model="socialTemp.url">
                                     </div>
-
                                     <div class="mb-3">
                                         <label class="form-label">Ícone</label>
                                         <input type="text" class="form-control" v-model="socialTemp.icon">
                                     </div>
-
                                     <div class="text-center mb-3">
                                         <button class="btn btn-success btn-sm" @click="addSocial">
                                             Adicionar
                                         </button>
                                     </div>
-
                                     <ul class="list-group">
                                         <li class="list-group-item d-flex justify-content-between align-items-center"
                                             v-for="i in social" :key="i.tempId">
@@ -186,11 +169,9 @@
                                     <button class="btn btn-outline-primary" :disabled="step === 0" @click="step--">
                                         <i class="bi bi-chevron-left"></i> Anterior
                                     </button>
-
                                     <button v-if="step < steps.length - 1" class="btn btn-primary" @click="step++">
                                         Próximo <i class="bi bi-chevron-right"></i>
                                     </button>
-
                                     <button v-else class="btn btn-success" @click="save" :disabled="loading">
                                         <i class="bi bi-check-circle"></i>
                                         <span v-if="!loading">Salvar</span>
@@ -265,26 +246,38 @@ export default {
         find() {
             axios.get('/admin/site/list')
                 .then(response => {
-                    this.about.title = response.data.items.about.title;
-                    this.about.description = response.data.items.about.description;
-                    this.about.oldImage = response.data.items.about.image;
 
-                    this.carousel = response.data.items.carousel.map(img => ({
-                        id: img.id,
-                        path: img.image
-                    }));
+                    const items = response.data.items || {};
 
-                    this.contact = response.data.items.contatct;
+                    this.about = {
+                        title: items.about?.title || '',
+                        description: items.about?.description || '',
+                        oldImage: items.about?.image || null
+                    };
 
-                    this.logo.oldImage = response.data.items.logo.image;
-                    this.main = response.data.items.main;
+                    this.carousel = Array.isArray(items.carousel)
+                        ? items.carousel.map(img => ({
+                            id: img.id,
+                            path: img.image
+                        }))
+                        : [];
 
-                    this.social = response.data.items.socialMedia.map(s => ({
-                        tempId: Date.now() + Math.random(),
-                        name: s.name,
-                        url: s.url,
-                        icon: s.icon
-                    }));
+                    this.contact = items.contatct || {};
+
+                    this.logo = {
+                        oldImage: items.logo?.image || null
+                    };
+
+                    this.main = items.main || {};
+
+                    this.social = Array.isArray(items.socialMedia)
+                        ? items.socialMedia.map(s => ({
+                            tempId: Date.now() + Math.random(),
+                            name: s.name || '',
+                            url: s.url || '',
+                            icon: s.icon || ''
+                        }))
+                        : [];
                 })
                 .catch(error => {
                     this.alertDanger(error);
