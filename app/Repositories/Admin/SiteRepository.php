@@ -66,6 +66,25 @@ class SiteRepository implements SiteRepositoryInterface
 
         try {
 
+            $logo = $this->logo->first() ?? new SiteLogo();
+
+            if (isset($data['logo_image'])) {
+
+                if (!empty($logo->image)) {
+                    Storage::disk('public')->delete($logo->image);
+                }
+
+                $file = $data['logo_image'];
+
+                $ext = $file->getClientOriginalExtension() ?: 'png';
+                $filename = uniqid() . '.' . $ext;
+
+                $path = $file->storeAs('site/logo/images', $filename, 'public');
+
+                $logo->image = $path;
+                $logo->save();
+            }
+
             $normalize = function ($value, bool $nullAsEmptyString = false) {
                 if (is_array($value)) {
                     return $value;

@@ -11,5 +11,5 @@ class SiteLogo extends Model
 
     protected $table = 'site_logo';
 
-    protected $fillable = ['name', 'image'];
+    protected $fillable = ['image'];
 }

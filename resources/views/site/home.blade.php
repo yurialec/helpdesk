@@ -2,104 +2,6 @@
 
 @section('content')
 
-    <style>
-        /* HERO */
-        .hero-section {
-            padding: 140px 0 80px;
-            background: linear-gradient(135deg, #eef3ff 0%, #ffffff 100%);
-        }
-
-        .hero-section h1 {
-            font-size: 3rem;
-            line-height: 1.2;
-            color: #0d6efd;
-        }
-
-        .hero-section p {
-            font-size: 1.2rem;
-            color: #444;
-        }
-
-        .hero-section img {
-            border-radius: 14px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            transition: .3s;
-        }
-
-        .hero-section img:hover {
-            transform: translateY(-6px);
-        }
-
-        /* ABOUT */
-        .section-padding {
-            padding: 90px 0;
-        }
-
-        .about-section img {
-            border-radius: 16px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .about-section h2 {
-            font-weight: 700;
-            font-size: 2.2rem;
-        }
-
-        .about-stats h3 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: .2rem;
-        }
-
-        .about-stats p {
-            margin: 0;
-            color: #555;
-        }
-
-        /* CAROUSEL */
-        #mainCarousel img {
-            border-radius: 16px;
-        }
-
-        .carousel-indicators [data-bs-target] {
-            height: 12px;
-            width: 12px;
-            border-radius: 50%;
-        }
-
-        /* CONTACT FORM */
-        .contact-form {
-            background: #fff;
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .contact-form button {
-            padding: 12px 35px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-        }
-
-        .contact-info-box i {
-            color: #0d6efd;
-        }
-
-        .contact-info-box {
-            background: #fff;
-            border-radius: 16px;
-            padding: 25px 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
-            transition: .25s;
-        }
-
-        .contact-info-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-        }
-    </style>
-
-
     {{-- HERO SECTION --}}
     @if(isset($mainText))
         <section id="home" class="hero-section">
@@ -240,34 +142,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- 3 BOXES --}}
-            <div class="row mt-5">
-                <div class="col-lg-4 text-center mb-4">
-                    <div class="contact-info-box">
-                        <i class="fas fa-map-marker-alt fa-2x mb-3"></i>
-                        <h5>Endereço</h5>
-                        <p>Rua Exemplo, 123<br>Cidade - Estado<br>CEP: 12345-678</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 text-center mb-4">
-                    <div class="contact-info-box">
-                        <i class="fas fa-phone fa-2x mb-3"></i>
-                        <h5>Telefone</h5>
-                        <p>(11) 99999-9999<br>(11) 3333-3333</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 text-center mb-4">
-                    <div class="contact-info-box">
-                        <i class="fas fa-envelope fa-2x mb-3"></i>
-                        <h5>E-mail</h5>
-                        <p>contato@exemplo.com<br>vendas@exemplo.com</p>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </section>
 

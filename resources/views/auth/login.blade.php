@@ -85,45 +85,8 @@
                         </form>
                     </div>
                 </div>
-                <!-- Informações adicionais -->
-                <!-- <div class="text-center mt-4">
-                    <p class="text-muted">
-                        <small>
-                            <i class="fas fa-shield-alt me-1"></i>
-                            Seus dados estão protegidos e seguros
-                        </small>
-                    </p>
-                </div> -->
             </div>
         </div>
     </div>
 </div>
-
-<!-- Script para melhorar a experiência do usuário -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Adicionar efeito de foco nos inputs
-    const inputs = document.querySelectorAll('.form-control');
-    inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.classList.add('focused');
-        });
-        
-        input.addEventListener('blur', function() {
-            this.parentElement.classList.remove('focused');
-        });
-    });
-    
-    // Animação suave para o card de login
-    const loginCard = document.querySelector('.login-card');
-    loginCard.style.opacity = '0';
-    loginCard.style.transform = 'translateY(30px)';
-    
-    setTimeout(() => {
-        loginCard.style.transition = 'all 0.6s ease';
-        loginCard.style.opacity = '1';
-        loginCard.style.transform = 'translateY(0)';
-    }, 100);
-});
-</script>
 @endsection

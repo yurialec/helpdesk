@@ -2,45 +2,6 @@
     $logo = App\Models\Site\SiteLogo::first();
 @endphp
 
-<style>
-    .navbar-custom {
-        height: 80px;
-        transition: all .3s ease;
-    }
-
-    .navbar-custom.scrolled {
-        background: #ffffff !important;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
-    }
-
-    .nav-link {
-        font-weight: 500;
-        font-size: 0.96rem;
-        padding: 12px 18px !important;
-        transition: 0.2s ease-in-out;
-        color: #444 !important;
-    }
-
-    .nav-link:hover {
-        color: #0d6efd !important;
-        transform: translateY(-1px);
-    }
-
-    .nav-link.active {
-        color: #0d6efd !important;
-        font-weight: 600;
-    }
-
-    .navbar-brand img {
-        max-height: 55px;
-        object-fit: contain;
-    }
-
-    .navbar-toggler {
-        border: none !important;
-    }
-</style>
-
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top navbar-custom">
     <div class="container">
 
