@@ -1,145 +1,168 @@
 <template>
-    <div class="container">
+    <div class="container py-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card" v-loading="{ show: loading }">
+                <div class="card shadow-sm rounded-3" v-loading="{ show: loading }">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="row mb-3">
-                                <div class="col-12 text-end">
-                                    <a :href="urlEdit" class="btn btn-success btn-sm">
-                                        Editar
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <h6 class="fw-bold mb-2">Conteúdo Principal</h6>
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div class="mb-1">
-                                        <strong>Título:</strong>
-                                        <span>{{ main?.title }}</span>
-                                    </div>
-                                    <div>
-                                        <strong>Texto:</strong>
-                                        <span>{{ main?.text }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <h6 class="fw-bold mb-2">Sobre</h6>
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div class="mb-1">
-                                        <strong>Título:</strong>
-                                        <span>{{ about?.title }}</span>
-                                    </div>
-                                    <div>
-                                        <strong>Descrição:</strong>
-                                        <span>{{ about?.description }}</span>
-                                    </div>
-                                    <div v-if="logo && logo.image">
-                                        <strong>Imagem</strong>
-                                        <img class="d-block rounded" :src="`/storage/${about.image}`" width="200"
-                                            height="200">
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <h6 class="fw-bold mb-2">Contato</h6>
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <dl class="row mb-2">
-                                        <dt class="col-sm-3">Telefone:</dt>
-                                        <dd class="col-sm-9">{{ contact?.phone }}</dd>
 
-                                        <dt class="col-sm-3">E-mail:</dt>
-                                        <dd class="col-sm-9">{{ contact?.email }}</dd>
-                                    </dl>
-                                    <dl class="row mb-2">
-                                        <dt class="col-sm-3">Cidade:</dt>
-                                        <dd class="col-sm-9">{{ contact?.city }}/{{ contact?.state }}</dd>
+                        <!-- Botão Editar -->
+                        <div class="row mb-4">
+                            <div class="col-12 text-end">
+                                <a :href="urlEdit" class="btn btn-success btn-sm px-3">
+                                    Editar
+                                </a>
+                            </div>
+                        </div>
 
-                                        <dt class="col-sm-3">Endereço:</dt>
-                                        <dd class="col-sm-9">{{ contact?.address }}</dd>
-                                    </dl>
-                                    <dl class="row mb-2">
-                                        <dt class="col-sm-3">CEP:</dt>
-                                        <dd class="col-sm-9">{{ contact?.zipcode }}</dd>
-                                    </dl>
-                                </div>
+                        <!-- Conteúdo Principal -->
+                        <div class="row mb-4">
+                            <div class="col-12 col-md-4">
+                                <h6 class="fw-bold mb-2 border-start ps-2 text-primary">Conteúdo Principal</h6>
                             </div>
-                            <hr>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <h6 class="fw-bold mb-2">Carousel</h6>
+                            <div class="col-12 col-md-8">
+                                <div class="mb-1">
+                                    <strong>Título:</strong>
+                                    <span>{{ main?.title }}</span>
                                 </div>
-                                <div v-if="carousel > 1" class="col-12 col-md-8">
-                                    <div class="mb-1">
-                                        <div id="carouselExample" class="carousel slide d-flex justify-content-center">
-                                            <div class="carousel-inner">
-                                                <div class="carousel-item" v-for="(item, index) in carousel"
-                                                    :key="item.id" :class="{ active: index === 0 }">
-                                                    <img :src="`/storage/${item.image}`" :alt="`Imagem ${index + 1}`"
-                                                        class="d-block rounded shadow-sm"
-                                                        style="width: 200px; height: 200px; object-fit: cover;">
-                                                </div>
-                                            </div>
-                                            <button class="carousel-control-prev" type="button"
-                                                data-bs-target="#carouselExample" data-bs-slide="prev">
-                                                <span
-                                                    class="carousel-control-prev-icon bg-primary p-2 rounded-circle small-control"></span>
-                                                <span class="visually-hidden">Anterior</span>
-                                            </button>
-                                            <button class="carousel-control-next" type="button"
-                                                data-bs-target="#carouselExample" data-bs-slide="next">
-                                                <span
-                                                    class="carousel-control-next-icon bg-primary p-2 rounded-circle small-control"></span>
-                                                <span class="visually-hidden">Próximo</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <h6 class="fw-bold mb-2">Logo</h6>
-                                </div>
-                                <div class="col-12 col-md-8" v-if="logo && logo.image">
-                                    <img class="d-block rounded" :src="`/storage/${logo.image}`" width="400"
-                                        height="200">
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <h6 class="fw-bold mb-2">Redes Sociais</h6>
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <ul class="list-unstyled mb-0">
-                                        <li v-for="item in socialMedia" :key="item.id"
-                                            class="mb-2 d-flex align-items-center">
-                                            <i :class="item.icon + ' fs-5 me-2 text-primary'"></i>
-                                            <a :href="item.url" target="_blank" class="text-decoration-none">
-                                                {{ item.name }}
-                                            </a>
-                                        </li>
-                                    </ul>
+                                <div>
+                                    <strong>Texto:</strong>
+                                    <span>{{ main?.text }}</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+
+                        <div class="border-top my-3"></div>
+
+                        <!-- Sobre -->
+                        <div class="row mb-4">
+                            <div class="col-12 col-md-4">
+                                <h6 class="fw-bold mb-2 border-start ps-2 text-primary">Sobre</h6>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <div class="mb-1">
+                                    <strong>Título:</strong>
+                                    <span>{{ about?.title }}</span>
+                                </div>
+                                <div class="mb-2">
+                                    <strong>Descrição:</strong>
+                                    <span>{{ about?.description }}</span>
+                                </div>
+
+                                <div v-if="about && about.image" class="mt-2">
+                                    <strong>Imagem:</strong><br>
+                                    <img class="d-block rounded shadow-sm mt-1" :src="`/storage/${about.image}`"
+                                        width="200" height="200" style="object-fit: cover;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-top my-3"></div>
+
+                        <!-- Contato -->
+                        <div class="row mb-4">
+                            <div class="col-12 col-md-4">
+                                <h6 class="fw-bold mb-2 border-start ps-2 text-primary">Contato</h6>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <dl class="row mb-2">
+                                    <dt class="col-sm-4">Telefone:</dt>
+                                    <dd class="col-sm-8">{{ contact?.phone }}</dd>
+
+                                    <dt class="col-sm-4">E-mail:</dt>
+                                    <dd class="col-sm-8">{{ contact?.email }}</dd>
+                                </dl>
+
+                                <dl class="row mb-2">
+                                    <dt class="col-sm-4">Cidade:</dt>
+                                    <dd class="col-sm-8">{{ contact?.city }}/{{ contact?.state }}</dd>
+
+                                    <dt class="col-sm-4">Endereço:</dt>
+                                    <dd class="col-sm-8">{{ contact?.address }}</dd>
+                                </dl>
+
+                                <dl class="row mb-2">
+                                    <dt class="col-sm-4">CEP:</dt>
+                                    <dd class="col-sm-8">{{ contact?.zipcode }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="border-top my-3"></div>
+
+                        <!-- Carousel -->
+                        <div class="row mb-4">
+                            <div class="col-12 col-md-4">
+                                <h6 class="fw-bold mb-2 border-start ps-2 text-primary">Carousel</h6>
+                            </div>
+                            <div v-if="carousel > 1" class="col-12 col-md-8">
+                                <div id="carouselExample" class="carousel slide d-flex justify-content-center">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item" v-for="(item, index) in carousel" :key="item.id"
+                                            :class="{ active: index === 0 }">
+
+                                            <img :src="`/storage/${item.image}`" :alt="`Imagem ${index + 1}`"
+                                                class="d-block rounded shadow-sm"
+                                                style="width: 220px; height: 220px; object-fit: cover;">
+                                        </div>
+                                    </div>
+
+                                    <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carouselExample" data-bs-slide="prev">
+                                        <span
+                                            class="carousel-control-prev-icon bg-primary p-2 rounded-circle small-control"></span>
+                                        <span class="visually-hidden">Anterior</span>
+                                    </button>
+
+                                    <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carouselExample" data-bs-slide="next">
+                                        <span
+                                            class="carousel-control-next-icon bg-primary p-2 rounded-circle small-control"></span>
+                                        <span class="visually-hidden">Próximo</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-top my-3"></div>
+
+                        <!-- Logo -->
+                        <div class="row mb-4">
+                            <div class="col-12 col-md-4">
+                                <h6 class="fw-bold mb-2 border-start ps-2 text-primary">Logo</h6>
+                            </div>
+                            <div class="col-12 col-md-8" v-if="logo && logo.image">
+                                <img class="d-block rounded shadow-sm" :src="`/storage/${logo.image}`" width="400"
+                                    height="200" style="object-fit: contain;">
+                            </div>
+                        </div>
+
+                        <div class="border-top my-3"></div>
+
+                        <!-- Redes sociais -->
+                        <div class="row mb-2">
+                            <div class="col-12 col-md-4">
+                                <h6 class="fw-bold mb-2 border-start ps-2 text-primary">Redes Sociais</h6>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <ul class="list-unstyled mb-0">
+                                    <li v-for="item in socialMedia" :key="item.id"
+                                        class="mb-2 d-flex align-items-center">
+                                        <i :class="item.icon + ' fs-5 me-2 text-primary'"></i>
+                                        <a :href="item.url" target="_blank" class="text-decoration-none fw-semibold">
+                                            {{ item.name }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div> <!-- card-body -->
+                </div> <!-- card -->
             </div>
         </div>
     </div>
 </template>
+
 
 
 <script>

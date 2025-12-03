@@ -2,10 +2,15 @@
 
 namespace App\Services\Admin;
 
+use App\Enums\TicketLogActions;
+use App\Models\Admin\Ticket;
+use App\Models\Admin\TicketAttachment;
+use App\Models\Admin\TicketLog;
 use App\Models\Admin\TicketStatus;
 use App\Repositories\Admin\TicketsRepository;
 use App\Utils\TicketHelper;
 use Auth;
+use Storage;
 
 class TicketsService
 {
@@ -47,7 +52,16 @@ class TicketsService
             'agent_id' => TicketHelper::nextAgent(),
         ];
 
-        return $this->ticketsRepository->create($ticketData);
+
+        $ticket = $this->ticketsRepository->create($ticketData);
+
+        $this->log(
+            ticketId: $ticket->id,
+            action: TicketLogActions::CREATED,
+            message: "Ticket criado pelo usuário"
+        );
+
+        return $ticket;
     }
 
     public function update($id, $data)
@@ -91,5 +105,90 @@ class TicketsService
     public function listGroups()
     {
         return $this->ticketsRepository->listGroups();
+    }
+
+
+    // ==============================================
+    //  METODOS AUXILIARES, VERIFICAR ONDE FICARÃO
+    // ==============================================
+    private function log($ticketId, $action, $from = null, $to = null, $message = null): void
+    {
+        TicketLog::create([
+            'ticket_id' => $ticketId,
+            'user_id' => Auth::id(),
+            'action' => $action,
+            'from' => $from,
+            'to' => $to,
+            'message' => $message
+        ]);
+    }
+
+    public function changeStatus($ticketId, $newStatus)
+    {
+        $ticket = Ticket::findOrFail($ticketId);
+
+        $oldStatus = $ticket->status_id;
+
+        $ticket->update(['status_id' => $newStatus]);
+
+        $this->log(
+            ticketId: $ticketId,
+            action: TicketLogActions::STATUS_CHANGED,
+            from: $oldStatus,
+            to: $newStatus
+        );
+    }
+
+    public function transferAgent($ticketId, $newAgentId)
+    {
+        $ticket = Ticket::findOrFail($ticketId);
+
+        $oldAgent = $ticket->agent_id;
+
+        $ticket->update(['agent_id' => $newAgentId]);
+
+        $this->log(
+            ticketId: $ticketId,
+            action: TicketLogActions::AGENT_CHANGED,
+            from: $oldAgent,
+            to: $newAgentId
+        );
+    }
+
+    // Verificar, nao sei se é necessario
+    public function addInternalNote($ticketId, $message)
+    {
+        $this->log(
+            ticketId: $ticketId,
+            action: TicketLogActions::INTERNAL_NOTE,
+            message: $message
+        );
+    }
+
+    // Verificar, nao sei se é necessario
+    public function addPublicReply($ticketId, $message)
+    {
+        $this->log(
+            ticketId: $ticketId,
+            action: TicketLogActions::PUBLIC_REPLY,
+            message: $message
+        );
+    }
+
+    public function addAttachment($ticketId, $filePath, $fileName)
+    {
+        TicketAttachment::create([
+            'ticket_id' => $ticketId,
+            'user_id' => Auth::id(),
+            'file_path' => $filePath,
+            'original_name' => $fileName,
+            'size' => Storage::size($filePath),
+        ]);
+
+        $this->log(
+            ticketId: $ticketId,
+            action: TicketLogActions::ATTACHMENT,
+            message: "Arquivo anexado: {$fileName}"
+        );
     }
 }

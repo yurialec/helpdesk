@@ -6,18 +6,18 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TicketLog extends Model
+class TicketAttachment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'ticket_id',
         'user_id',
-        'action',
-        'from',
-        'to',
-        'message'
+        'file_path',
+        'original_name',
+        'size'
     ];
+
 
     public function ticket()
     {

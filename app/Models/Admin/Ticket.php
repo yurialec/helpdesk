@@ -73,7 +73,7 @@ class Ticket extends Model
 
     public function logs()
     {
-        return $this->hasMany(TicketLog::class, 'ticket_id');
+        return $this->hasMany(TicketLog::class);
     }
 
     public function company()
@@ -84,6 +84,11 @@ class Ticket extends Model
     public function system()
     {
         return $this->belongsTo(Systems::class, 'system_id');
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(TicketAttachment::class);
     }
 
     public function scopeLevel1($query)

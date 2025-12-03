@@ -67,10 +67,18 @@ class SiteRepository implements SiteRepositoryInterface
         try {
 
             $normalize = function ($value, bool $nullAsEmptyString = false) {
+                if (is_array($value)) {
+                    return $value;
+                }
+
                 if (is_string($value)) {
                     $value = trim($value);
 
-                    if ($value === '' || strtolower($value) === 'null') {
+                    if (
+                        $value === '' ||
+                        strtolower($value) === 'null' ||
+                        strtolower($value) === 'undefined'
+                    ) {
                         return $nullAsEmptyString ? '' : null;
                     }
 
@@ -84,30 +92,37 @@ class SiteRepository implements SiteRepositoryInterface
                 return $value;
             };
 
-            $about = $this->about->first() ?? new SiteAbout();
 
-            if (array_key_exists('about_title', $data)) {
-                $about->title = $normalize($data['about_title']);
-            }
+            $processImage = function ($model, $removeFlag, $fileInput, string $dir) {
 
-            if (array_key_exists('about_description', $data)) {
-                $about->description = $normalize($data['about_description']);
-            }
+                if (!empty($fileInput)) {
+                    if (!empty($model->image)) {
+                        Storage::disk('public')->delete($model->image);
+                    }
 
-            $removeAboutImage = !empty($data['about_image_remove']);
-
-            if (!empty($data['about_image'])) {
-                if (!empty($about->image)) {
-                    Storage::disk('public')->delete($about->image);
+                    $file = $fileInput;
+                    $path = $file->store($dir, 'public');
+                    $model->image = $path;
+                    return;
                 }
 
-                $file = $data['about_image'];
-                $path = $file->store('site/about', 'public');
-                $about->image = $path;
-            } elseif ($removeAboutImage && !empty($about->image)) {
-                Storage::disk('public')->delete($about->image);
-                $about->image = null;
-            }
+                if ($removeFlag && !empty($model->image)) {
+                    Storage::disk('public')->delete($model->image);
+                    $model->image = null;
+                }
+            };
+
+            $about = $this->about->first() ?? new SiteAbout();
+
+            $about->title = $normalize($data['about_title'] ?? null);
+            $about->description = $normalize($data['about_description'] ?? null);
+
+            $processImage(
+                $about,
+                !empty($data['about_image_remove']),
+                $data['about_image'] ?? null,
+                'site/about'
+            );
 
             $about->save();
 
@@ -122,9 +137,9 @@ class SiteRepository implements SiteRepositoryInterface
                 'contact_zipcode' => 'zipcode',
             ];
 
-            foreach ($fieldsMap as $inputKey => $attr) {
-                if (array_key_exists($inputKey, $data)) {
-                    $contact->{$attr} = $normalize($data[$inputKey]);
+            foreach ($fieldsMap as $input => $attr) {
+                if (array_key_exists($input, $data)) {
+                    $contact->$attr = $normalize($data[$input] ?? null);
                 }
             }
 
@@ -132,20 +147,16 @@ class SiteRepository implements SiteRepositoryInterface
 
             $main = $this->mainText->first() ?? new MainText();
 
-            if (array_key_exists('main_title', $data)) {
-                $main->title = $normalize($data['main_title']);
-            }
-
-            if (array_key_exists('main_text', $data)) {
-                $main->text = $normalize($data['main_text']);
-            }
+            $main->title = $normalize($data['main_title'] ?? null);
+            $main->text = $normalize($data['main_text'] ?? null);
 
             $main->save();
 
             $oldIds = [];
-
             if (isset($data['carousel_old'])) {
-                $oldIds = is_array($data['carousel_old']) ? $data['carousel_old'] : [$data['carousel_old']];
+                $oldIds = is_array($data['carousel_old'])
+                    ? $data['carousel_old']
+                    : [$data['carousel_old']];
             }
 
             if (!empty($oldIds)) {
@@ -155,42 +166,41 @@ class SiteRepository implements SiteRepositoryInterface
             }
 
             if (isset($data['carousel_new'])) {
-                $newFiles = is_array($data['carousel_new']) ? $data['carousel_new'] : [$data['carousel_new']];
+                $newFiles = is_array($data['carousel_new'])
+                    ? $data['carousel_new']
+                    : [$data['carousel_new']];
 
                 foreach ($newFiles as $file) {
-                    if (!$file) {
-                        continue;
+                    if ($file) {
+                        $path = $file->store('site/carousel', 'public');
+                        $this->carousel->newQuery()->create([
+                            'image' => $path,
+                        ]);
                     }
-
-                    $path = $file->store('site/carousel', 'public');
-
-                    $this->carousel->newQuery()->create([
-                        'image' => $path,
-                    ]);
                 }
             }
 
-            $social = [];
+            $socialList = [];
 
             if (!empty($data['social'])) {
-                $social = json_decode($data['social'], true) ?: [];
+                $socialList = json_decode($data['social'], true) ?: [];
             }
 
             $this->socialMedia->query()->delete();
 
-            if (is_array($social)) {
-                foreach ($social as $item) {
-                    $this->socialMedia->newQuery()->create([
-                        'name' => $normalize($item['name'] ?? null, true),
-                        'url' => $normalize($item['url'] ?? null, true),
-                        'icon' => $normalize($item['icon'] ?? null, true),
-                    ]);
-                }
+            foreach ($socialList as $item) {
+                $this->socialMedia->newQuery()->create([
+                    'name' => $normalize($item['name'] ?? null, true),
+                    'url' => $normalize($item['url'] ?? null, true),
+                    'icon' => $normalize($item['icon'] ?? null, true),
+                ]);
             }
+
 
             DB::commit();
 
             return $this->all();
+
         } catch (Exception $err) {
             DB::rollBack();
             Log::error('Erro ao salvar registros Site', [$err->getMessage()]);
