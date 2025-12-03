@@ -12,6 +12,7 @@ use App\Models\Admin\TicketCategory;
 use App\Models\Admin\TicketPriority;
 use App\Models\Admin\TicketStatus;
 use App\Models\User;
+use Auth;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -53,32 +54,38 @@ class TicketsRepository implements TicketsRepositoryInterface
     public function all($filters)
     {
         try {
-            return $this->tickets->with(['status', 'priority', 'requester', 'company', 'system', 'agent'])
+
+            $user = Auth::user();
+
+            $query = $this->tickets
+                ->with(['status', 'priority', 'requester', 'company', 'system', 'agent'])
+                ->byRole($user)
                 ->when($filters, function ($query) use ($filters) {
-                    if (isset($filters['company_id'])) {
+
+                    if (!empty($filters['company_id'])) {
                         $query->where('company_id', $filters['company_id']);
                     }
-                    if (isset($filters['system_id'])) {
+                    if (!empty($filters['system_id'])) {
                         $query->where('system_id', $filters['system_id']);
                     }
-                    if (isset($filters['priority_id'])) {
+                    if (!empty($filters['priority_id'])) {
                         $query->where('priority_id', $filters['priority_id']);
                     }
-                    if (isset($filters['status_id'])) {
+                    if (!empty($filters['status_id'])) {
                         $query->where('status_id', $filters['status_id']);
                     }
-                    if (isset($filters['due_date'])) {
+                    if (!empty($filters['due_date'])) {
                         $query->whereDate('due_date', $filters['due_date']);
                     }
-                    if (isset($filters['protocol'])) {
+                    if (!empty($filters['protocol'])) {
                         $query->where('protocol', $filters['protocol']);
                     }
-                    return $query;
-                })
-                ->orderBy('priority_id', 'desc')
-                ->paginate(10);
+                });
+
+            return $query->orderBy('priority_id', 'desc')->paginate(10);
+
         } catch (Exception $err) {
-            Log::error('Erro ao listar registros Tickets', [$err->getMessage()]);
+            Log::error('Erro ao listar registros Tickets', ['error' => $err->getMessage()]);
             return false;
         }
     }

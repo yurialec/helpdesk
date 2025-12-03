@@ -2,6 +2,7 @@
     $logo = App\Models\Site\SiteLogo::first();
 @endphp
 <header-component
+    :user="{{ Auth::user()  }}"
     url-profile="{{ route('profile.view') }}"
     url-home="{{ route('home') }}"
     url-logout="{{ route('logout') }}"
